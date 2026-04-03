@@ -21,10 +21,10 @@ export function Navbar() {
 
   const links = [
     { href: "/diamonds",   label: "Diamonds" },
-    { href: "/jewellery",  label: "Jewellery" },
-    { href: "/trade",      label: "Trade" },
+    { href: "/services",   label: "Services" },
     { href: "/investment", label: "Investment" },
     { href: "/about",      label: "About" },
+    { href: "/faq",        label: "FAQ" },
     { href: "/journal",    label: "Journal" },
     { href: "/contact",    label: "Contact" },
   ];

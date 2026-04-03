@@ -7,6 +7,8 @@ import Investment from "@/pages/Investment";
 import Journal from "@/pages/Journal";
 import Contact from "@/pages/Contact";
 import About from "@/pages/About";
+import Services from "@/pages/Services";
+import FAQ from "@/pages/FAQ";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -24,6 +26,8 @@ function Router() {
         <Route path="/jewellery" component={Jewellery} />
         <Route path="/trade" component={Trade} />
         <Route path="/investment" component={Investment} />
+        <Route path="/services" component={Services} />
+        <Route path="/faq" component={FAQ} />
         <Route path="/about" component={About} />
         <Route path="/journal" component={Journal} />
         <Route path="/contact" component={Contact} />
