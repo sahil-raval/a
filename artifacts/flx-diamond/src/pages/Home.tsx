@@ -442,6 +442,145 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
+          2b. FL DIAMOND SHOWCASE — Visual proof
+      ══════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden" style={{ background: "#010d1a" }}>
+        {/* Grid texture */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: "linear-gradient(rgba(28,169,201,1) 1px, transparent 1px), linear-gradient(90deg, rgba(28,169,201,1) 1px, transparent 1px)",
+          backgroundSize: "60px 60px"
+        }} />
+
+        <div className="relative max-w-7xl mx-auto px-6 py-16 md:py-24 lg:py-28">
+
+          {/* Label */}
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger}
+            className="mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-6"
+          >
+            <div className="space-y-4">
+              <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
+                FL Certified Craftsmanship
+              </motion.p>
+              <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl lg:text-6xl text-white leading-none">
+                Flawless.<br />In every sense.
+              </motion.h2>
+            </div>
+            <motion.p variants={up} className="text-white/40 text-sm leading-relaxed max-w-xs font-light">
+              Every stone we convert reaches the highest clarity grade recognised by the GIA —
+              the only grade with zero inclusions and zero blemishes.
+            </motion.p>
+          </motion.div>
+
+          {/* Image grid — editorial layout */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-5">
+
+            {/* Main hero image — left, tall */}
+            <motion.div
+              className="md:col-span-7 relative overflow-hidden group"
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="relative aspect-[4/3] md:aspect-[4/3] overflow-hidden">
+                <img
+                  src="/fl-diamond-tweezers.png"
+                  alt="FL-grade diamond held in precision tweezers"
+                  className="w-full h-full object-cover transition-transform duration-[1.8s] ease-out group-hover:scale-105"
+                />
+                {/* Overlay gradient */}
+                <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 50%, rgba(1,13,26,0.85) 100%)" }} />
+                {/* Badge */}
+                <div className="absolute top-5 left-5 flex items-center gap-2 px-3 py-1.5" style={{ background: "rgba(1,13,26,0.7)", border: "1px solid rgba(28,169,201,0.35)", backdropFilter: "blur(8px)" }}>
+                  <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#1CA9C9" }} />
+                  <span className="text-[9px] uppercase tracking-[0.35em] font-medium" style={{ color: "#1CA9C9" }}>GIA FL Grade</span>
+                </div>
+                {/* Bottom label */}
+                <div className="absolute bottom-5 left-5">
+                  <p className="text-white text-xs uppercase tracking-[0.3em]">Precision Regrind</p>
+                  <p className="text-white/40 text-[10px] tracking-wider mt-0.5">Micro-millimetre surface correction</p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Right column — two stacked images */}
+            <div className="md:col-span-5 grid grid-cols-2 md:grid-cols-1 gap-4 md:gap-5">
+
+              <motion.div
+                className="relative overflow-hidden group"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="relative aspect-square md:aspect-[5/4] overflow-hidden">
+                  <img
+                    src="/fl-diamond-overhead.png"
+                    alt="Overhead view of a flawless round brilliant diamond showing perfect facet pattern"
+                    className="w-full h-full object-cover transition-transform duration-[1.8s] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 40%, rgba(1,13,26,0.75) 100%)" }} />
+                  <div className="absolute bottom-4 left-4">
+                    <p className="text-white text-[11px] uppercase tracking-[0.3em]">Facet Perfection</p>
+                    <p className="text-white/40 text-[9px] tracking-wider mt-0.5">Zero inclusions · Zero blemishes</p>
+                  </div>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="relative overflow-hidden group"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div className="relative aspect-square md:aspect-[5/4] overflow-hidden">
+                  <img
+                    src="/fl-diamond-certificate.png"
+                    alt="FL diamond alongside GIA grading certificate"
+                    className="w-full h-full object-cover transition-transform duration-[1.8s] ease-out group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, transparent 40%, rgba(1,13,26,0.75) 100%)" }} />
+                  <div className="absolute bottom-4 left-4">
+                    <p className="text-white text-[11px] uppercase tracking-[0.3em]">GIA Certified</p>
+                    <p className="text-white/40 text-[9px] tracking-wider mt-0.5">Documented · Verifiable · Transferable</p>
+                  </div>
+                </div>
+              </motion.div>
+
+            </div>
+          </div>
+
+          {/* Stat strip below images */}
+          <motion.div
+            className="mt-8 md:mt-10 grid grid-cols-3 gap-px overflow-hidden"
+            style={{ border: "1px solid rgba(28,169,201,0.12)" }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            {[
+              { stat: "FL", label: "Highest GIA Clarity Grade" },
+              { stat: "D–F", label: "Colour Range Available" },
+              { stat: "0.01mm", label: "Regrind Precision Tolerance" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center py-6 px-4 gap-1"
+                style={{ background: "rgba(28,169,201,0.04)", borderRight: i < 2 ? "1px solid rgba(28,169,201,0.12)" : undefined }}
+              >
+                <span className="font-serif text-2xl md:text-3xl text-white">{item.stat}</span>
+                <span className="text-[9px] uppercase tracking-[0.3em] text-center" style={{ color: "rgba(255,255,255,0.35)" }}>{item.label}</span>
+              </div>
+            ))}
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
           3. IF → FL OPPORTUNITY
       ══════════════════════════════════════════════════ */}
       <section className="py-28 px-6" style={{ background: "#02274A" }}>

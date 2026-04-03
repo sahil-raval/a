@@ -72,6 +72,24 @@ uri = "file://artifacts/flx-diamond/public/heritage-new.png"
 type = "image"
 title = "Craftsman examining diamond with loupe"
 
+[[generated]]
+id = "1fwLerpZzlAh1fdrY-YCf"
+uri = "file://artifacts/flx-diamond/public/fl-diamond-tweezers.png"
+type = "image"
+title = "fl diamond tweezers macro"
+
+[[generated]]
+id = "1_SmMwtXrVqo2dcwD3Pbh"
+uri = "file://artifacts/flx-diamond/public/fl-diamond-overhead.png"
+type = "image"
+title = "fl diamond overhead facets"
+
+[[generated]]
+id = "uOFKDfXLgU7Taq09yjenL"
+uri = "file://artifacts/flx-diamond/public/fl-diamond-certificate.png"
+type = "image"
+title = "fl diamond with gia certificate"
+
 [[outputs]]
 id = "NzsYcgbHpEBbs633vpj2B"
 uri = "file://attached_assets/stock_images/great-ocean-road_1.jpg"
