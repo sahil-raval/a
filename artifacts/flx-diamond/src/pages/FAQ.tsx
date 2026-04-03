@@ -18,6 +18,7 @@ const FAQ_CATEGORIES = [
   {
     id: "process",
     label: "The Conversion Process",
+    shortLabel: "Conversion",
     faqs: [
       {
         q: "What does the IF→FL conversion actually involve?",
@@ -44,6 +45,7 @@ const FAQ_CATEGORIES = [
   {
     id: "grading",
     label: "GIA Re-Certification",
+    shortLabel: "GIA",
     faqs: [
       {
         q: "Who submits the stone to GIA for re-grading?",
@@ -66,6 +68,7 @@ const FAQ_CATEGORIES = [
   {
     id: "minimums",
     label: "Minimums & Pricing",
+    shortLabel: "Pricing",
     faqs: [
       {
         q: "What is the minimum carat weight for conversion?",
@@ -87,7 +90,8 @@ const FAQ_CATEGORIES = [
   },
   {
     id: "terms",
-    label: "Payment & Commercial Terms",
+    label: "Payment & Terms",
+    shortLabel: "Payment",
     faqs: [
       {
         q: "What payment terms do you offer?",
@@ -109,7 +113,8 @@ const FAQ_CATEGORIES = [
   },
   {
     id: "confidentiality",
-    label: "Confidentiality & Discretion",
+    label: "Confidentiality",
+    shortLabel: "Discretion",
     faqs: [
       {
         q: "Do you discuss client relationships publicly?",
@@ -136,14 +141,14 @@ function FAQItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
     <div className="border-b" style={{ borderColor: "rgba(2,39,74,0.08)" }}>
       <button
         onClick={onToggle}
-        className="w-full flex items-start justify-between gap-6 py-6 text-left group"
+        className="w-full flex items-start justify-between gap-4 py-5 text-left group"
         data-testid={`faq-toggle-${q.slice(0, 20).replace(/\s+/g, "-").toLowerCase()}`}
       >
-        <span className="font-serif text-base text-[#02274A] leading-snug group-hover:text-[#1CA9C9] transition-colors" style={{ flex: 1 }}>
+        <span className="font-serif text-sm md:text-base text-[#02274A] leading-snug group-hover:text-[#1CA9C9] transition-colors" style={{ flex: 1 }}>
           {q}
         </span>
-        <span className="shrink-0 mt-0.5" style={{ color: "#1CA9C9" }}>
-          {isOpen ? <Minus size={16} /> : <Plus size={16} />}
+        <span className="shrink-0 mt-1" style={{ color: "#1CA9C9" }}>
+          {isOpen ? <Minus size={15} /> : <Plus size={15} />}
         </span>
       </button>
       <AnimatePresence initial={false}>
@@ -155,7 +160,7 @@ function FAQItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
             exit={{ height: 0, opacity: 0, transition: { duration: 0.25 } }}
             style={{ overflow: "hidden" }}
           >
-            <p className="pb-6 text-sm leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>{a}</p>
+            <p className="pb-5 text-sm leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>{a}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -173,55 +178,67 @@ export default function FAQ() {
     <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
-      <section className="pt-40 pb-28 px-6" style={{ background: "#02274A" }}>
+      <section className="pt-32 md:pt-40 pb-16 md:pb-28 px-6" style={{ background: "#02274A" }}>
         <motion.div
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-end"
+          className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-end"
         >
-          <div className="space-y-6">
+          <div className="space-y-5 md:space-y-6">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
               Trade Partner FAQ
             </motion.p>
-            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight">
+            <motion.h1 variants={up} className="font-serif text-4xl md:text-6xl lg:text-7xl text-white leading-tight">
               Common<br />
               <span style={{ color: "rgba(255,255,255,0.3)" }}>Questions.</span>
             </motion.h1>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
-          <motion.p variants={up} className="text-white/40 text-base leading-relaxed max-w-lg lg:pb-3">
+          <motion.p variants={up} className="text-white/40 text-sm md:text-base leading-relaxed md:pb-3">
             These are the questions serious buyers ask before they commit to an engagement.
             We have answered them directly so you can qualify us without needing a call first.
           </motion.p>
         </motion.div>
       </section>
 
-      {/* ── Category tabs ── */}
-      <div className="sticky top-20 z-30 px-6 py-4 border-b overflow-x-auto" style={{ background: "rgba(2,39,74,0.97)", backdropFilter: "blur(12px)", borderColor: "rgba(28,169,201,0.1)" }}>
-        <div className="max-w-7xl mx-auto flex gap-2 min-w-max">
-          {FAQ_CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              data-testid={`faq-cat-${cat.id}`}
-              className="text-[9px] uppercase tracking-[0.3em] px-4 py-2 transition-all whitespace-nowrap"
-              style={{
-                color: activeCategory === cat.id ? "#1CA9C9" : "rgba(255,255,255,0.35)",
-                borderBottom: activeCategory === cat.id ? "1px solid #1CA9C9" : "1px solid transparent",
-              }}
-            >
-              {cat.label}
-            </button>
-          ))}
+      {/* ── Category tabs — scrollable on mobile ── */}
+      <div
+        className="sticky top-20 z-30 border-b"
+        style={{
+          background: "rgba(2,39,74,0.97)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderColor: "rgba(28,169,201,0.1)",
+        }}
+      >
+        <div className="overflow-x-auto scrollbar-hide">
+          <div className="max-w-7xl mx-auto px-6 py-3 flex gap-1 min-w-max md:min-w-0 md:flex-wrap">
+            {FAQ_CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                data-testid={`faq-cat-${cat.id}`}
+                className="text-[9px] uppercase tracking-[0.28em] px-3 md:px-4 py-2 transition-all whitespace-nowrap"
+                style={{
+                  color: activeCategory === cat.id ? "#1CA9C9" : "rgba(255,255,255,0.35)",
+                  borderBottom: activeCategory === cat.id ? "1px solid #1CA9C9" : "1px solid transparent",
+                }}
+              >
+                {/* Shorter label on mobile */}
+                <span className="md:hidden">{cat.shortLabel}</span>
+                <span className="hidden md:inline">{cat.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* ── FAQ content ── */}
-      <section className="py-20 px-6" style={{ background: "#F4F8FC" }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-16">
+      <section className="py-14 md:py-20 px-6" style={{ background: "#F4F8FC" }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-10 lg:gap-16">
 
-          {/* Sidebar — category list */}
+          {/* Sidebar — hidden on mobile/tablet, visible on lg+ */}
           <div className="hidden lg:block space-y-2 pt-2">
             {FAQ_CATEGORIES.map((cat) => (
               <button
@@ -261,7 +278,7 @@ export default function FAQ() {
                   animate={{ opacity: 1, y: 0, transition: { duration: 0.35 } }}
                   className="space-y-0"
                 >
-                  <p className="text-[10px] uppercase tracking-[0.4em] font-medium mb-8" style={{ color: "#1CA9C9" }}>
+                  <p className="text-[10px] uppercase tracking-[0.4em] font-medium mb-6 md:mb-8" style={{ color: "#1CA9C9" }}>
                     {cat.label}
                   </p>
                   {cat.faqs.map((faq) => {
@@ -276,6 +293,19 @@ export default function FAQ() {
                       />
                     );
                   })}
+
+                  {/* Mobile CTA — shown below FAQ list on small screens */}
+                  <div className="pt-10 lg:hidden">
+                    <Link href="/contact">
+                      <Button
+                        className="rounded-none text-[10px] uppercase tracking-[0.2em] text-white hover:opacity-90"
+                        style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
+                        data-testid="btn-faq-mobile-contact"
+                      >
+                        Ask Directly
+                      </Button>
+                    </Link>
+                  </div>
                 </motion.div>
               ) : null
             )}
@@ -284,19 +314,19 @@ export default function FAQ() {
       </section>
 
       {/* ── Closing CTA ── */}
-      <section className="py-20 px-6" style={{ background: "#02274A" }}>
+      <section className="py-16 md:py-20 px-6" style={{ background: "#02274A" }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={stagger}
-          className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center"
+          className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 md:gap-16 items-center"
         >
           <div className="space-y-4">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
               Ready to proceed?
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight">
+            <motion.h2 variants={up} className="font-serif text-3xl md:text-4xl text-white leading-tight">
               If your question is not here,<br />
               <span style={{ color: "rgba(255,255,255,0.3)" }}>ask it directly.</span>
             </motion.h2>
@@ -308,7 +338,7 @@ export default function FAQ() {
           <motion.div variants={up} className="flex flex-col sm:flex-row gap-4">
             <Link href="/contact">
               <Button
-                className="rounded-none text-[10px] uppercase tracking-[0.25em] text-white hover:opacity-90"
+                className="w-full sm:w-auto rounded-none text-[10px] uppercase tracking-[0.25em] text-white hover:opacity-90"
                 style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
                 data-testid="btn-faq-contact"
               >
@@ -318,7 +348,7 @@ export default function FAQ() {
             <Link href="/services">
               <Button
                 variant="outline"
-                className="rounded-none text-[10px] uppercase tracking-[0.25em] hover:text-[#02274A] transition-colors"
+                className="w-full sm:w-auto rounded-none text-[10px] uppercase tracking-[0.25em] hover:text-[#02274A] transition-colors"
                 style={{ borderColor: "rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.55)", height: "48px", padding: "0 2rem" }}
                 data-testid="btn-faq-services"
               >

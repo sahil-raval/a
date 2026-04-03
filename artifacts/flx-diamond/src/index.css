@@ -199,6 +199,15 @@
   animation: tide-pulse 4s ease-in-out infinite;
 }
 
+/* ── Hide scrollbar (used on FAQ tabs mobile) ── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* ── Qualifier card ── */
 .qualifier-card {
   cursor: pointer;

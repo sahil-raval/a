@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { Link } from "wouter";
 
 const fade = {
@@ -115,14 +115,11 @@ const SERVICES = [
 ];
 
 function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number }) {
-  const [expanded, setExpanded] = useState(false);
-
-  const bg        = s.dark ? "#02274A" : "#F4F8FC";
-  const text      = s.dark ? "rgba(255,255,255,0.85)" : "rgba(2,39,74,0.85)";
-  const muted     = s.dark ? "rgba(255,255,255,0.36)" : "rgba(2,39,74,0.38)";
-  const border    = s.dark ? "rgba(255,255,255,0.07)" : "rgba(2,39,74,0.07)";
-  const numColor  = s.dark ? "rgba(255,255,255,0.04)" : "rgba(2,39,74,0.05)";
-  const tagColor  = s.dark ? "rgba(255,255,255,0.28)" : "rgba(2,39,74,0.3)";
+  const bg       = s.dark ? "#02274A" : "#F4F8FC";
+  const text     = s.dark ? "rgba(255,255,255,0.85)" : "rgba(2,39,74,0.85)";
+  const muted    = s.dark ? "rgba(255,255,255,0.36)" : "rgba(2,39,74,0.38)";
+  const border   = s.dark ? "rgba(255,255,255,0.07)" : "rgba(2,39,74,0.07)";
+  const tagColor = s.dark ? "rgba(255,255,255,0.28)" : "rgba(2,39,74,0.3)";
 
   return (
     <motion.section
@@ -133,16 +130,16 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
       style={{ background: bg, fontFamily: "'Inter', sans-serif" }}
       className="relative overflow-hidden"
     >
-      {/* Huge watermark number */}
+      {/* Watermark number — hidden on mobile, subtle on desktop */}
       <div
-        className="absolute select-none pointer-events-none"
+        className="absolute select-none pointer-events-none hidden md:block"
         style={{
-          fontSize: "clamp(200px, 30vw, 380px)",
+          fontSize: "clamp(160px, 22vw, 340px)",
           fontFamily: "'Playfair Display', serif",
-          color: numColor,
+          color: s.dark ? "rgba(255,255,255,0.04)" : "rgba(2,39,74,0.04)",
           lineHeight: 1,
-          right: s.dark ? "-2%" : "auto",
-          left: s.dark ? "auto" : "-2%",
+          right: s.dark ? "-1%" : "auto",
+          left: s.dark ? "auto" : "-1%",
           top: "50%",
           transform: "translateY(-50%)",
           letterSpacing: "-0.04em",
@@ -153,34 +150,29 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
         {s.number}
       </div>
 
-      {/* Subtle teal accent line at top */}
-      {index === 0 && (
-        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, #1CA9C9 0%, rgba(28,169,201,0.1) 60%, transparent 100%)" }} />
-      )}
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-20 md:py-32">
 
-      <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-28 md:py-36">
-
-        {/* Top row — label + number visible small */}
-        <motion.div variants={fade} className="flex items-center gap-5 mb-16">
+        {/* Label breadcrumb row */}
+        <motion.div variants={fade} className="flex items-center gap-4 mb-10 md:mb-16">
           <span className="text-[9px] uppercase tracking-[0.55em] font-medium" style={{ color: "#1CA9C9" }}>
             {s.label}
           </span>
-          <span className="w-12 h-px" style={{ background: "rgba(28,169,201,0.3)" }} />
+          <span className="w-8 md:w-12 h-px" style={{ background: "rgba(28,169,201,0.3)" }} />
           <span className="font-serif text-sm" style={{ color: muted }}>
             {s.number}
           </span>
         </motion.div>
 
-        {/* Main grid */}
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+        {/* Main grid — single col mobile → 12-col desktop */}
+        <div className="grid md:grid-cols-12 gap-10 md:gap-20 items-start">
 
           {/* LEFT — heading block */}
-          <motion.div variants={stagger} className="lg:col-span-4 space-y-6">
+          <motion.div variants={stagger} className="md:col-span-4 space-y-5">
             <motion.h2
               variants={fade}
               className="font-serif leading-tight"
               style={{
-                fontSize: "clamp(2.4rem, 4.5vw, 3.6rem)",
+                fontSize: "clamp(2rem, 4vw, 3.4rem)",
                 color: text,
                 whiteSpace: "pre-line",
               }}
@@ -192,15 +184,9 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
               {s.tagline}
             </motion.p>
 
-            {/* Turnaround chip */}
-            <motion.div
-              variants={fade}
-              className="inline-flex items-start gap-3 pt-4"
-            >
-              <div
-                className="mt-0.5 w-px self-stretch"
-                style={{ background: "rgba(28,169,201,0.4)", minHeight: "36px" }}
-              />
+            {/* Turnaround */}
+            <motion.div variants={fade} className="flex items-start gap-3 pt-3">
+              <div className="mt-0.5 w-px" style={{ background: "rgba(28,169,201,0.4)", minHeight: "36px" }} />
               <div>
                 <p className="text-[9px] uppercase tracking-[0.4em] mb-1" style={{ color: "#1CA9C9" }}>
                   Typical Turnaround
@@ -210,11 +196,20 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
                 </p>
               </div>
             </motion.div>
+
+            {/* Mobile CTA */}
+            <motion.div variants={fade} className="pt-2 md:hidden">
+              <Link href="/contact" data-testid={`btn-services-${s.id}-enquire`}>
+                <span className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em]" style={{ color: "#1CA9C9" }}>
+                  Enquire → 
+                </span>
+              </Link>
+            </motion.div>
           </motion.div>
 
-          {/* MIDDLE — body text */}
-          <motion.div variants={stagger} className="lg:col-span-4 space-y-5">
-            <motion.p variants={fade} className="text-[9px] uppercase tracking-[0.45em] mb-7" style={{ color: "#1CA9C9" }}>
+          {/* MIDDLE — body text (full width on mobile, col 5-8 on desktop) */}
+          <motion.div variants={stagger} className="md:col-span-4 space-y-5">
+            <motion.p variants={fade} className="text-[9px] uppercase tracking-[0.45em] mb-5" style={{ color: "#1CA9C9" }}>
               Overview
             </motion.p>
             {s.body.map((para, i) => (
@@ -223,67 +218,43 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
               </motion.p>
             ))}
 
-            {/* CTA */}
-            <motion.div variants={fade} className="pt-8">
-              <Link
-                href="/contact"
-                data-testid={`btn-services-${s.id}-enquire`}
-                className="inline-flex items-center gap-3 group"
-              >
+            {/* Desktop CTA */}
+            <motion.div variants={fade} className="pt-6 hidden md:block">
+              <Link href="/contact" data-testid={`btn-services-${s.id}-enquire`} className="inline-flex items-center gap-3 group">
                 <span
                   className="text-[10px] uppercase tracking-[0.3em] border-b pb-0.5 transition-all duration-300 group-hover:border-[#1CA9C9]"
-                  style={{
-                    color: "#1CA9C9",
-                    borderColor: "rgba(28,169,201,0.35)",
-                  }}
+                  style={{ color: "#1CA9C9", borderColor: "rgba(28,169,201,0.35)" }}
                 >
                   Enquire About This Service
                 </span>
-                <span
-                  className="text-[#1CA9C9] transition-transform duration-300 group-hover:translate-x-1"
-                  style={{ fontSize: "11px" }}
-                >
-                  →
-                </span>
+                <span className="text-[#1CA9C9] transition-transform duration-300 group-hover:translate-x-1 text-[11px]">→</span>
               </Link>
             </motion.div>
           </motion.div>
 
           {/* RIGHT — qualifies + delivers */}
-          <motion.div variants={stagger} className="lg:col-span-4 space-y-10">
+          <motion.div variants={stagger} className="md:col-span-4 space-y-8">
 
-            {/* Who it suits */}
             <motion.div variants={fade} className="space-y-4">
-              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
-                Who This Suits
-              </p>
+              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>Who This Suits</p>
               <ul className="space-y-3">
                 {s.qualifies.map((q, i) => (
                   <li key={i} className="flex gap-3 items-start">
-                    <span className="mt-2 shrink-0 w-1 h-1 rounded-full" style={{ background: "#1CA9C9", opacity: 0.6 }} />
+                    <span className="mt-1.5 shrink-0 w-1 h-1 rounded-full" style={{ background: "#1CA9C9", opacity: 0.6 }} />
                     <span className="text-[12px] leading-relaxed" style={{ color: muted }}>{q}</span>
                   </li>
                 ))}
               </ul>
             </motion.div>
 
-            {/* Divider */}
             <motion.div variants={fade} className="w-full h-px" style={{ background: border }} />
 
-            {/* What you receive */}
             <motion.div variants={fade} className="space-y-4">
-              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
-                What You Receive
-              </p>
+              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>What You Receive</p>
               <ul className="space-y-3">
                 {s.delivers.map((d, i) => (
                   <li key={i} className="flex gap-3 items-start">
-                    <span
-                      className="mt-1.5 shrink-0 text-[10px]"
-                      style={{ color: "#1CA9C9", opacity: 0.7 }}
-                    >
-                      ✓
-                    </span>
+                    <span className="mt-1.5 shrink-0 text-[10px]" style={{ color: "#1CA9C9", opacity: 0.7 }}>✓</span>
                     <span className="text-[12px] leading-relaxed" style={{ color: muted }}>{d}</span>
                   </li>
                 ))}
@@ -303,10 +274,10 @@ export default function Services() {
 
       {/* ══ HERO ══ */}
       <section
-        className="relative overflow-hidden pt-44 pb-36 px-6"
+        className="relative overflow-hidden pt-32 md:pt-44 pb-20 md:pb-36 px-6"
         style={{ background: "#010d1a" }}
       >
-        {/* Grid texture overlay */}
+        {/* Grid texture */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -318,11 +289,11 @@ export default function Services() {
           }}
         />
 
-        {/* Large decorative serif text */}
+        {/* Desktop watermark */}
         <div
           className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none hidden lg:block"
           style={{
-            fontSize: "clamp(120px, 20vw, 240px)",
+            fontSize: "clamp(120px, 18vw, 220px)",
             fontFamily: "'Playfair Display', serif",
             color: "rgba(255,255,255,0.025)",
             lineHeight: 1,
@@ -339,17 +310,17 @@ export default function Services() {
           variants={stagger}
           className="relative max-w-7xl mx-auto"
         >
-          <motion.p variants={fade} className="text-[10px] uppercase tracking-[0.55em] mb-8" style={{ color: "#1CA9C9" }}>
+          <motion.p variants={fade} className="text-[10px] uppercase tracking-[0.55em] mb-6 md:mb-8" style={{ color: "#1CA9C9" }}>
             What We Do
           </motion.p>
 
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-end">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-end">
             <div>
               <motion.h1
                 variants={fade}
-                className="font-serif leading-[1.05] mb-8"
+                className="font-serif leading-[1.05] mb-6 md:mb-8"
                 style={{
-                  fontSize: "clamp(3rem, 7vw, 5.5rem)",
+                  fontSize: "clamp(2.4rem, 7vw, 5.5rem)",
                   color: "rgba(255,255,255,0.92)",
                 }}
               >
@@ -358,14 +329,14 @@ export default function Services() {
               </motion.h1>
               <motion.span variants={fade} className="block w-12 h-px" style={{ background: "#1CA9C9" }} />
             </div>
-            <motion.div variants={stagger} className="space-y-6 lg:pb-4">
+            <motion.div variants={stagger} className="space-y-5 md:pb-4">
               <motion.p variants={fade} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.36)" }}>
                 Every service we offer is built around a single principle: the buyer should know
                 exactly what they are getting before they commit. We describe our work with precision
                 because imprecision in this industry costs people money.
               </motion.p>
               {/* Service index pills */}
-              <motion.div variants={fade} className="flex flex-wrap gap-3 pt-2">
+              <motion.div variants={fade} className="flex flex-wrap gap-2 pt-1">
                 {SERVICES.map(s => (
                   <a
                     key={s.id}
@@ -374,7 +345,7 @@ export default function Services() {
                     style={{ borderColor: "rgba(28,169,201,0.2)", background: "rgba(28,169,201,0.04)" }}
                   >
                     <span className="text-[8px] font-medium" style={{ color: "rgba(28,169,201,0.5)" }}>{s.number}</span>
-                    <span className="text-[9px] uppercase tracking-[0.25em] group-hover:text-[#1CA9C9] transition-colors" style={{ color: "rgba(255,255,255,0.3)" }}>
+                    <span className="text-[9px] uppercase tracking-[0.2em] group-hover:text-[#1CA9C9] transition-colors" style={{ color: "rgba(255,255,255,0.3)" }}>
                       {s.label}
                     </span>
                   </a>
@@ -383,10 +354,10 @@ export default function Services() {
             </motion.div>
           </div>
 
-          {/* Animated horizontal separator */}
+          {/* Separator */}
           <motion.div
             variants={fade}
-            className="mt-20 w-full h-px"
+            className="mt-12 md:mt-20 w-full h-px"
             style={{ background: "linear-gradient(90deg, #1CA9C9 0%, rgba(28,169,201,0.2) 40%, transparent 100%)" }}
           />
         </motion.div>
@@ -401,15 +372,14 @@ export default function Services() {
 
       {/* ══ CLOSING CTA ══ */}
       <section
-        className="relative overflow-hidden py-36 px-6"
+        className="relative overflow-hidden py-24 md:py-36 px-6"
         style={{ background: "#010d1a" }}
       >
-        {/* Teal glow blob */}
         <div
           className="absolute pointer-events-none"
           style={{
-            width: "600px",
-            height: "600px",
+            width: "500px",
+            height: "500px",
             borderRadius: "50%",
             background: "radial-gradient(circle, rgba(28,169,201,0.08) 0%, transparent 70%)",
             top: "50%",
@@ -423,7 +393,7 @@ export default function Services() {
           whileInView="visible"
           viewport={{ once: true }}
           variants={stagger}
-          className="relative max-w-3xl mx-auto text-center space-y-8"
+          className="relative max-w-3xl mx-auto text-center space-y-6 md:space-y-8"
         >
           <motion.p variants={fade} className="text-[10px] uppercase tracking-[0.55em]" style={{ color: "#1CA9C9" }}>
             All Enquiries
@@ -431,7 +401,7 @@ export default function Services() {
           <motion.h2
             variants={fade}
             className="font-serif leading-snug"
-            style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "rgba(255,255,255,0.85)" }}
+            style={{ fontSize: "clamp(1.6rem, 4vw, 2.8rem)", color: "rgba(255,255,255,0.85)" }}
           >
             We handle all enquiries directly and under strict commercial confidence.
           </motion.h2>
@@ -439,23 +409,18 @@ export default function Services() {
             There is no sales process — only an honest conversation about whether we are the right fit.
           </motion.p>
 
-          <motion.div variants={fade} className="flex justify-center gap-5 flex-wrap pt-4">
+          <motion.div variants={fade} className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
             <Link href="/contact" data-testid="btn-services-contact">
               <button
-                className="text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-200 hover:opacity-80"
-                style={{
-                  background: "#1CA9C9",
-                  height: "50px",
-                  padding: "0 2.25rem",
-                  border: "none",
-                }}
+                className="w-full sm:w-auto text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-200 hover:opacity-80"
+                style={{ background: "#1CA9C9", height: "50px", padding: "0 2.25rem", border: "none" }}
               >
                 Begin the Conversation
               </button>
             </Link>
             <Link href="/faq" data-testid="btn-services-faq">
               <button
-                className="text-[10px] uppercase tracking-[0.3em] transition-all duration-200"
+                className="w-full sm:w-auto text-[10px] uppercase tracking-[0.3em] transition-all duration-200 hover:border-[#1CA9C9] hover:text-[#1CA9C9]"
                 style={{
                   background: "transparent",
                   height: "50px",
@@ -463,22 +428,13 @@ export default function Services() {
                   border: "1px solid rgba(255,255,255,0.18)",
                   color: "rgba(255,255,255,0.55)",
                 }}
-                onMouseEnter={e => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "#1CA9C9";
-                  (e.currentTarget as HTMLButtonElement).style.color = "#1CA9C9";
-                }}
-                onMouseLeave={e => {
-                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.18)";
-                  (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.55)";
-                }}
               >
                 Common Questions
               </button>
             </Link>
           </motion.div>
 
-          {/* Bottom trust line */}
-          <motion.div variants={fade} className="pt-12 flex justify-center gap-8 flex-wrap">
+          <motion.div variants={fade} className="pt-8 md:pt-12 flex justify-center gap-5 md:gap-8 flex-wrap">
             {["B2B Only", "47 Years Mastery", "GIA Certified", "Commercial Confidence"].map(tag => (
               <span key={tag} className="flex items-center gap-2">
                 <span className="w-1 h-1 rounded-full" style={{ background: "rgba(28,169,201,0.4)" }} />

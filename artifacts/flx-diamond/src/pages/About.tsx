@@ -50,7 +50,7 @@ export default function About() {
     <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
-      <section className="pt-40 pb-28 px-6 text-center" style={{ background: "#02274A" }}>
+      <section className="pt-32 md:pt-40 pb-16 md:pb-28 px-6 text-center" style={{ background: "#02274A" }}>
         <motion.div
           initial="hidden"
           animate="visible"
@@ -72,8 +72,8 @@ export default function About() {
       </section>
 
       {/* ── The Origin ── */}
-      <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-16 items-start">
+      <section className="py-16 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-3 gap-10 md:gap-16 items-start">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -132,14 +132,14 @@ export default function About() {
       </section>
 
       {/* ── The Technique ── */}
-      <section className="py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-16 md:py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={stagger}
-            className="grid lg:grid-cols-2 gap-20 items-start"
+            className="grid lg:grid-cols-2 gap-12 md:gap-20 items-start"
           >
             <div className="space-y-6">
               <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
@@ -191,8 +191,8 @@ export default function About() {
       </section>
 
       {/* ── Notable Partnerships ── */}
-      <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
-        <div className="max-w-7xl mx-auto space-y-16">
+      <section className="py-16 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
+        <div className="max-w-7xl mx-auto space-y-10 md:space-y-16">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -240,8 +240,8 @@ export default function About() {
       </section>
 
       {/* ── What We Stand For ── */}
-      <section className="py-28 px-6" style={{ background: "#02274A" }}>
-        <div className="max-w-7xl mx-auto space-y-16">
+      <section className="py-16 md:py-28 px-6" style={{ background: "#02274A" }}>
+        <div className="max-w-7xl mx-auto space-y-10 md:space-y-16">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -275,7 +275,7 @@ export default function About() {
       </section>
 
       {/* ── Closing CTA ── */}
-      <section className="py-28 px-6 text-center" style={{ background: "#F4F8FC" }}>
+      <section className="py-16 md:py-28 px-6 text-center" style={{ background: "#F4F8FC" }}>
         <motion.div
           initial="hidden"
           whileInView="visible"
