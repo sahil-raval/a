@@ -1,15 +1,14 @@
-import { motion } from "framer-motion";
+import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Link } from "wouter";
-import { Button } from "@/components/ui/button";
 
-const up = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+const fade = {
+  hidden: { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
 };
-
 const stagger = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.13 } },
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.14 } },
 };
 
 const SERVICES = [
@@ -17,7 +16,7 @@ const SERVICES = [
     id: "conversion",
     number: "01",
     label: "Core Service",
-    title: "IF → FL Conversion",
+    title: "IF → FL\nConversion",
     tagline: "The conversion that redefines a stone's commercial ceiling.",
     body: [
       "We assess Internally Flawless (IF) diamonds for the specific surface characteristics that hold them below FL grade. Where removal is viable — without meaningful carat loss — we execute a precision micro-regrind of the affected facet and re-submit the stone to GIA for FL certification.",
@@ -36,16 +35,14 @@ const SERVICES = [
       "Full documentation of the conversion for your records",
     ],
     turnaround: "3–6 weeks from stone receipt to FL certificate",
-    bg: "#02274A",
-    textColor: "white",
-    accent: "#1CA9C9",
+    dark: true,
   },
   {
     id: "supply",
     number: "02",
     label: "Diamond Supply",
-    title: "Premium FL Inventory",
-    tagline: "GIA-certified Flawless diamonds. Verified, consistent, and available to trade.",
+    title: "Premium FL\nInventory",
+    tagline: "GIA-certified Flawless diamonds. Verified, consistent, available to trade.",
     body: [
       "Beyond conversion, we maintain a curated inventory of GIA-certified FL and IF diamonds sourced through our established trade network. Each stone is individually verified before we make it available — we do not list stones we have not handled.",
       "Supply arrangements can be structured as one-off purchases, ongoing allocation agreements, or standing requests against specific parameters (carat range, shape, colour, fluorescence).",
@@ -62,16 +59,14 @@ const SERVICES = [
       "Discreet delivery with appropriate commercial documentation",
       "Standing availability alerts for buyers with specific brief",
     ],
-    turnaround: "Subject to current inventory — typically 1–3 weeks for in-stock stones",
-    bg: "#F4F8FC",
-    textColor: "#02274A",
-    accent: "#1CA9C9",
+    turnaround: "Typically 1–3 weeks for in-stock stones",
+    dark: false,
   },
   {
     id: "investment",
     number: "03",
     label: "Investment Advisory",
-    title: "Diamonds as a Store of Value",
+    title: "Diamonds as a\nStore of Value",
     tagline: "For buyers approaching diamonds as a capital asset rather than a product.",
     body: [
       "FL-grade diamonds at meaningful carat weights have historically functioned as a portable, non-correlated store of value. The IF→FL conversion represents a specific arbitrage: the cost of regrinding is predictable, the FL premium over IF is documented, and the GIA certification makes the value transparent.",
@@ -89,16 +84,14 @@ const SERVICES = [
       "Documentation of purchase rationale for portfolio records",
       "Ongoing relationship for future acquisition or disposition advisory",
     ],
-    turnaround: "Advisory engagements structured individually — initial call within one week",
-    bg: "#02274A",
-    textColor: "white",
-    accent: "#1CA9C9",
+    turnaround: "Initial call within one week — advisory structured individually",
+    dark: true,
   },
   {
     id: "partnership",
     number: "04",
     label: "Trade Partnership",
-    title: "Structured B2B Relationships",
+    title: "Structured B2B\nRelationships",
     tagline: "For serious buyers who need a reliable, long-term supply relationship.",
     body: [
       "We work with a limited number of trade partners on an ongoing basis — typically jewellery manufacturers, diamond traders, or high-end retailers who need consistent access to our conversion service or FL inventory across production seasons.",
@@ -108,7 +101,7 @@ const SERVICES = [
       "Established businesses with verifiable trade history",
       "Buyers requiring regular volume — at least 4 engagements per year",
       "Partners willing to operate within agreed NDA and confidentiality terms",
-      "Businesses where a direct, personal relationship with the principal is appropriate",
+      "Businesses where a direct relationship with the principal is appropriate",
     ],
     delivers: [
       "Priority access to conversion slots ahead of spot enquiries",
@@ -117,163 +110,381 @@ const SERVICES = [
       "Flexible commercial terms negotiated individually",
     ],
     turnaround: "Partnership terms agreed within 2–3 weeks of initial conversation",
-    bg: "#F4F8FC",
-    textColor: "#02274A",
-    accent: "#1CA9C9",
+    dark: false,
   },
 ];
 
+function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const bg        = s.dark ? "#02274A" : "#F4F8FC";
+  const text      = s.dark ? "rgba(255,255,255,0.85)" : "rgba(2,39,74,0.85)";
+  const muted     = s.dark ? "rgba(255,255,255,0.36)" : "rgba(2,39,74,0.38)";
+  const border    = s.dark ? "rgba(255,255,255,0.07)" : "rgba(2,39,74,0.07)";
+  const numColor  = s.dark ? "rgba(255,255,255,0.04)" : "rgba(2,39,74,0.05)";
+  const tagColor  = s.dark ? "rgba(255,255,255,0.28)" : "rgba(2,39,74,0.3)";
+
+  return (
+    <motion.section
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-80px" }}
+      variants={stagger}
+      style={{ background: bg, fontFamily: "'Inter', sans-serif" }}
+      className="relative overflow-hidden"
+    >
+      {/* Huge watermark number */}
+      <div
+        className="absolute select-none pointer-events-none"
+        style={{
+          fontSize: "clamp(200px, 30vw, 380px)",
+          fontFamily: "'Playfair Display', serif",
+          color: numColor,
+          lineHeight: 1,
+          right: s.dark ? "-2%" : "auto",
+          left: s.dark ? "auto" : "-2%",
+          top: "50%",
+          transform: "translateY(-50%)",
+          letterSpacing: "-0.04em",
+          fontWeight: 400,
+        }}
+        aria-hidden="true"
+      >
+        {s.number}
+      </div>
+
+      {/* Subtle teal accent line at top */}
+      {index === 0 && (
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, #1CA9C9 0%, rgba(28,169,201,0.1) 60%, transparent 100%)" }} />
+      )}
+
+      <div className="relative max-w-7xl mx-auto px-6 md:px-12 py-28 md:py-36">
+
+        {/* Top row — label + number visible small */}
+        <motion.div variants={fade} className="flex items-center gap-5 mb-16">
+          <span className="text-[9px] uppercase tracking-[0.55em] font-medium" style={{ color: "#1CA9C9" }}>
+            {s.label}
+          </span>
+          <span className="w-12 h-px" style={{ background: "rgba(28,169,201,0.3)" }} />
+          <span className="font-serif text-sm" style={{ color: muted }}>
+            {s.number}
+          </span>
+        </motion.div>
+
+        {/* Main grid */}
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-start">
+
+          {/* LEFT — heading block */}
+          <motion.div variants={stagger} className="lg:col-span-4 space-y-6">
+            <motion.h2
+              variants={fade}
+              className="font-serif leading-tight"
+              style={{
+                fontSize: "clamp(2.4rem, 4.5vw, 3.6rem)",
+                color: text,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {s.title}
+            </motion.h2>
+            <motion.span variants={fade} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
+            <motion.p variants={fade} className="text-sm leading-relaxed italic" style={{ color: tagColor }}>
+              {s.tagline}
+            </motion.p>
+
+            {/* Turnaround chip */}
+            <motion.div
+              variants={fade}
+              className="inline-flex items-start gap-3 pt-4"
+            >
+              <div
+                className="mt-0.5 w-px self-stretch"
+                style={{ background: "rgba(28,169,201,0.4)", minHeight: "36px" }}
+              />
+              <div>
+                <p className="text-[9px] uppercase tracking-[0.4em] mb-1" style={{ color: "#1CA9C9" }}>
+                  Typical Turnaround
+                </p>
+                <p className="text-[12px] leading-snug" style={{ color: muted }}>
+                  {s.turnaround}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* MIDDLE — body text */}
+          <motion.div variants={stagger} className="lg:col-span-4 space-y-5">
+            <motion.p variants={fade} className="text-[9px] uppercase tracking-[0.45em] mb-7" style={{ color: "#1CA9C9" }}>
+              Overview
+            </motion.p>
+            {s.body.map((para, i) => (
+              <motion.p key={i} variants={fade} className="text-sm leading-relaxed" style={{ color: muted }}>
+                {para}
+              </motion.p>
+            ))}
+
+            {/* CTA */}
+            <motion.div variants={fade} className="pt-8">
+              <Link
+                href="/contact"
+                data-testid={`btn-services-${s.id}-enquire`}
+                className="inline-flex items-center gap-3 group"
+              >
+                <span
+                  className="text-[10px] uppercase tracking-[0.3em] border-b pb-0.5 transition-all duration-300 group-hover:border-[#1CA9C9]"
+                  style={{
+                    color: "#1CA9C9",
+                    borderColor: "rgba(28,169,201,0.35)",
+                  }}
+                >
+                  Enquire About This Service
+                </span>
+                <span
+                  className="text-[#1CA9C9] transition-transform duration-300 group-hover:translate-x-1"
+                  style={{ fontSize: "11px" }}
+                >
+                  →
+                </span>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* RIGHT — qualifies + delivers */}
+          <motion.div variants={stagger} className="lg:col-span-4 space-y-10">
+
+            {/* Who it suits */}
+            <motion.div variants={fade} className="space-y-4">
+              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
+                Who This Suits
+              </p>
+              <ul className="space-y-3">
+                {s.qualifies.map((q, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <span className="mt-2 shrink-0 w-1 h-1 rounded-full" style={{ background: "#1CA9C9", opacity: 0.6 }} />
+                    <span className="text-[12px] leading-relaxed" style={{ color: muted }}>{q}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+            {/* Divider */}
+            <motion.div variants={fade} className="w-full h-px" style={{ background: border }} />
+
+            {/* What you receive */}
+            <motion.div variants={fade} className="space-y-4">
+              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
+                What You Receive
+              </p>
+              <ul className="space-y-3">
+                {s.delivers.map((d, i) => (
+                  <li key={i} className="flex gap-3 items-start">
+                    <span
+                      className="mt-1.5 shrink-0 text-[10px]"
+                      style={{ color: "#1CA9C9", opacity: 0.7 }}
+                    >
+                      ✓
+                    </span>
+                    <span className="text-[12px] leading-relaxed" style={{ color: muted }}>{d}</span>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+
+          </motion.div>
+        </div>
+      </div>
+    </motion.section>
+  );
+}
+
 export default function Services() {
   return (
-    <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ fontFamily: "'Inter', sans-serif" }}>
 
-      {/* ── Hero ── */}
-      <section className="pt-40 pb-28 px-6" style={{ background: "#02274A" }}>
+      {/* ══ HERO ══ */}
+      <section
+        className="relative overflow-hidden pt-44 pb-36 px-6"
+        style={{ background: "#010d1a" }}
+      >
+        {/* Grid texture overlay */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(28,169,201,0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(28,169,201,0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: "80px 80px",
+          }}
+        />
+
+        {/* Large decorative serif text */}
+        <div
+          className="absolute right-0 top-1/2 -translate-y-1/2 select-none pointer-events-none hidden lg:block"
+          style={{
+            fontSize: "clamp(120px, 20vw, 240px)",
+            fontFamily: "'Playfair Display', serif",
+            color: "rgba(255,255,255,0.025)",
+            lineHeight: 1,
+            letterSpacing: "-0.04em",
+          }}
+          aria-hidden="true"
+        >
+          Services
+        </div>
+
         <motion.div
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-end"
+          className="relative max-w-7xl mx-auto"
         >
-          <div className="space-y-6">
-            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
-              What We Do
-            </motion.p>
-            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight">
-              Four services.<br />
-              <span style={{ color: "rgba(255,255,255,0.3)" }}>One standard.</span>
-            </motion.h1>
-            <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
-          </div>
-          <motion.p variants={up} className="text-white/40 text-base leading-relaxed max-w-lg lg:pb-3">
-            Every service we offer is built around a single principle: the buyer should know exactly
-            what they are getting before they commit. We describe our work with precision because
-            imprecision in this industry costs people money.
+          <motion.p variants={fade} className="text-[10px] uppercase tracking-[0.55em] mb-8" style={{ color: "#1CA9C9" }}>
+            What We Do
           </motion.p>
-        </motion.div>
-      </section>
 
-      {/* ── Service Sections ── */}
-      {SERVICES.map((s) => (
-        <section key={s.id} className="py-28 px-6" style={{ background: s.bg }}>
-          <div className="max-w-7xl mx-auto">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              variants={stagger}
-              className="grid lg:grid-cols-3 gap-16"
-            >
-              {/* Left — identity */}
-              <div className="space-y-5">
-                <motion.span variants={up} className="font-serif text-6xl" style={{ color: s.accent, opacity: 0.35 }}>
-                  {s.number}
-                </motion.span>
-                <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: s.accent }}>
-                  {s.label}
-                </motion.p>
-                <motion.h2 variants={up} className="font-serif text-3xl leading-tight" style={{ color: s.textColor }}>
-                  {s.title}
-                </motion.h2>
-                <motion.span variants={up} className="block w-8 h-px" style={{ background: s.accent }} />
-                <motion.p variants={up} className="text-sm leading-relaxed italic" style={{ color: s.textColor === "white" ? "rgba(255,255,255,0.4)" : "rgba(2,39,74,0.4)" }}>
-                  {s.tagline}
-                </motion.p>
-                {s.turnaround && (
-                  <motion.div variants={up} className="pt-4 border-t" style={{ borderColor: s.textColor === "white" ? "rgba(255,255,255,0.08)" : "rgba(2,39,74,0.08)" }}>
-                    <p className="text-[10px] uppercase tracking-widest mb-1" style={{ color: s.accent }}>Typical Turnaround</p>
-                    <p className="text-sm" style={{ color: s.textColor === "white" ? "rgba(255,255,255,0.55)" : "rgba(2,39,74,0.55)" }}>{s.turnaround}</p>
-                  </motion.div>
-                )}
-              </div>
-
-              {/* Middle — description */}
-              <motion.div variants={up} className="space-y-5">
-                <p className="text-[10px] uppercase tracking-[0.3em] font-medium mb-6" style={{ color: s.accent }}>Overview</p>
-                {s.body.map((para, i) => (
-                  <p key={i} className="text-sm leading-relaxed" style={{ color: s.textColor === "white" ? "rgba(255,255,255,0.48)" : "rgba(2,39,74,0.5)" }}>
-                    {para}
-                  </p>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-end">
+            <div>
+              <motion.h1
+                variants={fade}
+                className="font-serif leading-[1.05] mb-8"
+                style={{
+                  fontSize: "clamp(3rem, 7vw, 5.5rem)",
+                  color: "rgba(255,255,255,0.92)",
+                }}
+              >
+                Four services.<br />
+                <span style={{ color: "rgba(255,255,255,0.22)" }}>One standard.</span>
+              </motion.h1>
+              <motion.span variants={fade} className="block w-12 h-px" style={{ background: "#1CA9C9" }} />
+            </div>
+            <motion.div variants={stagger} className="space-y-6 lg:pb-4">
+              <motion.p variants={fade} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.36)" }}>
+                Every service we offer is built around a single principle: the buyer should know
+                exactly what they are getting before they commit. We describe our work with precision
+                because imprecision in this industry costs people money.
+              </motion.p>
+              {/* Service index pills */}
+              <motion.div variants={fade} className="flex flex-wrap gap-3 pt-2">
+                {SERVICES.map(s => (
+                  <a
+                    key={s.id}
+                    href={`#${s.id}`}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 border transition-all duration-200 hover:border-[#1CA9C9] group"
+                    style={{ borderColor: "rgba(28,169,201,0.2)", background: "rgba(28,169,201,0.04)" }}
+                  >
+                    <span className="text-[8px] font-medium" style={{ color: "rgba(28,169,201,0.5)" }}>{s.number}</span>
+                    <span className="text-[9px] uppercase tracking-[0.25em] group-hover:text-[#1CA9C9] transition-colors" style={{ color: "rgba(255,255,255,0.3)" }}>
+                      {s.label}
+                    </span>
+                  </a>
                 ))}
-              </motion.div>
-
-              {/* Right — who qualifies + delivers */}
-              <motion.div variants={stagger} className="space-y-8">
-                <motion.div variants={up} className="space-y-4">
-                  <p className="text-[10px] uppercase tracking-[0.3em] font-medium" style={{ color: s.accent }}>Who This Suits</p>
-                  <ul className="space-y-3">
-                    {s.qualifies.map((q, i) => (
-                      <li key={i} className="flex gap-3 items-start text-sm leading-relaxed" style={{ color: s.textColor === "white" ? "rgba(255,255,255,0.45)" : "rgba(2,39,74,0.5)" }}>
-                        <span className="mt-1.5 shrink-0 w-1 h-1 rounded-full" style={{ background: s.accent }} />
-                        {q}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-                <motion.div variants={up} className="space-y-4 pt-4 border-t" style={{ borderColor: s.textColor === "white" ? "rgba(255,255,255,0.08)" : "rgba(2,39,74,0.08)" }}>
-                  <p className="text-[10px] uppercase tracking-[0.3em] font-medium" style={{ color: s.accent }}>What You Receive</p>
-                  <ul className="space-y-3">
-                    {s.delivers.map((d, i) => (
-                      <li key={i} className="flex gap-3 items-start text-sm leading-relaxed" style={{ color: s.textColor === "white" ? "rgba(255,255,255,0.45)" : "rgba(2,39,74,0.5)" }}>
-                        <span className="mt-1.5 shrink-0 w-1 h-1 rounded-full" style={{ background: s.accent }} />
-                        {d}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-                <motion.div variants={up} className="pt-2">
-                  <Link href="/contact">
-                    <Button
-                      className="rounded-none text-[10px] uppercase tracking-[0.22em] text-white hover:opacity-90"
-                      style={{ background: s.accent, height: "44px", padding: "0 1.75rem" }}
-                      data-testid={`btn-services-${s.id}-enquire`}
-                    >
-                      Enquire About This Service
-                    </Button>
-                  </Link>
-                </motion.div>
               </motion.div>
             </motion.div>
           </div>
-        </section>
+
+          {/* Animated horizontal separator */}
+          <motion.div
+            variants={fade}
+            className="mt-20 w-full h-px"
+            style={{ background: "linear-gradient(90deg, #1CA9C9 0%, rgba(28,169,201,0.2) 40%, transparent 100%)" }}
+          />
+        </motion.div>
+      </section>
+
+      {/* ══ SERVICE BLOCKS ══ */}
+      {SERVICES.map((s, i) => (
+        <div key={s.id} id={s.id}>
+          <ServiceBlock s={s} index={i} />
+        </div>
       ))}
 
-      {/* ── Qualification note ── */}
-      <section className="py-20 px-6 text-center border-t" style={{ background: "#F4F8FC", borderColor: "rgba(2,39,74,0.06)" }}>
+      {/* ══ CLOSING CTA ══ */}
+      <section
+        className="relative overflow-hidden py-36 px-6"
+        style={{ background: "#010d1a" }}
+      >
+        {/* Teal glow blob */}
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            width: "600px",
+            height: "600px",
+            borderRadius: "50%",
+            background: "radial-gradient(circle, rgba(28,169,201,0.08) 0%, transparent 70%)",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+
         <motion.div
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={stagger}
-          className="max-w-2xl mx-auto space-y-6"
+          className="relative max-w-3xl mx-auto text-center space-y-8"
         >
-          <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
+          <motion.p variants={fade} className="text-[10px] uppercase tracking-[0.55em]" style={{ color: "#1CA9C9" }}>
             All Enquiries
           </motion.p>
-          <motion.p variants={up} className="font-serif text-2xl text-[#02274A] leading-relaxed">
+          <motion.h2
+            variants={fade}
+            className="font-serif leading-snug"
+            style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)", color: "rgba(255,255,255,0.85)" }}
+          >
             We handle all enquiries directly and under strict commercial confidence.
+          </motion.h2>
+          <motion.p variants={fade} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
             There is no sales process — only an honest conversation about whether we are the right fit.
           </motion.p>
-          <motion.div variants={up} className="flex justify-center gap-4 flex-wrap pt-4">
-            <Link href="/contact">
-              <Button
-                className="rounded-none text-[10px] uppercase tracking-[0.25em] text-white hover:opacity-90"
-                style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
-                data-testid="btn-services-contact"
+
+          <motion.div variants={fade} className="flex justify-center gap-5 flex-wrap pt-4">
+            <Link href="/contact" data-testid="btn-services-contact">
+              <button
+                className="text-[10px] uppercase tracking-[0.3em] text-white transition-all duration-200 hover:opacity-80"
+                style={{
+                  background: "#1CA9C9",
+                  height: "50px",
+                  padding: "0 2.25rem",
+                  border: "none",
+                }}
               >
                 Begin the Conversation
-              </Button>
+              </button>
             </Link>
-            <Link href="/faq">
-              <Button
-                variant="outline"
-                className="rounded-none text-[10px] uppercase tracking-[0.25em] text-[#02274A] hover:bg-[#02274A] hover:text-white transition-colors"
-                style={{ borderColor: "#02274A", height: "48px", padding: "0 2rem" }}
-                data-testid="btn-services-faq"
+            <Link href="/faq" data-testid="btn-services-faq">
+              <button
+                className="text-[10px] uppercase tracking-[0.3em] transition-all duration-200"
+                style={{
+                  background: "transparent",
+                  height: "50px",
+                  padding: "0 2.25rem",
+                  border: "1px solid rgba(255,255,255,0.18)",
+                  color: "rgba(255,255,255,0.55)",
+                }}
+                onMouseEnter={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "#1CA9C9";
+                  (e.currentTarget as HTMLButtonElement).style.color = "#1CA9C9";
+                }}
+                onMouseLeave={e => {
+                  (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.18)";
+                  (e.currentTarget as HTMLButtonElement).style.color = "rgba(255,255,255,0.55)";
+                }}
               >
                 Common Questions
-              </Button>
+              </button>
             </Link>
+          </motion.div>
+
+          {/* Bottom trust line */}
+          <motion.div variants={fade} className="pt-12 flex justify-center gap-8 flex-wrap">
+            {["B2B Only", "47 Years Mastery", "GIA Certified", "Commercial Confidence"].map(tag => (
+              <span key={tag} className="flex items-center gap-2">
+                <span className="w-1 h-1 rounded-full" style={{ background: "rgba(28,169,201,0.4)" }} />
+                <span className="text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.18)" }}>{tag}</span>
+              </span>
+            ))}
           </motion.div>
         </motion.div>
       </section>
