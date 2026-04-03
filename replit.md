@@ -25,3 +25,21 @@ pnpm workspace monorepo using TypeScript. Each package manages its own dependenc
 - `pnpm --filter @workspace/api-server run dev` — run API server locally
 
 See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details.
+
+## Artifacts
+
+### FLX Diamond Website (`artifacts/flx-diamond`)
+- **Type**: React + Vite (presentation-first, no backend)
+- **Preview path**: `/`
+- **Purpose**: Premium B2B diamond sourcing platform for FLXDIAMONDS
+- **Brand**: Navy (#02274A) + Teal (#1CA9C9) + White — Cormorant Garamond serif headings + Inter body
+- **Pages**:
+  - `/` — Full homepage (hero, credibility, what we do, buyer pathways, featured diamonds, mastery, why choose us, heritage, innovation, enquiry CTA, footer)
+  - `/diamonds` — Diamond inventory with filters and "Request Price" modals
+  - `/jewellery` — Jewellery collections grid
+  - `/trade` — B2B trade partnership page
+  - `/investment` — Investment-grade diamond page
+  - `/journal` — Industry articles/blog listing
+  - `/contact` — Contact form + info (Surat, India)
+- **Content**: Sourced from FLX brand documents — Babu Vekariya story, IF→FL expertise, 47 years combined experience, KGK/Venus/Excell references
+- **Target users**: Diamond traders, jewellery business owners, managing directors, investor-type buyers

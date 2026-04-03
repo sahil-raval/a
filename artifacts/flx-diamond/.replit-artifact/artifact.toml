@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "FLX Diamond"
+version = "1.0.0"
+id = "artifacts/flx-diamond"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24907
+
+[services.development]
+run = "pnpm --filter @workspace/flx-diamond run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/flx-diamond", "run", "build" ]
+publicDir = "artifacts/flx-diamond/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24907"
+BASE_PATH = "/"

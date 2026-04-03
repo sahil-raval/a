@@ -1,0 +1,62 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "B8aWDLvSA0zetVN03VEwj"
+uri = "file://artifacts/flx-diamond/public/hero-bg.png"
+type = "image"
+title = "Diamond on stone ocean view"
+
+[[generated]]
+id = "yej6hZM5ShslDcHbr1zDa"
+uri = "file://artifacts/flx-diamond/public/heritage.png"
+type = "image"
+title = "Craftsman examining diamond"
+
+[[generated]]
+id = "SMWPPVN6VU4rnr-q4mWQf"
+uri = "file://artifacts/flx-diamond/public/diamond-1.png"
+type = "image"
+title = "Round brilliant diamond"
+
+[[generated]]
+id = "vs7tMqT7Z_ZrcEdM8DRTN"
+uri = "file://artifacts/flx-diamond/public/diamond-2.png"
+type = "image"
+title = "Oval cut diamond"
+
+[[generated]]
+id = "5YoSPyn-zBCzfIBWsVYIN"
+uri = "file://artifacts/flx-diamond/public/diamond-3.png"
+type = "image"
+title = "Emerald cut diamond"
+
+[[generated]]
+id = "zIiMHfu3x6Jh4vr7_2fvM"
+uri = "file://artifacts/flx-diamond/public/diamond-4.png"
+type = "image"
+title = "Pear cut diamond"
+
+[[generated]]
+id = "yPN_0cvxZ98qEOjeNo4Fw"
+uri = "file://artifacts/flx-diamond/public/diamond-5.png"
+type = "image"
+title = "Radiant cut diamond"
+
+[[generated]]
+id = "aGtLTpWQfoFuEciVGFcZu"
+uri = "file://artifacts/flx-diamond/public/diamond-6.png"
+type = "image"
+title = "Cushion cut diamond"
+
+[[generated]]
+id = "VTb-XwyGTq1yRjElGVZQ2"
+uri = "file://artifacts/flx-diamond/public/jewellery-ring.png"
+type = "image"
+title = "Premium diamond ring"
+
+[[generated]]
+id = "fVq9jVqImptua0oexShKX"
+uri = "file://artifacts/flx-diamond/public/jewellery-earrings.png"
+type = "image"
+title = "Premium diamond earrings"
