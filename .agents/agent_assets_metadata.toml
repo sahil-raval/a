@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "B8aWDLvSA0zetVN03VEwj"
@@ -72,3 +71,39 @@ id = "g5RQrtkKOIRvei6C0iyax"
 uri = "file://artifacts/flx-diamond/public/heritage-new.png"
 type = "image"
 title = "Craftsman examining diamond with loupe"
+
+[[outputs]]
+id = "NzsYcgbHpEBbs633vpj2B"
+uri = "file://attached_assets/stock_images/great-ocean-road_1.jpg"
+type = "image"
+title = "Great Ocean Road Victoria Australia waves crashing limestone cliffs coastal scenery"
+
+[[outputs]]
+id = "_1LdrY_qtP_Nm3Gc56xmH"
+uri = "file://attached_assets/stock_images/great-ocean-road_2.jpg"
+type = "image"
+title = "Great Ocean Road Victoria Australia waves crashing limestone cliffs coastal scenery"
+
+[[outputs]]
+id = "Gskexfd_qPFz1-t7BLc8y"
+uri = "file://attached_assets/stock_images/great-ocean-road_3.jpg"
+type = "image"
+title = "Great Ocean Road Victoria Australia waves crashing limestone cliffs coastal scenery"
+
+[[outputs]]
+id = "nxJFkwm9LZOZE4HCf03O5"
+uri = "file://attached_assets/stock_images/great-ocean-road_4.jpg"
+type = "image"
+title = "Great Ocean Road Victoria Australia waves crashing limestone cliffs coastal scenery"
+
+[[outputs]]
+id = "yaO_pIET4iZmhgvX3oVXf"
+uri = "file://attached_assets/stock_images/great-ocean-road_5.jpg"
+type = "image"
+title = "Great Ocean Road Victoria Australia waves crashing limestone cliffs coastal scenery"
+
+[[outputs]]
+id = "9xpEQw3sArVZUw_wy7tam"
+uri = "file://attached_assets/stock_images/great-ocean-road_6.jpg"
+type = "image"
+title = "Great Ocean Road Victoria Australia waves crashing limestone cliffs coastal scenery"

@@ -92,6 +92,7 @@ export default function Home() {
   const [isMuted, setIsMuted] = useState(true);
   const [selected, setSelected] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const answerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -130,8 +131,35 @@ export default function Home() {
       {/* ─────────────────────────────────────────────── */}
       <section
         className="relative h-screen flex items-center justify-center overflow-hidden"
-        style={{ background: "linear-gradient(180deg, #011a36 0%, #02274A 45%, #04385E 75%, #073d5e 100%)" }}
+        style={{ background: "#011a36" }}
       >
+        {/* GOR background photo — always visible */}
+        <img
+          src="/great-ocean-road_1.jpg"
+          alt="Great Ocean Road — Twelve Apostles, Victoria, Australia"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          aria-hidden="true"
+          style={{ filter: "saturate(0.85) brightness(0.75)" }}
+        />
+
+        {/* Ocean waves video — replaces photo when loaded (poster keeps photo visible while loading) */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover"
+          src="/hero-ocean.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          poster="/great-ocean-road_1.jpg"
+        />
+
+        {/* Deep navy overlay — lets the photo breathe through */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(180deg, rgba(1,26,54,0.72) 0%, rgba(2,39,74,0.55) 50%, rgba(1,26,54,0.85) 100%)" }}
+        />
+
         {/* Deep water shimmer overlay */}
         <div
           className="absolute inset-0 ocean-shimmer pointer-events-none"
@@ -593,7 +621,69 @@ export default function Home() {
       </section>
 
       {/* ─────────────────────────────────────────────── */}
-      {/* 6. What We Do                                  */}
+      {/* 6. Great Ocean Road — Our Home                 */}
+      {/* ─────────────────────────────────────────────── */}
+      <section className="py-0 overflow-hidden">
+        {/* Full-bleed intro image */}
+        <div className="relative h-[55vh] min-h-[360px] overflow-hidden">
+          <img
+            src="/great-ocean-road_4.jpg"
+            alt="The Great Ocean Road — Victoria, Australia"
+            className="w-full h-full object-cover object-center"
+            style={{ filter: "saturate(0.9) brightness(0.85)" }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{ background: "linear-gradient(to bottom, rgba(1,26,54,0.3) 0%, rgba(1,26,54,0.1) 40%, rgba(1,26,54,0.7) 100%)" }}
+          />
+          <div className="absolute bottom-0 left-0 right-0 p-10 md:p-16">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <p className="text-[#1CA9C9] text-xs uppercase tracking-[0.3em] mb-3">Geelong, Victoria, Australia</p>
+              <h2 className="font-serif text-3xl md:text-5xl text-white leading-tight max-w-2xl">
+                Where the Southern Ocean shapes our perspective — and our standards.
+              </h2>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* 3-image grid */}
+        <div className="grid grid-cols-3 h-[35vh] min-h-[220px]">
+          {[
+            { src: "/great-ocean-road_3.jpg", alt: "London Arch — Great Ocean Road", label: "London Arch" },
+            { src: "/great-ocean-road_5.jpg", alt: "Aireys Inlet coastline, Victoria", label: "Aireys Inlet" },
+            { src: "/great-ocean-road_6.jpg", alt: "Griffiths Island Lighthouse, Port Fairy", label: "Port Fairy" },
+          ].map((img, i) => (
+            <div key={i} className="relative overflow-hidden group">
+              <img
+                src={img.src}
+                alt={img.alt}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                style={{ filter: "saturate(0.85) brightness(0.8)" }}
+              />
+              <div className="absolute inset-0 bg-[#02274A]/30 group-hover:bg-[#02274A]/20 transition-colors duration-500" />
+              <div className="absolute bottom-3 left-4">
+                <span className="text-white/70 text-[10px] uppercase tracking-widest">{img.label}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Connecting line copy */}
+        <div className="bg-white py-10 px-6 text-center border-b border-border">
+          <p className="text-muted-foreground text-sm max-w-3xl mx-auto leading-relaxed">
+            FLX Diamonds is based in Geelong — the gateway to the Great Ocean Road and one of Victoria's most significant port cities.
+            The same precision that shapes these coastlines over millennia shapes our approach to every stone we touch.
+          </p>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────── */}
+      {/* 7. What We Do                                  */}
       {/* ─────────────────────────────────────────────── */}
       <section className="py-24 px-6" style={{ background: "#011a36" }}>
         <div className="max-w-7xl mx-auto">
@@ -774,8 +864,17 @@ export default function Home() {
       {/* ─────────────────────────────────────────────── */}
       <section
         className="relative py-32 px-6 overflow-hidden"
-        style={{ background: "linear-gradient(160deg, #011a36 0%, #02274A 60%, #073d5e 100%)" }}
+        style={{ background: "#011a36" }}
       >
+        {/* GOR background — sunny Twelve Apostles */}
+        <img
+          src="/great-ocean-road_2.jpg"
+          alt="Twelve Apostles, Great Ocean Road"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+          aria-hidden="true"
+          style={{ filter: "saturate(0.7) brightness(0.35)" }}
+        />
+
         {/* Subtle wave at bottom */}
         <div className="wave-layer" style={{ animationDuration: "16s", height: "80px", opacity: 0.3 }}>
           <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
