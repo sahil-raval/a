@@ -267,11 +267,11 @@ export default function Home() {
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
-          poster="/great-ocean-road_1.jpg"
           autoPlay
           muted
           loop
           playsInline
+          preload="auto"
           aria-hidden="true"
         >
           <source src="/hero-ocean-4k.mp4" type="video/mp4" />
