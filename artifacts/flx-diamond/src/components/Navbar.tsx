@@ -8,12 +8,13 @@ export function Navbar() {
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isHome = location === "/";
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY >= 60);
-    window.addEventListener("scroll", handleScroll);
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY >= 72);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => { setMobileMenuOpen(false); }, [location]);
@@ -28,36 +29,44 @@ export function Navbar() {
     { href: "/contact",    label: "Contact" },
   ];
 
-  const isScrolledOrNotHome = scrolled || location !== "/";
+  /* On home: transparent until scrolled.
+     On inner pages: always solid navy. */
+  const solid = !isHome || scrolled;
 
   return (
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
-        isScrolledOrNotHome
-          ? "bg-[#02274A]/96 backdrop-blur-md border-b border-white/8"
-          : "bg-transparent"
+        solid
+          ? "border-b"
+          : "border-b border-transparent"
       )}
+      style={{
+        background: solid ? "rgba(2,39,74,0.96)" : "transparent",
+        borderColor: solid ? "rgba(28,169,201,0.12)" : "transparent",
+        backdropFilter: solid ? "blur(14px)" : "none",
+        WebkitBackdropFilter: solid ? "blur(14px)" : "none",
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
 
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3" data-testid="nav-logo">
+        {/* Logo — gold FLX (brand mark) */}
+        <Link href="/" className="flex items-center gap-3 shrink-0" data-testid="nav-logo">
           <span
-            className="font-serif text-2xl font-semibold tracking-[0.18em]"
+            className="font-serif text-2xl font-semibold tracking-[0.2em]"
             style={{ color: "#C9A227" }}
           >
             FLX
           </span>
           <span
-            className="text-[9px] tracking-[0.35em] font-medium hidden sm:inline-block"
-            style={{ color: "rgba(201,162,39,0.65)" }}
+            className="text-[9px] tracking-[0.38em] font-medium hidden sm:inline-block"
+            style={{ color: "rgba(201,162,39,0.6)" }}
           >
             DIAMONDS
           </span>
         </Link>
 
-        {/* Desktop nav */}
+        {/* Desktop links */}
         <div className="hidden md:flex items-center gap-8">
           {links.map((link) => (
             <Link
@@ -65,10 +74,10 @@ export function Navbar() {
               href={link.href}
               data-testid={`nav-link-${link.label.toLowerCase()}`}
               className={cn(
-                "text-[11px] tracking-[0.15em] uppercase font-medium transition-colors relative py-2",
+                "text-[10px] tracking-[0.18em] uppercase font-medium transition-all duration-200 relative py-2",
                 location === link.href
                   ? "text-white"
-                  : "text-white/60 hover:text-white"
+                  : "text-white/55 hover:text-white"
               )}
             >
               {link.label}
@@ -87,7 +96,7 @@ export function Navbar() {
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <button
-                className="text-white/80 hover:text-white p-2 transition-colors"
+                className="text-white/70 hover:text-white p-2 transition-colors"
                 data-testid="btn-mobile-menu"
                 aria-label="Open menu"
               >
@@ -96,9 +105,9 @@ export function Navbar() {
             </SheetTrigger>
             <SheetContent side="right" className="bg-[#02274A] border-none text-white w-full sm:max-w-sm p-0">
               <div className="flex flex-col h-full">
-                <div className="p-6 border-b border-white/8 flex items-center">
-                  <span className="font-serif text-2xl font-semibold tracking-[0.18em]" style={{ color: "#C9A227" }}>FLX</span>
-                  <span className="ml-3 text-[9px] tracking-[0.35em]" style={{ color: "rgba(201,162,39,0.65)" }}>DIAMONDS</span>
+                <div className="p-6 border-b flex items-center" style={{ borderColor: "rgba(28,169,201,0.12)" }}>
+                  <span className="font-serif text-2xl font-semibold tracking-[0.2em]" style={{ color: "#C9A227" }}>FLX</span>
+                  <span className="ml-3 text-[9px] tracking-[0.38em]" style={{ color: "rgba(201,162,39,0.55)" }}>DIAMONDS</span>
                 </div>
                 <div className="flex-1 py-10 px-6 flex flex-col gap-7">
                   {links.map((link) => (
@@ -106,17 +115,17 @@ export function Navbar() {
                       key={link.href}
                       href={link.href}
                       className={cn(
-                        "font-serif text-2xl tracking-wide transition-colors",
-                        location === link.href ? "text-white" : "text-white/60"
+                        "font-serif text-2xl font-light tracking-wide transition-colors",
+                        location === link.href ? "text-white" : "text-white/50"
                       )}
                     >
                       {link.label}
                     </Link>
                   ))}
                 </div>
-                <div className="p-6 border-t border-white/8 space-y-1">
-                  <p className="text-xs tracking-widest text-white/40 uppercase">Geelong, VIC, Australia</p>
-                  <p className="text-xs tracking-wide" style={{ color: "rgba(201,162,39,0.7)" }}>help@flxdiamond.com</p>
+                <div className="p-6 border-t space-y-2" style={{ borderColor: "rgba(28,169,201,0.1)" }}>
+                  <p className="text-[9px] tracking-widest text-white/30 uppercase">Geelong, VIC, Australia</p>
+                  <p className="text-xs tracking-wide" style={{ color: "rgba(28,169,201,0.7)" }}>help@flxdiamond.com</p>
                 </div>
               </div>
             </SheetContent>
