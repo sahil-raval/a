@@ -280,7 +280,7 @@ export default function Home() {
               className="text-[10px] uppercase tracking-[0.45em] font-medium"
               style={{ color: "#1CA9C9" }}
             >
-              Geelong, Victoria, Australia · Est. 1978
+              Geelong, Victoria, Australia, Est. 1978
             </motion.p>
 
             <motion.h1
