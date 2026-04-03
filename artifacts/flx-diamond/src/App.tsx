@@ -9,6 +9,8 @@ import Contact from "@/pages/Contact";
 import About from "@/pages/About";
 import Services from "@/pages/Services";
 import FAQ from "@/pages/FAQ";
+import Privacy from "@/pages/Privacy";
+import Terms from "@/pages/Terms";
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -31,6 +33,8 @@ function Router() {
         <Route path="/about" component={About} />
         <Route path="/journal" component={Journal} />
         <Route path="/contact" component={Contact} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
