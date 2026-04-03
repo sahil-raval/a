@@ -75,7 +75,7 @@ export function Navbar() {
               {location === link.href && (
                 <span
                   className="absolute bottom-0 left-0 w-full h-px"
-                  style={{ background: "#C9A227" }}
+                  style={{ background: "#1CA9C9" }}
                 />
               )}
             </Link>
