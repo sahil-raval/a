@@ -139,7 +139,7 @@ export default function Services() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
               What We Do
             </motion.p>
-            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight font-bold">
+            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight">
               Four services.<br />
               <span style={{ color: "rgba(255,255,255,0.3)" }}>One standard.</span>
             </motion.h1>
@@ -172,7 +172,7 @@ export default function Services() {
                 <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: s.accent }}>
                   {s.label}
                 </motion.p>
-                <motion.h2 variants={up} className="font-serif text-3xl leading-tight font-semibold" style={{ color: s.textColor }}>
+                <motion.h2 variants={up} className="font-serif text-3xl leading-tight" style={{ color: s.textColor }}>
                   {s.title}
                 </motion.h2>
                 <motion.span variants={up} className="block w-8 h-px" style={{ background: s.accent }} />

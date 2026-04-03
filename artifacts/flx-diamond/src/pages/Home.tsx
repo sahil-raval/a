@@ -365,7 +365,7 @@ export default function Home() {
 
             <motion.h1
               variants={up}
-              className="font-serif text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none font-bold"
+              className="font-serif text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none"
               style={{ letterSpacing: "-0.02em" }}
             >
               From IF<br />to FL.
@@ -450,7 +450,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               The Opportunity
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none font-semibold">
+            <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none">
               The world's most<br />precise upgrade.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
@@ -705,7 +705,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               The Craft
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] leading-tight font-semibold">
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] leading-tight">
               Mastery in<br />micro-millimeters.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
@@ -770,7 +770,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4" style={{ color: "#1CA9C9" }}>
               Our Services
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white font-semibold">
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white">
               Three ways we work with you.
             </motion.h2>
           </motion.div>

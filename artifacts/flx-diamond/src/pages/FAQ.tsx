@@ -184,7 +184,7 @@ export default function FAQ() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
               Trade Partner FAQ
             </motion.p>
-            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight font-bold">
+            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight">
               Common<br />
               <span style={{ color: "rgba(255,255,255,0.3)" }}>Questions.</span>
             </motion.h1>
@@ -296,7 +296,7 @@ export default function FAQ() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
               Ready to proceed?
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight font-semibold">
+            <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight">
               If your question is not here,<br />
               <span style={{ color: "rgba(255,255,255,0.3)" }}>ask it directly.</span>
             </motion.h2>
