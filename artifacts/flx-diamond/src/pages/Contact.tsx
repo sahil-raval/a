@@ -280,7 +280,7 @@ export default function Contact() {
   return (
     <div
       style={{
-        background: "#010d1a",
+        background: "#02274A",
         minHeight: "100vh",
         fontFamily: "'Inter', sans-serif",
         position: "relative",
@@ -288,8 +288,8 @@ export default function Contact() {
       }}
     >
       {/* ── ambient glow orbs ── */}
-      <TealOrb x="75%" y="30%" size={500} opacity={0.06} />
-      <TealOrb x="20%" y="70%" size={300} opacity={0.04} />
+      <TealOrb x="75%" y="30%" size={500} opacity={0.08} />
+      <TealOrb x="20%" y="70%" size={300} opacity={0.05} />
 
       {/* ── grid texture ── */}
       <div
@@ -609,7 +609,7 @@ function SubmitButton() {
           fontSize: "10px",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: hovered ? "#010d1a" : "rgba(255,255,255,0.7)",
+          color: hovered ? "#02274A" : "rgba(255,255,255,0.7)",
           transition: "color 0.3s ease",
           fontWeight: 500,
         }}
