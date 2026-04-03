@@ -116,3 +116,99 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+/* ── Ocean Wave Animations ── */
+@keyframes wave-move {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave-move-slow {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes wave-swell {
+  0%, 100% { transform: translateX(0) translateY(0); }
+  50%       { transform: translateX(-25%) translateY(-10px); }
+}
+
+@keyframes float-up {
+  0%   { opacity: 0; transform: translateY(0) scale(0.8); }
+  20%  { opacity: 1; }
+  80%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translateY(-120px) scale(1.2); }
+}
+
+@keyframes shimmer-x {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-ring {
+  0%   { transform: scale(1);   opacity: 0.6; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+.wave-layer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  animation: wave-move linear infinite;
+  will-change: transform;
+}
+
+.wave-layer-slow {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  animation: wave-swell ease-in-out infinite;
+  will-change: transform;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(28, 169, 201, 0.6);
+  animation: float-up ease-out infinite;
+  pointer-events: none;
+}
+
+.ocean-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(28, 169, 201, 0.08) 40%,
+    rgba(28, 169, 201, 0.15) 50%,
+    rgba(28, 169, 201, 0.08) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-x 4s ease-in-out infinite;
+}
+
+.pulse-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(28, 169, 201, 0.4);
+  animation: pulse-ring 2.5s ease-out infinite;
+}
+
+/* Qualifier card hover/selected states */
+.qualifier-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.qualifier-card:hover {
+  border-color: rgba(28, 169, 201, 0.6);
+  background: rgba(28, 169, 201, 0.08);
+  transform: translateY(-2px);
+}
+.qualifier-card.selected {
+  border-color: #1CA9C9;
+  background: rgba(28, 169, 201, 0.12);
+  box-shadow: 0 0 0 1px #1CA9C9;
+}
