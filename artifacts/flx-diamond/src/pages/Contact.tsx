@@ -20,7 +20,7 @@ function FloatInput({
           top: lifted ? "0px" : "30px",
           fontSize: lifted ? "9px" : "13px",
           letterSpacing: lifted ? "0.45em" : "0.04em",
-          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.32)",
+          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.55)",
           textTransform: "uppercase",
           transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
           pointerEvents: "none",
@@ -42,7 +42,7 @@ function FloatInput({
           height: "44px",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.12)"}`,
+          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.22)"}`,
           outline: "none",
           color: "rgba(255,255,255,0.9)",
           fontSize: "13px",
@@ -72,7 +72,7 @@ function FloatSelect({
           top: lifted ? "0px" : "30px",
           fontSize: lifted ? "9px" : "13px",
           letterSpacing: lifted ? "0.45em" : "0.04em",
-          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.32)",
+          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.55)",
           textTransform: "uppercase",
           transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
           pointerEvents: "none",
@@ -93,7 +93,7 @@ function FloatSelect({
           height: "44px",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.12)"}`,
+          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.22)"}`,
           outline: "none",
           color: value ? "rgba(255,255,255,0.9)" : "transparent",
           fontSize: "13px",
@@ -117,7 +117,7 @@ function FloatSelect({
         viewBox="0 0 10 6"
         style={{
           position: "absolute", right: "4px", bottom: "16px",
-          opacity: 0.3, pointerEvents: "none",
+          opacity: 0.55, pointerEvents: "none",
         }}
       >
         <path d="M1 1l4 4 4-4" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" />
@@ -142,7 +142,7 @@ function FloatTextarea({
           top: lifted ? "0px" : "30px",
           fontSize: lifted ? "9px" : "13px",
           letterSpacing: lifted ? "0.45em" : "0.04em",
-          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.32)",
+          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.55)",
           textTransform: "uppercase",
           transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
           pointerEvents: "none",
@@ -163,7 +163,7 @@ function FloatTextarea({
           width: "100%",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.12)"}`,
+          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.22)"}`,
           outline: "none",
           color: "rgba(255,255,255,0.9)",
           fontSize: "13px",
@@ -346,7 +346,7 @@ export default function Contact() {
               Let's<br />
               <span
                 style={{
-                  WebkitTextStroke: "1px rgba(255,255,255,0.18)",
+                  WebkitTextStroke: "1px rgba(255,255,255,0.35)",
                   color: "transparent",
                 }}
               >
@@ -359,7 +359,7 @@ export default function Contact() {
               <div className="w-5 h-px mt-1.5" style={{ background: "rgba(28,169,201,0.35)" }} />
             </motion.div>
 
-            <motion.p variants={up} className="text-sm leading-relaxed max-w-xs" style={{ color: "rgba(255,255,255,0.3)" }}>
+            <motion.p variants={up} className="text-sm leading-relaxed max-w-xs" style={{ color: "rgba(255,255,255,0.65)" }}>
               All enquiries are handled personally under strict commercial confidence. No sales process — just a direct conversation.
             </motion.p>
           </div>
@@ -372,7 +372,7 @@ export default function Contact() {
             className="relative z-10 mt-12 lg:mt-0 space-y-6"
           >
             {/* Horizontal rule */}
-            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
+            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.12)" }} />
 
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-6 lg:gap-5">
               {[
@@ -381,12 +381,12 @@ export default function Contact() {
                 { icon: "◈", label: "Phone",    value: "+91 91042 90971 · +91 99982 17496" },
               ].map(({ icon, label, value, teal }) => (
                 <motion.div key={label} variants={up} className="flex items-start gap-4">
-                  <span className="text-base mt-0.5 shrink-0" style={{ color: "rgba(28,169,201,0.45)", fontFamily: "monospace" }}>
+                  <span className="text-base mt-0.5 shrink-0" style={{ color: "rgba(28,169,201,0.75)", fontFamily: "monospace" }}>
                     {icon}
                   </span>
                   <div>
-                    <p className="text-[8px] uppercase tracking-[0.45em] mb-1" style={{ color: "rgba(255,255,255,0.2)" }}>{label}</p>
-                    <p className="text-[12px] leading-snug" style={{ color: teal ? "rgba(28,169,201,0.8)" : "rgba(255,255,255,0.45)" }}>
+                    <p className="text-[8px] uppercase tracking-[0.45em] mb-1" style={{ color: "rgba(255,255,255,0.45)" }}>{label}</p>
+                    <p className="text-[12px] leading-snug" style={{ color: teal ? "#1CA9C9" : "rgba(255,255,255,0.75)" }}>
                       {value}
                     </p>
                   </div>
@@ -394,11 +394,11 @@ export default function Contact() {
               ))}
             </div>
 
-            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
+            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.12)" }} />
 
             <div className="flex items-center gap-3">
-              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#1CA9C9", opacity: 0.6 }} />
-              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.18)" }}>
+              <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#1CA9C9", opacity: 0.8 }} />
+              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.4)" }}>
                 B2B Trade Enquiries Only
               </p>
             </div>
@@ -468,7 +468,7 @@ export default function Contact() {
                   <h2 className="font-serif text-3xl" style={{ color: "rgba(255,255,255,0.88)" }}>
                     Enquiry received.
                   </h2>
-                  <p className="text-sm leading-relaxed max-w-sm mx-auto" style={{ color: "rgba(255,255,255,0.35)" }}>
+                  <p className="text-sm leading-relaxed max-w-sm mx-auto" style={{ color: "rgba(255,255,255,0.62)" }}>
                     We will respond personally within one business day. All correspondence is treated as commercially confidential.
                   </p>
                 </div>
@@ -504,7 +504,7 @@ export default function Contact() {
               >
                 {/* Form header */}
                 <div className="mb-8 space-y-1">
-                  <p className="text-[9px] uppercase tracking-[0.55em]" style={{ color: "rgba(255,255,255,0.2)" }}>
+                  <p className="text-[9px] uppercase tracking-[0.55em]" style={{ color: "rgba(255,255,255,0.45)" }}>
                     Enquiry Form
                   </p>
                   <div className="w-8 h-px" style={{ background: "rgba(28,169,201,0.35)" }} />
@@ -537,7 +537,7 @@ export default function Contact() {
                 {/* Submit */}
                 <SubmitButton />
 
-                <p className="text-center pt-3 text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.15)" }}>
+                <p className="text-center pt-3 text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.35)" }}>
                   All correspondence is commercially confidential
                 </p>
               </motion.form>
@@ -549,18 +549,18 @@ export default function Contact() {
       {/* ── Bottom strip ── */}
       <div
         className="relative max-w-7xl mx-auto px-8 md:px-12 py-5 flex flex-wrap justify-between items-center gap-3"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
       >
         <div className="flex flex-wrap gap-x-8 gap-y-1">
           {["GIA Certified", "47 Years Mastery", "B2B Only", "Commercial Confidence"].map(t => (
             <span key={t} className="flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full" style={{ background: "rgba(28,169,201,0.4)" }} />
-              <span className="text-[8px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.14)" }}>{t}</span>
+              <span className="w-1 h-1 rounded-full" style={{ background: "rgba(28,169,201,0.6)" }} />
+              <span className="text-[8px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.38)" }}>{t}</span>
             </span>
           ))}
         </div>
         <Link href="/faq">
-          <span className="text-[9px] uppercase tracking-[0.3em] transition-colors hover:text-[#1CA9C9]" style={{ color: "rgba(255,255,255,0.18)", cursor: "pointer" }}>
+          <span className="text-[9px] uppercase tracking-[0.3em] transition-colors hover:text-[#1CA9C9]" style={{ color: "rgba(255,255,255,0.45)", cursor: "pointer" }}>
             Read FAQ →
           </span>
         </Link>
@@ -584,7 +584,7 @@ function SubmitButton() {
         height: "52px",
         background: "transparent",
         border: "1px solid",
-        borderColor: hovered ? "#1CA9C9" : "rgba(255,255,255,0.15)",
+        borderColor: hovered ? "#1CA9C9" : "rgba(255,255,255,0.28)",
         cursor: "pointer",
         overflow: "hidden",
         transition: "border-color 0.3s ease",
