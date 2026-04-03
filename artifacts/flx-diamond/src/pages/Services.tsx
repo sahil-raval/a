@@ -139,7 +139,7 @@ export default function Services() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
               What We Do
             </motion.p>
-            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight font-light">
+            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight font-bold">
               Four services.<br />
               <span style={{ color: "rgba(255,255,255,0.3)" }}>One standard.</span>
             </motion.h1>
@@ -166,13 +166,13 @@ export default function Services() {
             >
               {/* Left — identity */}
               <div className="space-y-5">
-                <motion.span variants={up} className="font-serif text-6xl font-light" style={{ color: s.accent, opacity: 0.35 }}>
+                <motion.span variants={up} className="font-serif text-6xl" style={{ color: s.accent, opacity: 0.35 }}>
                   {s.number}
                 </motion.span>
                 <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: s.accent }}>
                   {s.label}
                 </motion.p>
-                <motion.h2 variants={up} className="font-serif text-3xl leading-tight font-light" style={{ color: s.textColor }}>
+                <motion.h2 variants={up} className="font-serif text-3xl leading-tight font-semibold" style={{ color: s.textColor }}>
                   {s.title}
                 </motion.h2>
                 <motion.span variants={up} className="block w-8 h-px" style={{ background: s.accent }} />
@@ -250,7 +250,7 @@ export default function Services() {
           <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
             All Enquiries
           </motion.p>
-          <motion.p variants={up} className="font-serif text-2xl text-[#02274A] font-light leading-relaxed">
+          <motion.p variants={up} className="font-serif text-2xl text-[#02274A] leading-relaxed">
             We handle all enquiries directly and under strict commercial confidence.
             There is no sales process — only an honest conversation about whether we are the right fit.
           </motion.p>

@@ -115,7 +115,7 @@ export function Navbar() {
                       key={link.href}
                       href={link.href}
                       className={cn(
-                        "font-serif text-2xl font-light tracking-wide transition-colors",
+                        "font-serif text-2xl tracking-wide transition-colors",
                         location === link.href ? "text-white" : "text-white/50"
                       )}
                     >

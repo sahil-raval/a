@@ -365,7 +365,7 @@ export default function Home() {
 
             <motion.h1
               variants={up}
-              className="font-serif text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none font-light"
+              className="font-serif text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none font-bold"
               style={{ letterSpacing: "-0.02em" }}
             >
               From IF<br />to FL.
@@ -450,7 +450,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               The Opportunity
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none font-light">
+            <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none font-semibold">
               The world's most<br />precise upgrade.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
@@ -515,13 +515,13 @@ export default function Home() {
             ].map((step, i) => (
               <motion.div key={i} variants={up} className="py-8 flex items-start gap-8 group">
                 <span
-                  className="font-serif text-3xl font-light shrink-0 leading-none transition-colors"
+                  className="font-serif text-3xl shrink-0 leading-none transition-colors"
                   style={{ color: "#1CA9C9", opacity: 0.5 }}
                 >
                   {step.n}
                 </span>
                 <div>
-                  <h3 className="font-serif text-xl text-white mb-2 font-light">{step.title}</h3>
+                  <h3 className="font-serif text-xl text-white mb-2">{step.title}</h3>
                   <p className="text-white/40 text-sm leading-relaxed">{step.body}</p>
                 </div>
               </motion.div>
@@ -539,7 +539,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
               Find Your Answer
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] font-light mb-3">
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] mb-3">
               What brings you here today?
             </motion.h2>
             <motion.p variants={up} className="text-[#02274A]/40 text-base max-w-md">
@@ -564,7 +564,7 @@ export default function Home() {
                 onKeyDown={(e) => e.key === "Enter" && handleSelect(bt.id)}
               >
                 <div className="font-serif text-3xl text-[#02274A]/15 mb-5 leading-none">{bt.num}</div>
-                <h3 className="font-serif text-lg text-[#02274A] mb-3 leading-snug font-light">{bt.headline}</h3>
+                <h3 className="font-serif text-lg text-[#02274A] mb-3 leading-snug">{bt.headline}</h3>
                 <p className="text-[#02274A]/45 text-xs leading-relaxed">{bt.subtext}</p>
                 <div
                   className="mt-6 flex items-center gap-2 text-[9px] uppercase tracking-wider font-medium"
@@ -595,7 +595,7 @@ export default function Home() {
                   <div className="grid md:grid-cols-2 gap-12 items-start">
                     <div>
                       <p className="text-[10px] uppercase tracking-[0.3em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>Our Answer</p>
-                      <h3 className="font-serif text-2xl md:text-3xl text-[#02274A] mb-6 font-light">
+                      <h3 className="font-serif text-2xl md:text-3xl text-[#02274A] mb-6">
                         {selectedBuyer.answer.title}
                       </h3>
                       <ul className="space-y-3">
@@ -655,7 +655,7 @@ export default function Home() {
               <p className="text-[10px] uppercase tracking-[0.4em] mb-3" style={{ color: "#1CA9C9" }}>
                 Geelong, Victoria, Australia
               </p>
-              <h2 className="font-serif text-2xl md:text-4xl text-white font-light max-w-2xl leading-tight">
+              <h2 className="font-serif text-2xl md:text-4xl text-white max-w-2xl leading-tight">
                 Where the Southern Ocean shapes our perspective — and our standards.
               </h2>
             </motion.div>
@@ -705,7 +705,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               The Craft
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] leading-tight font-light">
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] leading-tight font-semibold">
               Mastery in<br />micro-millimeters.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
@@ -770,7 +770,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4" style={{ color: "#1CA9C9" }}>
               Our Services
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white font-light">
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white font-semibold">
               Three ways we work with you.
             </motion.h2>
           </motion.div>
@@ -813,9 +813,9 @@ export default function Home() {
                 onMouseEnter={e => (e.currentTarget.style.background = "#04385E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#02274A")}
               >
-                <span className="font-serif text-4xl font-light" style={{ color: "#1CA9C9", opacity: 0.4 }}>{svc.num}</span>
+                <span className="font-serif text-4xl" style={{ color: "#1CA9C9", opacity: 0.4 }}>{svc.num}</span>
                 <div>
-                  <h3 className="font-serif text-2xl text-white mb-1 font-light">{svc.title}</h3>
+                  <h3 className="font-serif text-2xl text-white mb-1">{svc.title}</h3>
                   <p className="text-[9px] uppercase tracking-widest mb-3" style={{ color: "rgba(28,169,201,0.5)" }}>{svc.sub}</p>
                   <p className="text-white/40 text-sm leading-relaxed">{svc.body}</p>
                 </div>
@@ -842,7 +842,7 @@ export default function Home() {
               <p className="text-[10px] uppercase tracking-[0.35em] mb-2 font-medium" style={{ color: "#1CA9C9" }}>
                 By Application Only
               </p>
-              <h2 className="font-serif text-4xl text-[#02274A] font-light">Featured Inventory</h2>
+              <h2 className="font-serif text-4xl text-[#02274A]">Featured Inventory</h2>
             </div>
             <Link href="/diamonds" className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-medium text-[#02274A]/35 hover:text-[#02274A] transition-colors">
               View All Stones <ArrowRight size={11} />
@@ -889,7 +889,7 @@ export default function Home() {
               className="p-8 border border-[#02274A]/8"
               style={{ background: "#F4F8FC" }}
             >
-              <div className="font-serif text-4xl font-light mb-2" style={{ color: "#1CA9C9" }}>{p.n}</div>
+              <div className="font-serif text-4xl mb-2" style={{ color: "#1CA9C9" }}>{p.n}</div>
               <div className="text-[9px] uppercase tracking-[0.2em] text-[#02274A] mb-3 font-medium">{p.label}</div>
               <p className="text-xs text-[#02274A]/40 leading-relaxed">{p.sub}</p>
             </motion.div>
@@ -914,7 +914,7 @@ export default function Home() {
               <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
                 Our Heritage
               </motion.p>
-              <motion.h2 variants={up} className="font-serif text-4xl lg:text-5xl text-[#02274A] leading-tight font-light">
+              <motion.h2 variants={up} className="font-serif text-4xl lg:text-5xl text-[#02274A] leading-tight">
                 Babu Vekariya.<br />
                 <span className="text-[#02274A]/30">Master Craftsman.</span>
               </motion.h2>
@@ -1010,7 +1010,7 @@ export default function Home() {
             <motion.p variants={up} className="text-[9px] uppercase tracking-[0.45em]" style={{ color: "#1CA9C9" }}>
               Precision. Trust. Excellence.
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-3xl md:text-5xl text-white font-light leading-snug">
+            <motion.h2 variants={up} className="font-serif text-3xl md:text-5xl text-white leading-snug">
               "The finest diamonds are not found.<br />
               They are understood."
             </motion.h2>
@@ -1039,7 +1039,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>Direct Access</p>
-            <h2 className="font-serif text-3xl text-white mb-3 font-light">Send a Direct Enquiry</h2>
+            <h2 className="font-serif text-3xl text-white mb-3">Send a Direct Enquiry</h2>
             <p className="text-white/35 text-sm max-w-md mx-auto leading-relaxed">
               No automated responses. Every enquiry is read personally and responded to
               within 24 hours from our Geelong office.

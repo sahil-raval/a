@@ -60,7 +60,7 @@ export default function About() {
           <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
             Our Story
           </motion.p>
-          <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight font-light">
+          <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight font-bold">
             Heritage.<br />Mastery.<br />
             <span style={{ color: "rgba(255,255,255,0.3)" }}>Quiet Confidence.</span>
           </motion.h1>
@@ -84,7 +84,7 @@ export default function About() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               The Craftsman
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl text-[#02274A] leading-tight font-light">
+            <motion.h2 variants={up} className="font-serif text-4xl text-[#02274A] leading-tight font-semibold">
               Babu Vekariya
             </motion.h2>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
@@ -145,7 +145,7 @@ export default function About() {
               <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
                 The Technique
               </motion.p>
-              <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight font-light">
+              <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight font-semibold">
                 What the conversion<br />
                 <span style={{ color: "rgba(255,255,255,0.3)" }}>actually requires.</span>
               </motion.h2>
@@ -203,7 +203,7 @@ export default function About() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               Notable Relationships
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl text-[#02274A] leading-tight font-light">
+            <motion.h2 variants={up} className="font-serif text-4xl text-[#02274A] leading-tight font-semibold">
               Trusted by names that<br />
               <span style={{ color: "rgba(2,39,74,0.3)" }}>hold their own standard.</span>
             </motion.h2>
@@ -252,7 +252,7 @@ export default function About() {
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
               Our Position
             </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight font-light">
+            <motion.h2 variants={up} className="font-serif text-4xl text-white leading-tight font-semibold">
               How we operate.
             </motion.h2>
           </motion.div>
@@ -283,7 +283,7 @@ export default function About() {
           variants={stagger}
           className="max-w-2xl mx-auto space-y-8"
         >
-          <motion.h2 variants={up} className="font-serif text-4xl text-[#02274A] leading-tight font-light">
+          <motion.h2 variants={up} className="font-serif text-4xl text-[#02274A] leading-tight font-semibold">
             Ready to begin a<br />
             <span style={{ color: "rgba(2,39,74,0.35)" }}>serious conversation?</span>
           </motion.h2>
