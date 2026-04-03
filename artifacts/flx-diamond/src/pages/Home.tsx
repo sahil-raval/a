@@ -1065,17 +1065,6 @@ export default function Home() {
             <motion.div variants={up} className="flex justify-center">
               <span className="ocean-line tide-pulse" />
             </motion.div>
-            <motion.div variants={up}>
-              <Link href="/contact">
-                <Button
-                  className="rounded-none text-xs uppercase tracking-[0.22em] font-medium text-white hover:opacity-90"
-                  style={{ background: "#1CA9C9", height: "52px", padding: "0 2.5rem" }}
-                  data-testid="btn-closing-contact"
-                >
-                  Begin the Conversation →
-                </Button>
-              </Link>
-            </motion.div>
           </motion.div>
         </div>
       </section>
