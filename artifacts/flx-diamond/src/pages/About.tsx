@@ -47,7 +47,7 @@ const PILLARS = [
 
 export default function About() {
   return (
-    <div className="min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
       <section className="pt-40 pb-28 px-6 text-center" style={{ background: "#02274A" }}>

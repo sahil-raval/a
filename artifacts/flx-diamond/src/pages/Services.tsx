@@ -125,7 +125,7 @@ const SERVICES = [
 
 export default function Services() {
   return (
-    <div className="min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
       <section className="pt-40 pb-28 px-6" style={{ background: "#02274A" }}>

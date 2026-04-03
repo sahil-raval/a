@@ -8,7 +8,7 @@ const fadeInUp = {
 
 export default function Investment() {
   return (
-    <div className="bg-background min-h-screen pt-32 pb-24">
+    <div className="bg-background pt-32 pb-24">
       <div className="max-w-4xl mx-auto px-6">
         <motion.div 
           initial="hidden"

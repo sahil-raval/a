@@ -170,7 +170,7 @@ export default function FAQ() {
   const toggle = (key: string) => setOpenItem(prev => prev === key ? null : key);
 
   return (
-    <div className="min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
+    <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
       <section className="pt-40 pb-28 px-6" style={{ background: "#02274A" }}>
