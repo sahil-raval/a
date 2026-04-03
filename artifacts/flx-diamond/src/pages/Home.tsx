@@ -901,63 +901,78 @@ export default function Home() {
           10. HERITAGE — Babu Vekariya
       ══════════════════════════════════════════════════ */}
       <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
-          <div className="overflow-hidden shadow-xl order-2 lg:order-1">
-            <img
-              src="/babu-portrait.png"
-              alt="Babu Vekariya — master diamond craftsman, 47 years"
-              className="w-full object-cover"
-              style={{ height: "540px", filter: "grayscale(20%) contrast(1.05)" }}
-            />
-          </div>
+        <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={stagger}
-            className="space-y-6 order-1 lg:order-2"
+            className="grid lg:grid-cols-3 gap-16 items-start"
           >
-            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
-              Our Heritage
-            </motion.p>
-            <motion.h2 variants={up} className="font-serif text-4xl lg:text-5xl text-[#02274A] leading-tight font-light">
-              Babu Vekariya.<br />
-              <span className="text-[#02274A]/35">Master Craftsman.</span>
-            </motion.h2>
-            <motion.div variants={up}><span className="ocean-line" /></motion.div>
-            <motion.div variants={up} className="space-y-4 text-[#02274A]/50 leading-relaxed text-base">
-              <p>
+            {/* Left — label + heading */}
+            <div className="space-y-6 lg:col-span-1">
+              <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
+                Our Heritage
+              </motion.p>
+              <motion.h2 variants={up} className="font-serif text-4xl lg:text-5xl text-[#02274A] leading-tight font-light">
+                Babu Vekariya.<br />
+                <span className="text-[#02274A]/30">Master Craftsman.</span>
+              </motion.h2>
+              <motion.div variants={up}><span className="ocean-line" /></motion.div>
+              <motion.div variants={up} className="space-y-2 pt-2">
+                {[
+                  { label: "Born into the craft", value: "1978, Age 12" },
+                  { label: "Years of mastery",    value: "47 Years" },
+                  { label: "Based in",            value: "Geelong, VIC" },
+                ].map((s, i) => (
+                  <div key={i} className="flex justify-between items-baseline border-b py-3" style={{ borderColor: "#02274A0f" }}>
+                    <span className="text-[10px] uppercase tracking-widest text-[#02274A]/35">{s.label}</span>
+                    <span className="font-serif text-base text-[#02274A]">{s.value}</span>
+                  </div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Right — narrative */}
+            <motion.div variants={up} className="lg:col-span-2 space-y-6 pt-2 lg:pt-14">
+              <p className="text-[#02274A]/55 text-lg leading-relaxed font-light">
                 Babu began cutting diamonds in 1978, aged 12, in the diamond ateliers of Surat, India.
                 By his late 20s he was among a small group of craftsmen who could reliably identify
-                and execute the IF→FL conversion — a technique requiring decades of practiced eye
-                and flawless judgment.
+                and execute the IF→FL conversion — a technique requiring decades of practiced eye and
+                flawless judgment to see what is invisible to most.
               </p>
-              <p>
-                Over four decades, that mastery refined into the process behind FLX Diamonds.
+              <p className="text-[#02274A]/40 text-base leading-relaxed">
+                The conversion is not a trick of grading. It requires reading the specific language
+                of a GIA certificate, understanding which surface characteristics are removable, and
+                then executing a micro-regrind of under 0.01mm — a margin where most hands simply
+                cannot operate with confidence.
+              </p>
+              <p className="text-[#02274A]/40 text-base leading-relaxed">
+                Over four decades that mastery refined into the process behind FLX Diamonds.
                 Now based in Geelong, Victoria, we bring that level of craft to serious buyers
                 and trade partners worldwide — quietly, without fanfare.
               </p>
-            </motion.div>
-            <motion.div variants={up} className="flex gap-4 pt-2">
-              <Link href="/about">
-                <Button
-                  variant="outline"
-                  className="rounded-none text-[10px] uppercase tracking-[0.2em] text-[#02274A] hover:bg-[#02274A] hover:text-white transition-colors"
-                  style={{ borderColor: "#02274A", height: "46px", padding: "0 1.75rem" }}
-                  data-testid="btn-heritage-about"
-                >
-                  Full Story
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button
-                  className="rounded-none text-[10px] uppercase tracking-[0.2em] text-white hover:opacity-90 font-medium"
-                  style={{ background: "#1CA9C9", height: "46px", padding: "0 1.75rem" }}
-                  data-testid="btn-heritage-contact"
-                >
-                  Work With Us
-                </Button>
-              </Link>
+              <div className="flex gap-4 pt-4">
+                <Link href="/about">
+                  <Button
+                    variant="outline"
+                    className="rounded-none text-[10px] uppercase tracking-[0.2em] text-[#02274A] hover:bg-[#02274A] hover:text-white transition-colors"
+                    style={{ borderColor: "#02274A", height: "46px", padding: "0 1.75rem" }}
+                    data-testid="btn-heritage-about"
+                  >
+                    Full Story
+                  </Button>
+                </Link>
+                <Link href="/contact">
+                  <Button
+                    className="rounded-none text-[10px] uppercase tracking-[0.2em] text-white hover:opacity-90 font-medium"
+                    style={{ background: "#1CA9C9", height: "46px", padding: "0 1.75rem" }}
+                    data-testid="btn-heritage-contact"
+                  >
+                    Work With Us
+                  </Button>
+                </Link>
+              </div>
             </motion.div>
           </motion.div>
         </div>
