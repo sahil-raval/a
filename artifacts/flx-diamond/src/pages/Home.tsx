@@ -5,31 +5,32 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DiamondCard } from "@/components/DiamondCard";
-import { Volume2, VolumeX, Gem, Sparkles, Diamond, ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
+import { Volume2, VolumeX, ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
 
-const fadeInUp = {
-  hidden: { opacity: 0, y: 24 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+/* ── Motion presets ─────────────────────────────────── */
+const up = {
+  hidden:  { opacity: 0, y: 28 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } }
 };
-
 const stagger = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } }
+  hidden:  {},
+  visible: { transition: { staggerChildren: 0.18 } }
 };
 
+/* ── Buyer qualifier data ───────────────────────────── */
 const BUYER_TYPES = [
   {
     id: "upgrade",
-    icon: "◇",
-    headline: "I have IF diamonds I want to upgrade",
-    subtext: "You hold stones graded Internally Flawless. Our GIA analysis may unlock Flawless grade — same weight, greater value.",
+    num: "01",
+    headline: "I hold IF diamonds I want to upgrade",
+    subtext: "Your GIA certificate may reveal a path to Flawless grade — same carat weight, measurable value uplift.",
     answer: {
       title: "Yes — this is precisely what we do.",
       points: [
-        "Send us your GIA certificate. We analyse the comments for technical upgrade potential.",
-        "If viable, our master craftsman precision-regrounds the surface in micro-millimeters.",
-        "The stone is resubmitted to GIA. FL grade achieved. Same carat weight bracket.",
-        "Most partners see measurable value uplift without touching their inventory volume."
+        "Send us your GIA certificate number. We read the comments for surface-characteristic indicators.",
+        "If the stone qualifies, our master craftsman precision-regrounds in micro-millimeters.",
+        "The stone is resubmitted to GIA. FL grade achieved. Same carat weight bracket documented.",
+        "Most partners see measurable value uplift without changing their inventory volume."
       ],
       cta: "Discuss Your Stones",
       href: "/contact"
@@ -37,16 +38,16 @@ const BUYER_TYPES = [
   },
   {
     id: "supply",
-    icon: "◈",
+    num: "02",
     headline: "I need a reliable diamond supplier",
-    subtext: "Ethically sourced, GIA-certified natural and lab-grown diamonds for retailers, manufacturers, and jewellers.",
+    subtext: "Natural and lab-grown, GIA certified, trade pricing. No retail. Sourced through 47 years of trusted relationships.",
     answer: {
       title: "We supply serious trade buyers — not retail.",
       points: [
         "Natural diamonds: D–K colour, VVS1–SI2 clarity, 0.30ct to 10ct+.",
-        "Lab-grown: high precision CVD and HPHT stones at competitive trade pricing.",
-        "Minimum orders and pricing available on application — no catalogue, by design.",
-        "47 years of sourcing relationships with trusted cutters in Antwerp and Mumbai."
+        "Lab-grown: high-precision CVD and HPHT at competitive trade pricing.",
+        "Pricing on application — no public catalogue, by design.",
+        "47 years of relationships with cutters in Antwerp and Mumbai."
       ],
       cta: "Request Trade Access",
       href: "/trade"
@@ -54,16 +55,16 @@ const BUYER_TYPES = [
   },
   {
     id: "invest",
-    icon: "◆",
-    headline: "I want to invest in high-grade diamonds",
-    subtext: "Investment-grade stones with verifiable documentation, long-term value, and access to the FL conversion opportunity.",
+    num: "03",
+    headline: "I want investment-grade diamonds",
+    subtext: "FL and IF clarity with complete GIA documentation. The IF→FL conversion creates a documented, verifiable uplift.",
     answer: {
       title: "Diamonds are tangible, portable, stateless assets.",
       points: [
-        "FL and IF clarity in D–F colour represent the top 1% of all stones graded globally.",
-        "The IF→FL conversion creates a documented, verifiable upgrade with a new GIA cert.",
+        "FL and IF in D–F colour represent the top 1% of all GIA-graded stones globally.",
+        "The IF→FL conversion creates a new GIA certificate — documented uplift.",
         "We advise on stone selection, market timing, and re-sale pathways.",
-        "All stones come with full GIA certification — the global standard of trust."
+        "All stones carry full GIA certification — the global standard."
       ],
       cta: "Explore Investment Stones",
       href: "/investment"
@@ -71,16 +72,16 @@ const BUYER_TYPES = [
   },
   {
     id: "partner",
-    icon: "⬡",
+    num: "04",
     headline: "I want a B2B partnership",
-    subtext: "Jewellery businesses, diamond traders, and managing directors — let us be the quiet expert behind your sourcing.",
+    subtext: "We operate as the quiet expert behind serious businesses — white-label sourcing, discretion guaranteed.",
     answer: {
-      title: "We operate as your behind-the-scenes specialist.",
+      title: "We are the specialist behind your sourcing.",
       points: [
         "White-label sourcing: we find and verify, you present to your clients.",
         "IF→FL conversion offered on your client's existing stones.",
         "Trusted by KGK Diamond, Venus Jewellery, and Excell Overseas.",
-        "Discretion guaranteed. All agreements under NDA by default."
+        "All agreements under NDA by default — discretion is not negotiable."
       ],
       cta: "Discuss a Partnership",
       href: "/contact"
@@ -88,6 +89,7 @@ const BUYER_TYPES = [
   }
 ];
 
+/* ── Component ──────────────────────────────────────── */
 export default function Home() {
   const [isMuted, setIsMuted] = useState(true);
   const [selected, setSelected] = useState<string | null>(null);
@@ -96,29 +98,28 @@ export default function Home() {
   const answerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.25;
-    }
+    if (audioRef.current) audioRef.current.volume = 0.22;
   }, []);
 
   const toggleMute = () => {
-    setIsMuted(!isMuted);
-    if (audioRef.current) {
-      if (isMuted) {
-        audioRef.current.play().catch(() => {});
-      } else {
-        audioRef.current.pause();
+    setIsMuted(m => {
+      const next = !m;
+      if (audioRef.current) {
+        if (next === false) audioRef.current.play().catch(() => {});
+        else audioRef.current.pause();
       }
-    }
+      return next;
+    });
   };
 
   const handleSelect = (id: string) => {
-    setSelected(id === selected ? null : id);
-    setTimeout(() => {
-      if (answerRef.current && id !== selected) {
-        answerRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    setSelected(prev => {
+      const next = prev === id ? null : id;
+      if (next && answerRef.current) {
+        setTimeout(() => answerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
       }
-    }, 100);
+      return next;
+    });
   };
 
   const selectedBuyer = BUYER_TYPES.find(b => b.id === selected);
@@ -126,198 +127,94 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 1. HERO — CSS Animated Ocean Waves              */}
-      {/* ─────────────────────────────────────────────── */}
-      <section
-        className="relative h-screen flex items-center justify-center overflow-hidden"
-        style={{ background: "#011a36" }}
-      >
-        {/* GOR background photo — always visible */}
-        <img
-          src="/great-ocean-road_1.jpg"
-          alt="Great Ocean Road — Twelve Apostles, Victoria, Australia"
-          className="absolute inset-0 w-full h-full object-cover object-center"
-          aria-hidden="true"
-          style={{ filter: "saturate(0.85) brightness(0.75)" }}
-        />
+      {/* ══════════════════════════════════════════════════
+          1. HERO — Brand imagery / luxury office
+      ══════════════════════════════════════════════════ */}
+      <section className="relative h-screen flex items-end justify-start overflow-hidden" style={{ background: "#0a0806" }}>
 
-        {/* Ocean waves video — replaces photo when loaded (poster keeps photo visible while loading) */}
+        {/* Background — brand office image (zooming slowly) */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img
+            src="/brand-office-3.jpg"
+            alt="FLX Diamonds — private advisory studio"
+            className="w-full h-full object-cover object-center hero-img-zoom"
+            aria-hidden="true"
+          />
+        </div>
+
+        {/* Ocean video — plays silently over image when loaded */}
         <video
           ref={videoRef}
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover opacity-0"
           src="/hero-ocean.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="/great-ocean-road_1.jpg"
+          autoPlay muted loop playsInline
+          onCanPlay={() => { if (videoRef.current) videoRef.current.style.opacity = "1"; }}
+          style={{ transition: "opacity 2s ease" }}
         />
 
-        {/* Deep navy overlay — lets the photo breathe through */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "linear-gradient(180deg, rgba(1,26,54,0.72) 0%, rgba(2,39,74,0.55) 50%, rgba(1,26,54,0.85) 100%)" }}
-        />
+        {/* Layered overlays for depth */}
+        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(2,10,20,0.72) 0%, rgba(2,10,20,0.35) 55%, rgba(2,10,20,0.65) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(2,10,20,0.90) 0%, transparent 55%)" }} />
 
-        {/* Deep water shimmer overlay */}
-        <div
-          className="absolute inset-0 ocean-shimmer pointer-events-none"
-          style={{ mixBlendMode: "screen" }}
-        />
-
-        {/* Radial light from above (surface light) */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: "radial-gradient(ellipse 80% 40% at 50% 0%, rgba(28,169,201,0.18) 0%, transparent 70%)"
-          }}
-        />
-
-        {/* Wave layer 1 — deep, slow */}
-        <div
-          className="wave-layer"
-          style={{ animationDuration: "14s", bottom: "0", height: "220px", opacity: 0.55 }}
-        >
-          <svg viewBox="0 0 1440 220" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path
-              d="M0,80 C240,140 480,20 720,80 C960,140 1200,20 1440,80 L1440,220 L0,220 Z"
-              fill="rgba(2,39,74,0.85)"
-            />
-            <path
-              d="M1440,80 C1680,140 1920,20 2160,80 C2400,140 2640,20 2880,80 L2880,220 L1440,220 Z"
-              fill="rgba(2,39,74,0.85)"
-            />
-          </svg>
-        </div>
-
-        {/* Wave layer 2 — mid, teal tint */}
-        <div
-          className="wave-layer"
-          style={{ animationDuration: "10s", animationDirection: "reverse", bottom: "0", height: "160px", opacity: 0.45 }}
-        >
-          <svg viewBox="0 0 1440 160" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path
-              d="M0,60 C320,120 640,0 960,60 C1280,120 1440,40 1440,60 L1440,160 L0,160 Z"
-              fill="rgba(28,169,201,0.12)"
-            />
-            <path
-              d="M1440,60 C1760,120 2080,0 2400,60 C2720,120 2880,40 2880,60 L2880,160 L1440,160 Z"
-              fill="rgba(28,169,201,0.12)"
-            />
-          </svg>
-        </div>
-
-        {/* Wave layer 3 — surface, fast, bright teal */}
-        <div
-          className="wave-layer"
-          style={{ animationDuration: "7s", bottom: "0", height: "100px", opacity: 0.6 }}
-        >
+        {/* CSS wave accent at bottom */}
+        <div className="wave-layer" style={{ animationDuration: "18s", height: "100px", opacity: 0.18 }}>
           <svg viewBox="0 0 1440 100" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path
-              d="M0,30 C180,70 360,0 540,35 C720,70 900,10 1080,40 C1260,70 1350,20 1440,30 L1440,100 L0,100 Z"
-              fill="rgba(28,169,201,0.18)"
-            />
-            <path
-              d="M1440,30 C1620,70 1800,0 1980,35 C2160,70 2340,10 2520,40 C2700,70 2790,20 2880,30 L2880,100 L1440,100 Z"
-              fill="rgba(28,169,201,0.18)"
-            />
+            <path d="M0,35 C240,75 480,10 720,40 C960,70 1200,15 1440,35 L1440,100 L0,100 Z" fill="rgba(201,162,39,0.4)" />
+            <path d="M1440,35 C1680,75 1920,10 2160,40 C2400,70 2640,15 2880,35 L2880,100 L1440,100 Z" fill="rgba(201,162,39,0.4)" />
           </svg>
         </div>
 
-        {/* Floating particles — light on water */}
+        {/* Floating gold particles */}
         {[
-          { left: "12%", animationDelay: "0s",   animationDuration: "5s",  width: 3, height: 3 },
-          { left: "28%", animationDelay: "1.5s", animationDuration: "7s",  width: 2, height: 2 },
-          { left: "45%", animationDelay: "0.8s", animationDuration: "6s",  width: 4, height: 4 },
-          { left: "62%", animationDelay: "2.2s", animationDuration: "5.5s",width: 2, height: 2 },
-          { left: "78%", animationDelay: "0.3s", animationDuration: "8s",  width: 3, height: 3 },
-          { left: "88%", animationDelay: "1.9s", animationDuration: "6.5s",width: 2, height: 2 },
+          { left: "8%",  delay: "0s",   dur: "7s",  s: 3 },
+          { left: "22%", delay: "2.1s", dur: "9s",  s: 2 },
+          { left: "55%", delay: "1.2s", dur: "6s",  s: 2 },
+          { left: "78%", delay: "0.4s", dur: "8s",  s: 3 },
+          { left: "91%", delay: "3s",   dur: "7.5s",s: 2 },
         ].map((p, i) => (
-          <div
-            key={i}
-            className="particle"
-            style={{
-              left: p.left,
-              bottom: "15%",
-              width: p.width,
-              height: p.height,
-              animationDelay: p.animationDelay,
-              animationDuration: p.animationDuration,
-            }}
-          />
+          <div key={i} className="particle" style={{ left: p.left, bottom: "12%", width: p.s, height: p.s, animationDelay: p.delay, animationDuration: p.dur }} />
         ))}
-
-        {/* Horizontal line accent — horizon */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            bottom: "22%",
-            left: 0,
-            right: 0,
-            height: "1px",
-            background: "linear-gradient(90deg, transparent 0%, rgba(28,169,201,0.3) 30%, rgba(28,169,201,0.5) 50%, rgba(28,169,201,0.3) 70%, transparent 100%)"
-          }}
-        />
-
-        {/* Audio */}
-        <audio ref={audioRef} src="https://www.soundjay.com/nature/sounds/ocean-waves-1.mp3" loop />
 
         {/* Sound toggle */}
         <button
           onClick={toggleMute}
-          className="absolute bottom-8 right-8 z-20 text-white/60 hover:text-[#1CA9C9] transition-colors p-3 bg-black/20 backdrop-blur-sm rounded-full"
+          className="absolute top-24 right-8 z-20 p-3 transition-colors"
+          style={{ color: isMuted ? "rgba(255,255,255,0.35)" : "#C9A227" }}
           data-testid="btn-toggle-sound"
           aria-label={isMuted ? "Unmute ocean ambience" : "Mute ocean ambience"}
         >
           {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} />}
         </button>
+        <audio ref={audioRef} src="https://www.soundjay.com/nature/sounds/ocean-waves-1.mp3" loop />
 
-        {/* Location pill */}
-        <div className="absolute top-28 left-1/2 -translate-x-1/2 z-10">
-          <span className="text-[10px] uppercase tracking-[0.25em] text-[#1CA9C9]/80 font-medium">
-            Geelong, Victoria, Australia
-          </span>
-        </div>
+        {/* Hero text — bottom-left, editorial */}
+        <div className="relative z-10 w-full px-8 md:px-16 lg:px-24 pb-16 md:pb-20">
+          <motion.div initial="hidden" animate="visible" variants={stagger} className="max-w-3xl space-y-6">
 
-        {/* Hero Content */}
-        <div className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={stagger}
-            className="space-y-6"
-          >
-            <motion.p
-              variants={fadeInUp}
-              className="text-[#1CA9C9] uppercase tracking-[0.3em] text-xs md:text-sm font-medium"
-            >
-              The World's Most Precise Upgrade
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#C9A227" }}>
+              Geelong, Victoria, Australia · Est. 1978
             </motion.p>
 
-            <motion.h1
-              variants={fadeInUp}
-              className="font-serif text-6xl md:text-8xl lg:text-9xl text-white leading-none tracking-wide"
-              style={{ textShadow: "0 2px 40px rgba(28,169,201,0.25)" }}
-            >
-              FROM IF TO FL.
+            <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl lg:text-8xl text-white leading-none font-light">
+              Precision.<br />
+              Trust.<br />
+              Excellence.
             </motion.h1>
 
-            <motion.p
-              variants={fadeInUp}
-              className="text-white/80 text-base md:text-xl max-w-2xl mx-auto font-light leading-relaxed"
-            >
-              Precision regrinding converts Internally Flawless diamonds to Flawless grade —
-              preserving carat weight, maximising intrinsic value. Verified by GIA. Available to trade partners only.
+            <motion.div variants={up}>
+              <span className="gold-line" />
+            </motion.div>
+
+            <motion.p variants={up} className="text-white/65 text-base md:text-lg font-light leading-relaxed max-w-xl">
+              Private wealth gem advisory. IF→FL diamond conversion. Bespoke B2B sourcing.
+              47 years of master craftsmanship — Geelong to the world.
             </motion.p>
 
-            <motion.div
-              variants={fadeInUp}
-              className="flex flex-col sm:flex-row gap-4 justify-center pt-4"
-            >
+            <motion.div variants={up} className="flex flex-col sm:flex-row gap-4 pt-2">
               <Link href="/investment">
                 <Button
-                  className="rounded-none bg-white text-[#02274A] hover:bg-white/90 h-14 px-10 tracking-[0.12em] text-sm uppercase font-medium w-full sm:w-auto"
+                  className="rounded-none h-13 px-10 text-xs uppercase tracking-[0.18em] font-medium text-[#02274A] hover:opacity-90 w-full sm:w-auto"
+                  style={{ background: "#C9A227", height: "52px" }}
                   data-testid="hero-cta-investment"
                 >
                   Understand the Opportunity
@@ -326,7 +223,8 @@ export default function Home() {
               <Link href="/contact">
                 <Button
                   variant="outline"
-                  className="rounded-none border-white/50 text-white hover:bg-white/10 hover:border-white h-14 px-10 tracking-[0.12em] text-sm uppercase w-full sm:w-auto"
+                  className="rounded-none h-13 px-10 text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8 w-full sm:w-auto"
+                  style={{ borderColor: "rgba(201,162,39,0.5)", height: "52px" }}
                   data-testid="hero-cta-contact"
                 >
                   Partner With Us
@@ -334,51 +232,97 @@ export default function Home() {
               </Link>
             </motion.div>
 
-            <motion.div
-              variants={fadeInUp}
-              className="pt-4 flex items-center justify-center gap-2 text-white/40 text-xs tracking-widest uppercase"
-            >
-              <span>47 Years Combined Expertise</span>
-              <span className="text-[#1CA9C9]">·</span>
-              <span>GIA Certified</span>
-              <span className="text-[#1CA9C9]">·</span>
-              <span>B2B Only</span>
+            <motion.div variants={up} className="flex items-center gap-6 pt-2">
+              {["47 Years Mastery", "GIA Certified", "B2B Only"].map((t, i) => (
+                <span key={i} className="text-[9px] uppercase tracking-[0.25em] text-white/35">{t}</span>
+              ))}
             </motion.div>
           </motion.div>
         </div>
 
         {/* Scroll cue */}
         <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/30"
+          className="absolute bottom-8 right-1/2 translate-x-1/2 z-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
+          transition={{ delay: 2.5, duration: 1 }}
         >
-          <ChevronDown size={20} className="animate-bounce" />
+          <ChevronDown size={18} className="animate-bounce" style={{ color: "rgba(201,162,39,0.5)" }} />
         </motion.div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 2. QUALIFIER — "What brings you here today?"   */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 px-6" style={{ background: "#02274A" }}>
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={stagger}
-            className="text-center mb-14"
-          >
-            <motion.p variants={fadeInUp} className="text-[#1CA9C9] uppercase tracking-[0.25em] text-xs font-medium mb-4">
-              Find Your Answer
+      {/* ══════════════════════════════════════════════════
+          2. FROM IF TO FL — The service statement
+      ══════════════════════════════════════════════════ */}
+      <section className="py-28 px-6" style={{ background: "#02274A" }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="space-y-6">
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.35em] font-medium" style={{ color: "#C9A227" }}>
+              The Opportunity
             </motion.p>
-            <motion.h2 variants={fadeInUp} className="font-serif text-4xl md:text-5xl text-white mb-4">
-              What brings you here today?
+            <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none font-light">
+              From IF<br />to FL.
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-white/50 text-base max-w-xl mx-auto">
-              Select what matches your situation. We'll give you the exact answer you need.
+            <motion.div variants={up}><span className="gold-line" /></motion.div>
+            <motion.p variants={up} className="text-white/60 text-lg leading-relaxed max-w-lg font-light">
+              When a GIA certificate notes specific surface characteristics on an Internally Flawless stone,
+              there is often a viable path to Flawless grade — without leaving the same carat weight bracket.
             </motion.p>
+            <motion.p variants={up} className="text-white/40 text-sm leading-relaxed max-w-lg">
+              This requires reading GIA comments with precision, then executing a micro-regrind of
+              under 0.01mm. It is not a shortcut. It is 47 years of judgment applied to a single stone.
+            </motion.p>
+            <motion.div variants={up} className="flex gap-4 pt-2">
+              <Link href="/investment">
+                <Button
+                  className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-[#02274A] hover:opacity-90"
+                  style={{ background: "#C9A227", height: "48px", paddingLeft: "2rem", paddingRight: "2rem" }}
+                  data-testid="btn-if-to-fl-learn"
+                >
+                  Learn More
+                </Button>
+              </Link>
+              <Link href="/contact">
+                <Button
+                  variant="outline"
+                  className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8"
+                  style={{ borderColor: "rgba(201,162,39,0.4)", height: "48px", paddingLeft: "2rem", paddingRight: "2rem" }}
+                  data-testid="btn-if-to-fl-submit"
+                >
+                  Submit a GIA Cert →
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+
+          {/* 3 steps */}
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="space-y-0 divide-y" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
+            {[
+              { n: "01", title: "Identify the Stone", body: "We read the GIA certificate comments. Roughly 15–20% of IF stones carry comment types indicating a removable surface characteristic." },
+              { n: "02", title: "Precision Regrinding", body: "Under high-magnification, Babu Vekariya removes the surface imperfection in micro-millimeters. Hours per stone. No shortcuts." },
+              { n: "03", title: "GIA FL Certificate", body: "The stone is resubmitted to GIA. A new Flawless certificate is issued. Same carat weight bracket. Documented value." },
+            ].map((step, i) => (
+              <motion.div key={i} variants={up} className="py-8 flex items-start gap-8">
+                <span className="font-serif text-4xl font-light shrink-0 leading-none" style={{ color: "#C9A227", opacity: 0.6 }}>{step.n}</span>
+                <div>
+                  <h3 className="font-serif text-xl text-white mb-2">{step.title}</h3>
+                  <p className="text-white/45 text-sm leading-relaxed">{step.body}</p>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
+          3. QUALIFIER — What brings you here today?
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#FAF8F5" }}>
+        <div className="max-w-6xl mx-auto">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="mb-14">
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.35em] mb-4 font-medium" style={{ color: "#C9A227" }}>Find Your Answer</motion.p>
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A] mb-3 font-light">What brings you here today?</motion.h2>
+            <motion.p variants={up} className="text-[#02274A]/45 text-base max-w-lg">Select what matches your situation. We'll give you the exact answer you need.</motion.p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -388,35 +332,26 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className={`qualifier-card p-6 text-left ${selected === bt.id ? "selected" : ""}`}
+                transition={{ delay: i * 0.1, duration: 0.6 }}
+                className={`qualifier-card p-7 border ${selected === bt.id ? "selected" : "border-[#02274A]/12"}`}
+                style={{ background: selected === bt.id ? "rgba(201,162,39,0.05)" : "white" }}
                 onClick={() => handleSelect(bt.id)}
                 data-testid={`qualifier-${bt.id}`}
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && handleSelect(bt.id)}
               >
-                <div className="text-3xl text-[#1CA9C9] mb-4 leading-none">{bt.icon}</div>
-                <h3 className="font-serif text-lg text-white mb-3 leading-tight">{bt.headline}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{bt.subtext}</p>
-                <div className={`mt-5 flex items-center gap-2 text-xs uppercase tracking-wider transition-colors ${selected === bt.id ? "text-[#1CA9C9]" : "text-white/30"}`}>
-                  {selected === bt.id ? (
-                    <>
-                      <CheckCircle2 size={13} />
-                      <span>Selected</span>
-                    </>
-                  ) : (
-                    <>
-                      <ArrowRight size={13} />
-                      <span>See Answer</span>
-                    </>
-                  )}
+                <div className="font-serif text-3xl text-[#02274A]/20 mb-5 leading-none">{bt.num}</div>
+                <h3 className="font-serif text-lg text-[#02274A] mb-3 leading-snug">{bt.headline}</h3>
+                <p className="text-[#02274A]/50 text-xs leading-relaxed">{bt.subtext}</p>
+                <div className={`mt-6 flex items-center gap-2 text-[10px] uppercase tracking-wider font-medium transition-colors ${selected === bt.id ? "" : "text-[#02274A]/30"}`} style={{ color: selected === bt.id ? "#C9A227" : undefined }}>
+                  {selected === bt.id ? <><CheckCircle2 size={12} /><span>Selected</span></> : <><ArrowRight size={12} /><span>See Answer</span></>}
                 </div>
               </motion.div>
             ))}
           </div>
 
-          {/* Answer Panel */}
+          {/* Answer panel */}
           <div ref={answerRef}>
             <AnimatePresence mode="wait">
               {selectedBuyer && (
@@ -426,29 +361,30 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.4 }}
-                  className="mt-8 p-8 md:p-10 border border-[#1CA9C9]/30"
-                  style={{ background: "rgba(28,169,201,0.06)" }}
+                  className="mt-6 p-8 md:p-12 border"
+                  style={{ background: "white", borderColor: "rgba(201,162,39,0.3)" }}
                 >
-                  <div className="grid md:grid-cols-2 gap-10 items-start">
+                  <div className="grid md:grid-cols-2 gap-12 items-start">
                     <div>
-                      <span className="text-[#1CA9C9] text-xs uppercase tracking-[0.2em] font-medium mb-4 block">Our Answer</span>
-                      <h3 className="font-serif text-2xl md:text-3xl text-white mb-6">{selectedBuyer.answer.title}</h3>
+                      <p className="text-[10px] uppercase tracking-[0.3em] mb-4 font-medium" style={{ color: "#C9A227" }}>Our Answer</p>
+                      <h3 className="font-serif text-2xl md:text-3xl text-[#02274A] mb-6 font-light">{selectedBuyer.answer.title}</h3>
                       <ul className="space-y-3">
                         {selectedBuyer.answer.points.map((p, i) => (
-                          <li key={i} className="flex items-start gap-3 text-white/70 text-sm leading-relaxed">
-                            <span className="text-[#1CA9C9] mt-0.5 shrink-0">—</span>
+                          <li key={i} className="flex items-start gap-3 text-sm text-[#02274A]/60 leading-relaxed">
+                            <span className="shrink-0 mt-0.5 font-serif" style={{ color: "#C9A227" }}>—</span>
                             <span>{p}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                    <div className="flex flex-col justify-between h-full gap-8 md:items-end">
-                      <div className="text-white/30 text-sm italic font-serif text-right max-w-xs hidden md:block">
-                        "Every answer we give begins with understanding exactly what you need."
-                      </div>
+                    <div className="flex flex-col gap-6 md:items-end">
+                      <p className="text-[#02274A]/30 text-sm italic font-serif leading-relaxed text-right hidden md:block max-w-xs">
+                        "Every answer begins with understanding exactly what you need."
+                      </p>
                       <Link href={selectedBuyer.answer.href}>
                         <Button
-                          className="rounded-none bg-[#1CA9C9] hover:bg-[#1CA9C9]/90 text-white uppercase tracking-wider text-xs px-8 h-12"
+                          className="rounded-none text-xs uppercase tracking-[0.18em] text-[#02274A] hover:opacity-90 font-medium"
+                          style={{ background: "#C9A227", height: "48px", paddingLeft: "2rem", paddingRight: "2rem" }}
                           data-testid={`qualifier-cta-${selectedBuyer.id}`}
                         >
                           {selectedBuyer.answer.cta} →
@@ -463,155 +399,100 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 3. IF→FL Opportunity                           */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 bg-white px-6">
-        <div className="max-w-7xl mx-auto">
+      {/* ══════════════════════════════════════════════════
+          4. BRAND STATEMENT — Full-bleed office imagery
+      ══════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden" style={{ height: "80vh", minHeight: "520px" }}>
+        <img
+          src="/brand-office-1.jpg"
+          alt="FLX Diamonds private advisory studio"
+          className="absolute inset-0 w-full h-full object-cover object-center hero-img-zoom"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(135deg, rgba(2,10,20,0.78) 0%, rgba(2,10,20,0.45) 60%, rgba(2,10,20,0.65) 100%)" }} />
+
+        <div className="absolute inset-0 flex items-center justify-center px-8">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
+            viewport={{ once: true, margin: "-100px" }}
             variants={stagger}
-            className="text-center max-w-4xl mx-auto mb-16"
+            className="text-center space-y-6 max-w-3xl"
           >
-            <motion.span variants={fadeInUp} className="text-[#1CA9C9] text-sm font-bold tracking-[0.2em] uppercase mb-4 block">
-              The Opportunity
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="font-serif text-4xl md:text-5xl text-[#02274A] mb-6">
-              Most buyers never know this exists.
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="text-muted-foreground text-lg leading-relaxed">
-              When a GIA certificate notes specific surface-reaching characteristics on an IF stone,
-              there is often a viable path to Flawless grade through precision micro-regrinding —
-              without leaving the same carat weight bracket. This is rare, technical, and requires
-              47 years of judgment to execute correctly.
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em]" style={{ color: "#C9A227" }}>
+              Private Wealth · Gem Expertise · Bespoke Advisory
             </motion.p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-6 mb-16">
-            {[
-              {
-                n: "01",
-                title: "IDENTIFY THE STONE",
-                body: "We read the GIA certificate comments to determine whether the surface characteristic is removable without loss of carat weight bracket.",
-                detail: "Not all IF stones qualify — roughly 15–20% carry the right comment type."
-              },
-              {
-                n: "02",
-                title: "PRECISION REGRIND",
-                body: "Our master craftsman — 47 years in the craft — removes the surface imperfection in micro-millimeters under high-magnification control.",
-                detail: "The process takes hours per stone. There are no shortcuts at this level."
-              },
-              {
-                n: "03",
-                title: "GIA FL CERTIFICATION",
-                body: "The stone is resubmitted to GIA. A new certificate is issued. FL grade is achieved. The same carat weight bracket is documented.",
-                detail: "Documented value uplift. A new GIA report. A more valuable stone."
-              }
-            ].map((step, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.6 }}
-                className="relative p-8 border border-border group hover:border-[#1CA9C9]/40 transition-colors"
-              >
-                <span className="font-serif text-6xl text-[#02274A]/8 absolute top-6 right-6 leading-none select-none">
-                  {step.n}
-                </span>
-                <div className="w-10 h-10 flex items-center justify-center bg-[#02274A] text-white font-serif text-sm mb-6">
-                  {step.n}
-                </div>
-                <h3 className="font-serif text-xl text-[#02274A] mb-3 tracking-wide">{step.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-4">{step.body}</p>
-                <p className="text-[#1CA9C9] text-xs italic">{step.detail}</p>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="bg-[#02274A] p-10 max-w-4xl mx-auto text-center">
-            <p className="text-white/70 text-sm uppercase tracking-[0.2em] mb-2">B2B Partners Only</p>
-            <p className="font-serif text-white text-xl md:text-2xl mb-6 leading-relaxed">
-              Do you hold IF stones with upgrade potential?
-              Send us the GIA certificate number — our analysis is complimentary.
-            </p>
-            <Link href="/contact">
-              <Button
-                className="rounded-none bg-[#1CA9C9] hover:bg-[#1CA9C9]/90 text-white uppercase tracking-[0.15em] text-xs px-10 h-12"
-                data-testid="btn-if-to-fl-contact"
-              >
-                Submit for Free Analysis →
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────── */}
-      {/* 4. Credibility Strip                           */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="border-y border-border py-7 bg-[#02274A]/3">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 text-xs font-medium tracking-[0.18em] text-[#02274A] uppercase text-center">
-            <span>47 Years of Mastery</span>
-            <span className="text-[#1CA9C9]">·</span>
-            <span>GIA Certified</span>
-            <span className="text-[#1CA9C9]">·</span>
-            <span>B2B Specialists</span>
-            <span className="text-[#1CA9C9]">·</span>
-            <span>Geelong, Victoria, Australia</span>
-            <span className="text-[#1CA9C9]">·</span>
-            <span>Trusted by KGK · Venus · Excell</span>
-          </div>
-        </div>
-      </section>
-
-      {/* ─────────────────────────────────────────────── */}
-      {/* 5. The Craft — Video Section                   */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 bg-white px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="space-y-6 order-2 lg:order-1"
-          >
-            <motion.span variants={fadeInUp} className="text-[#1CA9C9] text-sm font-bold tracking-[0.2em] uppercase block">
-              The Craft Behind the Grade
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="font-serif text-4xl text-[#02274A] leading-tight">
-              Mastery in Micro-Millimeters
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-6xl lg:text-7xl text-white leading-none font-light">
+              The Quiet Partner<br />Behind Serious<br />Decisions.
             </motion.h2>
-            <motion.p variants={fadeInUp} className="text-muted-foreground text-lg leading-relaxed">
-              What separates IF from FL is often less than 0.01mm. Our master craftsman
-              Babu Vekariya has spent 47 years developing the judgment to see that difference —
-              and the skill to act on it without compromising weight.
-            </motion.p>
-            <motion.div variants={fadeInUp} className="space-y-3 pt-2">
-              {["Started at age 12 in 1978 — diamond cutting was everything", "Trained under master cutters, moved to polishing mastery by his 20s", "Today, trusted by three of Asia's largest diamond houses"].map((fact, i) => (
-                <div key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                  <span className="text-[#1CA9C9] mt-0.5 shrink-0">—</span>
-                  <span>{fact}</span>
-                </div>
-              ))}
+            <motion.div variants={up} className="flex justify-center">
+              <span className="gold-line" />
             </motion.div>
-            <motion.div variants={fadeInUp}>
+            <motion.p variants={up} className="text-white/55 text-base md:text-lg leading-relaxed font-light">
+              We don't advertise. We don't operate retail. Every partner engagement begins
+              with a direct conversation — no chatbots, no catalogues, no delays.
+            </motion.p>
+            <motion.div variants={up} className="pt-2">
+              <Link href="/contact">
+                <Button
+                  className="rounded-none text-xs uppercase tracking-[0.2em] font-medium text-[#02274A] hover:opacity-90"
+                  style={{ background: "#C9A227", height: "52px", paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
+                  data-testid="btn-statement-contact"
+                >
+                  Begin the Conversation →
+                </Button>
+              </Link>
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
+          5. CRAFT — Mastery in micro-millimeters
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#02274A" }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="space-y-6">
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.35em] font-medium" style={{ color: "#C9A227" }}>The Craft Behind the Grade</motion.p>
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white leading-tight font-light">Mastery in<br />Micro-Millimeters</motion.h2>
+            <motion.div variants={up}><span className="gold-line" /></motion.div>
+            <motion.p variants={up} className="text-white/55 text-lg leading-relaxed font-light">
+              What separates IF from FL is often less than 0.01mm. Babu Vekariya has spent
+              47 years developing the judgment to see that difference — and the skill to act on
+              it without compromising carat weight.
+            </motion.p>
+            <motion.ul variants={up} className="space-y-3 pt-2">
+              {[
+                "Began cutting diamonds at age 12, 1978 — Surat, India",
+                "Developed IF→FL regrinding technique through decades of practice",
+                "Now trusted by KGK Diamond, Venus Jewellery, Excell Overseas",
+                "Based in Geelong, Victoria — serving serious buyers worldwide"
+              ].map((f, i) => (
+                <li key={i} className="flex items-start gap-3 text-sm text-white/45">
+                  <span className="shrink-0 font-serif" style={{ color: "#C9A227" }}>—</span>
+                  <span>{f}</span>
+                </li>
+              ))}
+            </motion.ul>
+            <motion.div variants={up}>
               <Link href="/about">
-                <Button variant="outline" className="rounded-none border-[#02274A] text-[#02274A] hover:bg-[#02274A] hover:text-white h-11 px-8 uppercase tracking-wider text-xs" data-testid="btn-craft-about">
+                <Button
+                  variant="outline"
+                  className="rounded-none text-[10px] uppercase tracking-[0.2em] text-white hover:bg-white/8"
+                  style={{ borderColor: "rgba(201,162,39,0.4)", height: "46px", paddingLeft: "1.75rem", paddingRight: "1.75rem" }}
+                  data-testid="btn-craft-about"
+                >
                   Read Babu's Story
                 </Button>
               </Link>
             </motion.div>
           </motion.div>
-          <div className="aspect-video w-full bg-muted overflow-hidden relative shadow-2xl order-1 lg:order-2">
+
+          <div className="aspect-video w-full overflow-hidden shadow-2xl" style={{ background: "#011a36" }}>
             <iframe
-              className="absolute inset-0 w-full h-full"
+              className="w-full h-full"
               src="https://www.youtube.com/embed/pPMCz3DN7u4?autoplay=0&mute=0&controls=1"
-              title="Diamond Crafting Process"
+              title="Diamond Crafting — FLX Diamonds"
               frameBorder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
@@ -620,31 +501,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 6. Great Ocean Road — Our Home                 */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-0 overflow-hidden">
-        {/* Full-bleed intro image */}
-        <div className="relative h-[55vh] min-h-[360px] overflow-hidden">
+      {/* ══════════════════════════════════════════════════
+          6. GREAT OCEAN ROAD — Our Home
+      ══════════════════════════════════════════════════ */}
+      <section className="overflow-hidden" style={{ background: "#FAF8F5" }}>
+        {/* Wide hero shot */}
+        <div className="relative overflow-hidden" style={{ height: "52vh", minHeight: "320px" }}>
           <img
             src="/great-ocean-road_4.jpg"
             alt="The Great Ocean Road — Victoria, Australia"
-            className="w-full h-full object-cover object-center"
-            style={{ filter: "saturate(0.9) brightness(0.85)" }}
+            className="w-full h-full object-cover object-center hero-img-zoom"
+            style={{ filter: "saturate(0.85) brightness(0.75)" }}
           />
-          <div
-            className="absolute inset-0"
-            style={{ background: "linear-gradient(to bottom, rgba(1,26,54,0.3) 0%, rgba(1,26,54,0.1) 40%, rgba(1,26,54,0.7) 100%)" }}
-          />
-          <div className="absolute bottom-0 left-0 right-0 p-10 md:p-16">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <p className="text-[#1CA9C9] text-xs uppercase tracking-[0.3em] mb-3">Geelong, Victoria, Australia</p>
-              <h2 className="font-serif text-3xl md:text-5xl text-white leading-tight max-w-2xl">
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(2,10,20,0.2) 0%, rgba(2,10,20,0.1) 40%, rgba(2,10,20,0.75) 100%)" }} />
+          <div className="absolute bottom-0 left-0 right-0 px-10 md:px-16 pb-10">
+            <motion.div initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.9 }}>
+              <p className="text-[10px] uppercase tracking-[0.35em] mb-3" style={{ color: "#C9A227" }}>Geelong, Victoria, Australia</p>
+              <h2 className="font-serif text-2xl md:text-4xl text-white font-light max-w-2xl leading-tight">
                 Where the Southern Ocean shapes our perspective — and our standards.
               </h2>
             </motion.div>
@@ -652,72 +525,63 @@ export default function Home() {
         </div>
 
         {/* 3-image grid */}
-        <div className="grid grid-cols-3 h-[35vh] min-h-[220px]">
+        <div className="grid grid-cols-3" style={{ height: "30vh", minHeight: "180px" }}>
           {[
-            { src: "/great-ocean-road_3.jpg", alt: "London Arch — Great Ocean Road", label: "London Arch" },
-            { src: "/great-ocean-road_5.jpg", alt: "Aireys Inlet coastline, Victoria", label: "Aireys Inlet" },
-            { src: "/great-ocean-road_6.jpg", alt: "Griffiths Island Lighthouse, Port Fairy", label: "Port Fairy" },
+            { src: "/great-ocean-road_3.jpg", alt: "London Arch", label: "London Arch" },
+            { src: "/great-ocean-road_1.jpg", alt: "Twelve Apostles", label: "Twelve Apostles" },
+            { src: "/great-ocean-road_6.jpg", alt: "Port Fairy Lighthouse", label: "Port Fairy" },
           ].map((img, i) => (
             <div key={i} className="relative overflow-hidden group">
               <img
                 src={img.src}
                 alt={img.alt}
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                style={{ filter: "saturate(0.85) brightness(0.8)" }}
+                style={{ filter: "saturate(0.8) brightness(0.72)" }}
               />
-              <div className="absolute inset-0 bg-[#02274A]/30 group-hover:bg-[#02274A]/20 transition-colors duration-500" />
-              <div className="absolute bottom-3 left-4">
-                <span className="text-white/70 text-[10px] uppercase tracking-widest">{img.label}</span>
-              </div>
+              <div className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-0" style={{ background: "rgba(2,10,20,0.28)" }} />
+              <span className="absolute bottom-3 left-4 text-[9px] uppercase tracking-widest text-white/55">{img.label}</span>
             </div>
           ))}
         </div>
 
-        {/* Connecting line copy */}
-        <div className="bg-white py-10 px-6 text-center border-b border-border">
-          <p className="text-muted-foreground text-sm max-w-3xl mx-auto leading-relaxed">
-            FLX Diamonds is based in Geelong — the gateway to the Great Ocean Road and one of Victoria's most significant port cities.
-            The same precision that shapes these coastlines over millennia shapes our approach to every stone we touch.
+        {/* Caption */}
+        <div className="py-10 px-6 text-center border-b border-[#02274A]/8">
+          <p className="text-[#02274A]/45 text-sm max-w-2xl mx-auto leading-relaxed">
+            Based in Geelong — the gateway to the Great Ocean Road. The same patient forces that carved these
+            limestone cliffs over millennia inform our approach: precision measured not in haste, but in decades.
           </p>
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 7. What We Do                                  */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 px-6" style={{ background: "#011a36" }}>
+      {/* ══════════════════════════════════════════════════
+          7. THREE SERVICES
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="text-center mb-16"
-          >
-            <motion.p variants={fadeInUp} className="text-[#1CA9C9] text-xs uppercase tracking-[0.25em] mb-4">Our Services</motion.p>
-            <motion.h2 variants={fadeInUp} className="font-serif text-4xl text-white mb-4">Three Ways We Work With You</motion.h2>
-            <motion.p variants={fadeInUp} className="text-white/50 max-w-2xl mx-auto text-base">Sourcing, conversion, and advisory — always at the institutional level.</motion.p>
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="mb-16">
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.35em] mb-4" style={{ color: "#C9A227" }}>Our Services</motion.p>
+            <motion.h2 variants={up} className="font-serif text-4xl text-white font-light">Three ways we work with you.</motion.h2>
           </motion.div>
-          <div className="grid md:grid-cols-3 gap-px bg-white/10">
+          <div className="grid md:grid-cols-3 gap-px" style={{ background: "rgba(255,255,255,0.06)" }}>
             {[
               {
-                icon: <Diamond size={28} strokeWidth={1.2} />,
+                num: "01",
                 title: "Diamond Sourcing",
-                body: "Natural GIA-certified diamonds. Lab-grown precision stones. D–K colour, VVS1–SI2 clarity, any shape. Trade pricing, no retail. Minimum order requirements apply.",
+                body: "Natural GIA-certified diamonds. Lab-grown precision stones. D–K colour, VVS1–SI2 clarity, any shape. Trade pricing only — no retail. Minimum order requirements apply.",
                 link: "/diamonds",
                 linkText: "View Diamond Inventory"
               },
               {
-                icon: <Gem size={28} strokeWidth={1.2} />,
+                num: "02",
                 title: "IF→FL Conversion",
-                body: "Send us any IF stone's GIA cert number. We analyse the comments, assess upgrade viability, and — if suitable — execute the precision regrind. New GIA FL certificate issued.",
+                body: "Send any IF stone's GIA cert number. We analyse comments, assess viability, and — if suitable — execute the precision regrind. New GIA FL certificate issued.",
                 link: "/investment",
                 linkText: "Learn About Conversion"
               },
               {
-                icon: <Sparkles size={28} strokeWidth={1.2} />,
+                num: "03",
                 title: "B2B Advisory",
-                body: "White-label sourcing. Custom specification briefs. Investment stone advisory. Partnership structures available for retailers, jewellers, and institutional buyers.",
+                body: "White-label sourcing. Investment stone advisory. Custom specification briefs. Partnership structures for retailers, jewellers, and institutional buyers.",
                 link: "/trade",
                 linkText: "Explore Partnership"
               }
@@ -727,16 +591,19 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.6 }}
-                className="bg-[#02274A] p-10 flex flex-col gap-6 group hover:bg-[#04385E] transition-colors"
+                transition={{ delay: i * 0.15, duration: 0.7 }}
+                className="p-10 flex flex-col gap-6 group transition-colors"
+                style={{ background: "#02274A" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "#04385E")}
+                onMouseLeave={e => (e.currentTarget.style.background = "#02274A")}
               >
-                <div className="text-[#1CA9C9]">{svc.icon}</div>
+                <span className="font-serif text-4xl font-light" style={{ color: "#C9A227", opacity: 0.45 }}>{svc.num}</span>
                 <div>
-                  <h3 className="font-serif text-2xl text-white mb-3">{svc.title}</h3>
-                  <p className="text-white/55 text-sm leading-relaxed">{svc.body}</p>
+                  <h3 className="font-serif text-2xl text-white mb-3 font-light">{svc.title}</h3>
+                  <p className="text-white/45 text-sm leading-relaxed">{svc.body}</p>
                 </div>
-                <Link href={svc.link} className="text-[#1CA9C9] text-xs uppercase tracking-wider flex items-center gap-2 mt-auto group-hover:gap-3 transition-all">
-                  {svc.linkText} <ArrowRight size={12} />
+                <Link href={svc.link} className="flex items-center gap-2 text-[10px] uppercase tracking-wider group-hover:gap-3 transition-all font-medium" style={{ color: "#C9A227" }}>
+                  {svc.linkText} <ArrowRight size={11} />
                 </Link>
               </motion.div>
             ))}
@@ -744,113 +611,105 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 7. Featured Inventory                          */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 bg-white px-6">
+      {/* ══════════════════════════════════════════════════
+          8. FEATURED INVENTORY
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#FAF8F5" }}>
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-12 gap-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-4">
             <div>
-              <p className="text-[#1CA9C9] text-xs uppercase tracking-[0.2em] mb-2">By Application Only</p>
-              <h2 className="font-serif text-4xl text-[#02274A]">Featured Inventory</h2>
+              <p className="text-[10px] uppercase tracking-[0.3em] mb-2 font-medium" style={{ color: "#C9A227" }}>By Application Only</p>
+              <h2 className="font-serif text-4xl text-[#02274A] font-light">Featured Inventory</h2>
             </div>
-            <Link href="/diamonds" className="text-[#1CA9C9] hover:text-[#02274A] transition-colors text-xs font-medium uppercase tracking-wider flex items-center gap-2">
-              View All Stones <ArrowRight size={12} />
+            <Link href="/diamonds" className="flex items-center gap-2 text-[10px] uppercase tracking-wider font-medium text-[#02274A]/40 hover:text-[#02274A] transition-colors">
+              View All Stones <ArrowRight size={11} />
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { id: 1, shape: "Round Brilliant", image: "/diamond-1.png", carat: "1.52", color: "D", clarity: "VVS1", cut: "Excellent" },
               { id: 2, shape: "Oval Cut",        image: "/diamond-2.png", carat: "2.01", color: "E", clarity: "VS1",  cut: "Excellent" },
               { id: 3, shape: "Emerald Cut",     image: "/diamond-3.png", carat: "3.15", color: "F", clarity: "IF",  cut: "Excellent" },
-            ].map((diamond) => (
-              <DiamondCard
-                key={diamond.id}
-                image={diamond.image}
-                shape={diamond.shape}
-                carat={diamond.carat}
-                color={diamond.color}
-                clarity={diamond.clarity}
-                cut={diamond.cut}
-                onRequestPrice={() => {}}
-              />
+            ].map((d) => (
+              <DiamondCard key={d.id} image={d.image} shape={d.shape} carat={d.carat} color={d.color} clarity={d.clarity} cut={d.cut} onRequestPrice={() => {}} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 8. Trust Pillars                               */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-20 bg-[#02274A]/5 border-t border-border px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { n: "47", label: "Years of Combined Expertise", sub: "Since Babu Vekariya began at age 12 in 1978." },
-              { n: "GIA", label: "Certified on Every Stone", sub: "The global standard. Every stone, every time." },
-              { n: "3", label: "Trusted Diamond Houses", sub: "KGK Diamond, Venus Jewellery, Excell Overseas." },
-              { n: "B2B", label: "Partners Only — By Design", sub: "We don't sell retail. Serious professionals only." },
-            ].map((pillar, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6 }}
-                className="bg-white p-8 border border-border"
-              >
-                <div className="font-serif text-4xl text-[#02274A] mb-2">{pillar.n}</div>
-                <h4 className="text-sm font-medium text-[#02274A] uppercase tracking-wide mb-3">{pillar.label}</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">{pillar.sub}</p>
-              </motion.div>
-            ))}
-          </div>
+      {/* ══════════════════════════════════════════════════
+          9. TRUST PILLARS
+      ══════════════════════════════════════════════════ */}
+      <section className="py-20 px-6 border-t" style={{ background: "white", borderColor: "#02274A0f" }}>
+        <div className="max-w-7xl mx-auto grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {[
+            { n: "47", label: "Years of Combined Expertise", sub: "Since Babu Vekariya began at age 12 in 1978." },
+            { n: "GIA", label: "Certified on Every Stone", sub: "The global standard. Every stone, every time. No exceptions." },
+            { n: "3", label: "Trusted Diamond Houses", sub: "KGK Diamond, Venus Jewellery, Excell Overseas." },
+            { n: "B2B", label: "Partners Only — By Design", sub: "We don't sell retail. Serious professionals only." },
+          ].map((p, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.6 }}
+              className="p-8 border border-[#02274A]/8"
+              style={{ background: "#FAF8F5" }}
+            >
+              <div className="font-serif text-4xl font-light mb-2" style={{ color: "#C9A227" }}>{p.n}</div>
+              <div className="text-[10px] uppercase tracking-[0.2em] text-[#02274A] mb-3 font-medium">{p.label}</div>
+              <p className="text-xs text-[#02274A]/45 leading-relaxed">{p.sub}</p>
+            </motion.div>
+          ))}
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 9. Heritage                                    */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 bg-white px-6">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      {/* ══════════════════════════════════════════════════
+          10. HERITAGE — Babu Vekariya
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#FAF8F5" }}>
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
           <div className="order-2 lg:order-1">
             <img
               src="/babu-portrait.png"
               alt="Babu Vekariya — master diamond craftsman"
-              className="w-full h-[560px] object-cover grayscale shadow-2xl"
+              className="w-full object-cover grayscale"
+              style={{ height: "560px", filter: "grayscale(30%) contrast(1.05)" }}
             />
           </div>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={stagger}
-            className="space-y-6 order-1 lg:order-2"
-          >
-            <motion.span variants={fadeInUp} className="text-[#1CA9C9] text-sm font-bold tracking-[0.2em] uppercase block">Our Heritage</motion.span>
-            <motion.h2 variants={fadeInUp} className="font-serif text-4xl lg:text-5xl text-[#02274A] leading-tight">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-60px" }} variants={stagger} className="space-y-6 order-1 lg:order-2">
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.35em] font-medium" style={{ color: "#C9A227" }}>Our Heritage</motion.p>
+            <motion.h2 variants={up} className="font-serif text-4xl lg:text-5xl text-[#02274A] leading-tight font-light">
               Babu Vekariya.<br />
-              <span className="text-[#02274A]/60">Master Craftsman.</span>
+              <span className="text-[#02274A]/40">Master Craftsman.</span>
             </motion.h2>
-            <motion.div variants={fadeInUp} className="space-y-4 text-muted-foreground leading-relaxed text-base">
-              <p>
-                Babu began cutting diamonds in 1978, aged 12. By his late 20s he was among a small group of craftsmen
-                who could reliably identify and execute the IF→FL conversion — a technique that requires seeing the
-                difference between Internally Flawless and Flawless with a practiced eye and flawless judgment.
-              </p>
-              <p>
-                Over 47 years, that mastery has been refined into the process behind FLX Diamonds.
-                Based in Geelong, Victoria, we bring that level of craft to serious buyers and partners worldwide.
-              </p>
+            <motion.div variants={up}><span className="gold-line" /></motion.div>
+            <motion.div variants={up} className="space-y-4 text-[#02274A]/55 leading-relaxed">
+              <p>Babu began cutting diamonds in 1978, aged 12. By his late 20s he was among a
+              small group of craftsmen who could reliably identify and execute the IF→FL conversion —
+              a technique requiring 47 years of practiced eye and flawless judgment.</p>
+              <p>Over four decades, that mastery refined into the process behind FLX Diamonds.
+              Based in Geelong, Victoria, we bring that level of craft to serious buyers and
+              partners worldwide — quietly, without fanfare.</p>
             </motion.div>
-            <motion.div variants={fadeInUp} className="flex gap-4 pt-2">
+            <motion.div variants={up} className="flex gap-4 pt-2">
               <Link href="/about">
-                <Button variant="outline" className="rounded-none border-[#02274A] text-[#02274A] hover:bg-[#02274A] hover:text-white h-12 px-8 uppercase tracking-wider text-xs" data-testid="btn-heritage-about">
+                <Button
+                  variant="outline"
+                  className="rounded-none text-[10px] uppercase tracking-[0.2em] text-[#02274A] hover:bg-[#02274A] hover:text-white transition-colors"
+                  style={{ borderColor: "#02274A", height: "46px", paddingLeft: "1.75rem", paddingRight: "1.75rem" }}
+                  data-testid="btn-heritage-about"
+                >
                   Full Story
                 </Button>
               </Link>
               <Link href="/contact">
-                <Button className="rounded-none bg-[#02274A] hover:bg-[#02274A]/90 text-white h-12 px-8 uppercase tracking-wider text-xs" data-testid="btn-heritage-contact">
+                <Button
+                  className="rounded-none text-[10px] uppercase tracking-[0.2em] hover:opacity-90 font-medium text-[#02274A]"
+                  style={{ background: "#C9A227", height: "46px", paddingLeft: "1.75rem", paddingRight: "1.75rem" }}
+                  data-testid="btn-heritage-contact"
+                >
                   Work With Us
                 </Button>
               </Link>
@@ -859,131 +718,128 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 10. Ocean Quote / Closing Statement            */}
-      {/* ─────────────────────────────────────────────── */}
-      <section
-        className="relative py-32 px-6 overflow-hidden"
-        style={{ background: "#011a36" }}
-      >
-        {/* GOR background — sunny Twelve Apostles */}
+      {/* ══════════════════════════════════════════════════
+          11. CLOSING — Brand image + quote + CTA
+      ══════════════════════════════════════════════════ */}
+      <section className="relative overflow-hidden" style={{ height: "70vh", minHeight: "480px" }}>
         <img
-          src="/great-ocean-road_2.jpg"
-          alt="Twelve Apostles, Great Ocean Road"
-          className="absolute inset-0 w-full h-full object-cover object-center"
+          src="/brand-office-2.jpg"
+          alt="FLX Diamonds"
+          className="absolute inset-0 w-full h-full object-cover object-center hero-img-zoom"
           aria-hidden="true"
-          style={{ filter: "saturate(0.7) brightness(0.35)" }}
+          style={{ filter: "brightness(0.55) saturate(0.85)" }}
         />
+        <div className="absolute inset-0" style={{ background: "rgba(2,10,20,0.55)" }} />
 
-        {/* Subtle wave at bottom */}
-        <div className="wave-layer" style={{ animationDuration: "16s", height: "80px", opacity: 0.3 }}>
+        {/* Animated wave accent */}
+        <div className="wave-layer" style={{ animationDuration: "20s", height: "80px", opacity: 0.15 }}>
           <svg viewBox="0 0 1440 80" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path d="M0,30 C360,70 720,0 1080,35 C1260,55 1350,15 1440,30 L1440,80 L0,80 Z" fill="rgba(28,169,201,0.2)" />
-            <path d="M1440,30 C1800,70 2160,0 2520,35 C2700,55 2790,15 2880,30 L2880,80 L1440,80 Z" fill="rgba(28,169,201,0.2)" />
+            <path d="M0,25 C360,65 720,0 1080,30 C1260,50 1350,10 1440,25 L1440,80 L0,80 Z" fill="rgba(201,162,39,0.5)" />
+            <path d="M1440,25 C1800,65 2160,0 2520,30 C2700,50 2790,10 2880,25 L2880,80 L1440,80 Z" fill="rgba(201,162,39,0.5)" />
           </svg>
         </div>
 
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-8">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="text-[#1CA9C9] uppercase tracking-[0.3em] text-xs"
-          >
-            The Quiet Partner Behind Serious Decisions
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="font-serif text-3xl md:text-5xl text-white leading-snug"
-          >
-            "Heritage, craftsmanship, and the knowledge to see what others cannot — this is where serious diamond sourcing begins."
-          </motion.h2>
+        <div className="absolute inset-0 flex items-center justify-center px-8">
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="pt-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={stagger}
+            className="text-center space-y-7 max-w-3xl"
           >
-            <Link href="/contact">
-              <Button className="rounded-none bg-white hover:bg-white/90 text-[#02274A] uppercase tracking-[0.15em] text-sm px-10 h-14" data-testid="btn-closing-contact">
-                Begin the Conversation →
-              </Button>
-            </Link>
+            <motion.p variants={up} className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#C9A227" }}>
+              The Quiet Partner Behind Serious Decisions
+            </motion.p>
+            <motion.h2 variants={up} className="font-serif text-3xl md:text-5xl text-white font-light leading-snug">
+              "Heritage, craftsmanship, and the knowledge to see what others cannot —
+              this is where serious diamond sourcing begins."
+            </motion.h2>
+            <motion.div variants={up} className="flex justify-center">
+              <span className="gold-line" />
+            </motion.div>
+            <motion.div variants={up}>
+              <Link href="/contact">
+                <Button
+                  className="rounded-none text-xs uppercase tracking-[0.22em] font-medium text-[#02274A] hover:opacity-90"
+                  style={{ background: "#C9A227", height: "52px", paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
+                  data-testid="btn-closing-contact"
+                >
+                  Begin the Conversation →
+                </Button>
+              </Link>
+            </motion.div>
           </motion.div>
         </div>
       </section>
 
-      {/* ─────────────────────────────────────────────── */}
-      {/* 11. Inline Enquiry Form                        */}
-      {/* ─────────────────────────────────────────────── */}
-      <section className="py-24 bg-muted/20 px-6">
+      {/* ══════════════════════════════════════════════════
+          12. ENQUIRY FORM
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-[#1CA9C9] text-xs uppercase tracking-[0.2em] mb-3">Direct Access</p>
-            <h2 className="font-serif text-3xl text-[#02274A] mb-3">Send a Direct Enquiry</h2>
-            <p className="text-muted-foreground text-sm">
-              No automated responses. Every enquiry is read personally by our Geelong office and responded to within 24 hours.
+          <div className="text-center mb-12">
+            <p className="text-[10px] uppercase tracking-[0.35em] mb-4 font-medium" style={{ color: "#C9A227" }}>Direct Access</p>
+            <h2 className="font-serif text-3xl text-white mb-3 font-light">Send a Direct Enquiry</h2>
+            <p className="text-white/40 text-sm max-w-md mx-auto leading-relaxed">
+              No automated responses. Every enquiry is read personally and responded to within 24 hours from our Geelong office.
             </p>
           </div>
-          <div className="bg-white p-8 md:p-12 border border-border shadow-sm">
+          <div className="p-8 md:p-12 border" style={{ background: "rgba(255,255,255,0.04)", borderColor: "rgba(201,162,39,0.2)" }}>
             <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Full Name</label>
-                  <Input className="rounded-none border-border h-11" data-testid="enquiry-name" />
+                  <label className="text-[9px] uppercase tracking-[0.25em] text-white/40">Full Name</label>
+                  <Input className="rounded-none bg-transparent text-white border-white/15 focus:border-[#C9A227]/60 h-11 placeholder:text-white/20" data-testid="enquiry-name" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Company Name</label>
-                  <Input className="rounded-none border-border h-11" data-testid="enquiry-company" />
+                  <label className="text-[9px] uppercase tracking-[0.25em] text-white/40">Company Name</label>
+                  <Input className="rounded-none bg-transparent text-white border-white/15 focus:border-[#C9A227]/60 h-11 placeholder:text-white/20" data-testid="enquiry-company" />
                 </div>
               </div>
               <div className="grid sm:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Email Address</label>
-                  <Input type="email" className="rounded-none border-border h-11" data-testid="enquiry-email" />
+                  <label className="text-[9px] uppercase tracking-[0.25em] text-white/40">Email Address</label>
+                  <Input type="email" className="rounded-none bg-transparent text-white border-white/15 focus:border-[#C9A227]/60 h-11 placeholder:text-white/20" data-testid="enquiry-email" />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-xs uppercase tracking-wider text-muted-foreground">Phone / WhatsApp</label>
-                  <Input type="tel" className="rounded-none border-border h-11" data-testid="enquiry-phone" />
+                  <label className="text-[9px] uppercase tracking-[0.25em] text-white/40">Phone / WhatsApp</label>
+                  <Input type="tel" className="rounded-none bg-transparent text-white border-white/15 focus:border-[#C9A227]/60 h-11 placeholder:text-white/20" data-testid="enquiry-phone" />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">What are you looking for?</label>
+                <label className="text-[9px] uppercase tracking-[0.25em] text-white/40">What are you looking for?</label>
                 <select
-                  className="flex h-11 w-full rounded-none border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="flex h-11 w-full border bg-transparent text-white/70 px-3 py-2 text-sm focus-visible:outline-none"
+                  style={{ borderColor: "rgba(255,255,255,0.15)" }}
                   data-testid="enquiry-type"
                 >
-                  <option value="">Select an option...</option>
-                  <option value="if-to-fl">IF→FL Conversion (GIA cert upgrade)</option>
-                  <option value="natural">Natural Diamond Sourcing</option>
-                  <option value="lab-grown">Lab-Grown Diamonds</option>
-                  <option value="investment">Investment-Grade Stones</option>
-                  <option value="b2b">B2B / Trade Partnership</option>
-                  <option value="custom">Custom / Bespoke Brief</option>
+                  <option value="" style={{ background: "#02274A" }}>Select an option...</option>
+                  <option value="if-to-fl" style={{ background: "#02274A" }}>IF→FL Conversion</option>
+                  <option value="natural" style={{ background: "#02274A" }}>Natural Diamond Sourcing</option>
+                  <option value="lab-grown" style={{ background: "#02274A" }}>Lab-Grown Diamonds</option>
+                  <option value="investment" style={{ background: "#02274A" }}>Investment-Grade Stones</option>
+                  <option value="b2b" style={{ background: "#02274A" }}>B2B / Trade Partnership</option>
+                  <option value="custom" style={{ background: "#02274A" }}>Custom / Bespoke Brief</option>
                 </select>
               </div>
               <div className="space-y-2">
-                <label className="text-xs uppercase tracking-wider text-muted-foreground">Message / Specification</label>
+                <label className="text-[9px] uppercase tracking-[0.25em] text-white/40">Message / Specification</label>
                 <Textarea
-                  className="rounded-none border-border min-h-[110px]"
+                  className="rounded-none bg-transparent text-white border-white/15 focus:border-[#C9A227]/60 min-h-[110px] placeholder:text-white/20"
                   placeholder="Include GIA cert numbers, carat range, colour/clarity target, or any specific requirements."
                   data-testid="enquiry-message"
                 />
               </div>
               <Button
                 type="submit"
-                className="w-full rounded-none bg-[#02274A] hover:bg-[#02274A]/90 text-white h-14 uppercase tracking-[0.15em] text-sm"
+                className="w-full rounded-none text-sm uppercase tracking-[0.18em] font-medium text-[#02274A] hover:opacity-90"
+                style={{ background: "#C9A227", height: "54px" }}
                 data-testid="btn-enquiry-submit"
               >
                 Submit Enquiry
               </Button>
-              <p className="text-center text-xs text-muted-foreground">
-                All enquiries are treated in strict confidence. We do not share information with third parties.
+              <p className="text-center text-[10px] text-white/25 tracking-wider">
+                All enquiries treated in strict confidence. We do not share information with third parties.
               </p>
             </form>
           </div>

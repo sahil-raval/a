@@ -2,52 +2,81 @@ import { Link } from "wouter";
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground py-20">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="space-y-4 md:col-span-1">
-          <Link href="/" className="inline-block" data-testid="footer-logo">
-            <span className="font-serif text-3xl font-bold tracking-widest text-white">FLX</span>
-            <span className="block text-[0.6rem] tracking-[0.3em] text-white/70 mt-1">DIAMONDS</span>
+    <footer style={{ background: "#02274A" }} className="text-white">
+      <div className="max-w-7xl mx-auto px-6 pt-20 pb-10 grid grid-cols-1 md:grid-cols-4 gap-14">
+
+        {/* Brand column */}
+        <div className="md:col-span-1 space-y-5">
+          <Link href="/" className="inline-flex items-baseline gap-3" data-testid="footer-logo">
+            <span className="font-serif text-3xl font-semibold tracking-[0.18em]" style={{ color: "#C9A227" }}>FLX</span>
+            <span className="text-[9px] tracking-[0.35em]" style={{ color: "rgba(201,162,39,0.6)" }}>DIAMONDS</span>
           </Link>
-          <p className="text-sm text-white/70 tracking-widest uppercase mt-4">Precision. Trust. Excellence.</p>
+          <div>
+            <span className="gold-line mb-4" />
+            <p className="text-xs tracking-[0.22em] text-white/50 uppercase mt-4">Precision. Trust. Excellence.</p>
+          </div>
+          <p className="text-xs text-white/35 leading-relaxed max-w-[180px]">
+            B2B diamond sourcing and IF→FL conversion specialists. Geelong, Victoria.
+          </p>
         </div>
 
-        <div className="space-y-4">
-          <h4 className="font-serif text-lg text-white">Navigation</h4>
-          <ul className="space-y-2 text-sm text-white/70">
-            <li><Link href="/diamonds" className="hover:text-accent transition-colors" data-testid="footer-link-diamonds">Diamonds</Link></li>
-            <li><Link href="/jewellery" className="hover:text-accent transition-colors" data-testid="footer-link-jewellery">Jewellery</Link></li>
-            <li><Link href="/trade" className="hover:text-accent transition-colors" data-testid="footer-link-trade">Trade</Link></li>
-            <li><Link href="/investment" className="hover:text-accent transition-colors" data-testid="footer-link-investment">Investment</Link></li>
-            <li><Link href="/about" className="hover:text-accent transition-colors" data-testid="footer-link-about">About</Link></li>
-            <li><Link href="/journal" className="hover:text-accent transition-colors" data-testid="footer-link-journal">Journal</Link></li>
-            <li><Link href="/contact" className="hover:text-accent transition-colors" data-testid="footer-link-contact">Contact</Link></li>
+        {/* Navigation */}
+        <div className="space-y-5">
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-medium">Navigation</h4>
+          <ul className="space-y-3 text-sm">
+            {[
+              { href: "/diamonds",   label: "Diamonds" },
+              { href: "/jewellery",  label: "Jewellery" },
+              { href: "/trade",      label: "Trade" },
+              { href: "/investment", label: "Investment" },
+              { href: "/about",      label: "About" },
+              { href: "/journal",    label: "Journal" },
+              { href: "/contact",    label: "Contact" },
+            ].map(l => (
+              <li key={l.href}>
+                <Link
+                  href={l.href}
+                  className="text-white/55 hover:text-white transition-colors text-xs tracking-wide"
+                  data-testid={`footer-link-${l.label.toLowerCase()}`}
+                >
+                  {l.label}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
 
-        <div className="space-y-4">
-          <h4 className="font-serif text-lg text-white">Contact</h4>
-          <ul className="space-y-2 text-sm text-white/70">
+        {/* Contact */}
+        <div className="space-y-5">
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-medium">Contact</h4>
+          <ul className="space-y-3 text-xs text-white/55 leading-relaxed">
             <li>+91 91042 90971</li>
             <li>+91 99982 17496</li>
-            <li>help@flxdiamond.com</li>
-            <li>Geelong, VIC, Australia</li>
+            <li style={{ color: "rgba(201,162,39,0.75)" }}>help@flxdiamond.com</li>
+            <li className="pt-1 text-white/35">Geelong, VIC, Australia</li>
           </ul>
         </div>
 
-        <div className="space-y-4">
-          <h4 className="font-serif text-lg text-white">Partners</h4>
-          <p className="text-sm text-white/70 leading-relaxed">
-            Trusted by industry leaders including KGK Diamond, Venus Jewellery, and Excell Overseas.
+        {/* Partners */}
+        <div className="space-y-5">
+          <h4 className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-medium">Trusted By</h4>
+          <ul className="space-y-3 text-xs text-white/55">
+            <li>KGK Diamond</li>
+            <li>Venus Jewellery</li>
+            <li>Excell Overseas</li>
+          </ul>
+          <p className="text-xs text-white/30 leading-relaxed pt-2">
+            All enquiries handled under strict confidentiality.
           </p>
         </div>
       </div>
-      
-      <div className="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-white/50">
+
+      {/* Bottom bar */}
+      <div className="border-t border-white/8 max-w-7xl mx-auto px-6 py-7 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] text-white/30 tracking-widest uppercase">
         <p>&copy; {new Date().getFullYear()} FLX Diamonds. All rights reserved.</p>
-        <div className="flex gap-4 mt-4 md:mt-0">
-          <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+        <div className="flex gap-6">
+          <Link href="/privacy" className="hover:text-white/60 transition-colors">Privacy</Link>
+          <Link href="/terms" className="hover:text-white/60 transition-colors">Terms</Link>
         </div>
       </div>
     </footer>
