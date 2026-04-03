@@ -1039,14 +1039,6 @@ export default function Home() {
         />
         <div className="absolute inset-0" style={{ background: "rgba(1,13,26,0.5)" }} />
 
-        {/* Wave accent */}
-        <div className="wave-layer" style={{ animationDuration: "17s", height: "90px", opacity: 0.3 }}>
-          <svg viewBox="0 0 1440 90" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path d="M0,30 C360,70 720,5 1080,35 C1260,52 1360,18 1440,30 L1440,90 L0,90 Z" fill="rgba(28,169,201,0.5)" />
-            <path d="M1440,30 C1800,70 2160,5 2520,35 C2700,52 2800,18 2880,30 L2880,90 L1440,90 Z" fill="rgba(28,169,201,0.5)" />
-          </svg>
-        </div>
-
         <div className="absolute inset-0 flex items-center justify-center px-8">
           <motion.div
             initial="hidden"
@@ -1064,6 +1056,18 @@ export default function Home() {
             </motion.h2>
             <motion.div variants={up} className="flex justify-center">
               <span className="ocean-line tide-pulse" />
+            </motion.div>
+            <motion.div variants={up}>
+              <Link href="/contact">
+                <Button
+                  variant="outline"
+                  className="rounded-none text-xs uppercase tracking-[0.22em] font-medium text-white hover:bg-white/10"
+                  style={{ borderColor: "rgba(255,255,255,0.4)", height: "52px", padding: "0 2.5rem" }}
+                  data-testid="btn-closing-contact"
+                >
+                  Begin the Conversation →
+                </Button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
