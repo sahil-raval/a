@@ -60,3 +60,15 @@ id = "fVq9jVqImptua0oexShKX"
 uri = "file://artifacts/flx-diamond/public/jewellery-earrings.png"
 type = "image"
 title = "Premium diamond earrings"
+
+[[generated]]
+id = "zXM0Vr52pMTKy4iZvOERB"
+uri = "file://artifacts/flx-diamond/public/babu-portrait.png"
+type = "image"
+title = "Portrait of a master diamond craftsman"
+
+[[generated]]
+id = "g5RQrtkKOIRvei6C0iyax"
+uri = "file://artifacts/flx-diamond/public/heritage-new.png"
+type = "image"
+title = "Craftsman examining diamond with loupe"

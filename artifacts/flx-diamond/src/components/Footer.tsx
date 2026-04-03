@@ -5,20 +5,23 @@ export function Footer() {
     <footer className="bg-primary text-primary-foreground py-20">
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div className="space-y-4 md:col-span-1">
-          <Link href="/" className="inline-block">
+          <Link href="/" className="inline-block" data-testid="footer-logo">
             <span className="font-serif text-3xl font-bold tracking-widest text-white">FLX</span>
+            <span className="block text-[0.6rem] tracking-[0.3em] text-white/70 mt-1">DIAMONDS</span>
           </Link>
-          <p className="text-sm text-white/70 tracking-widest uppercase">Precision. Trust. Excellence.</p>
+          <p className="text-sm text-white/70 tracking-widest uppercase mt-4">Precision. Trust. Excellence.</p>
         </div>
 
         <div className="space-y-4">
           <h4 className="font-serif text-lg text-white">Navigation</h4>
           <ul className="space-y-2 text-sm text-white/70">
-            <li><Link href="/diamonds" className="hover:text-accent transition-colors">Diamonds</Link></li>
-            <li><Link href="/jewellery" className="hover:text-accent transition-colors">Jewellery</Link></li>
-            <li><Link href="/trade" className="hover:text-accent transition-colors">Trade</Link></li>
-            <li><Link href="/investment" className="hover:text-accent transition-colors">Investment</Link></li>
-            <li><Link href="/journal" className="hover:text-accent transition-colors">Journal</Link></li>
+            <li><Link href="/diamonds" className="hover:text-accent transition-colors" data-testid="footer-link-diamonds">Diamonds</Link></li>
+            <li><Link href="/jewellery" className="hover:text-accent transition-colors" data-testid="footer-link-jewellery">Jewellery</Link></li>
+            <li><Link href="/trade" className="hover:text-accent transition-colors" data-testid="footer-link-trade">Trade</Link></li>
+            <li><Link href="/investment" className="hover:text-accent transition-colors" data-testid="footer-link-investment">Investment</Link></li>
+            <li><Link href="/about" className="hover:text-accent transition-colors" data-testid="footer-link-about">About</Link></li>
+            <li><Link href="/journal" className="hover:text-accent transition-colors" data-testid="footer-link-journal">Journal</Link></li>
+            <li><Link href="/contact" className="hover:text-accent transition-colors" data-testid="footer-link-contact">Contact</Link></li>
           </ul>
         </div>
 
@@ -28,7 +31,7 @@ export function Footer() {
             <li>+91 91042 90971</li>
             <li>+91 99982 17496</li>
             <li>help@flxdiamond.com</li>
-            <li>Surat, India</li>
+            <li>Geelong, VIC, Australia</li>
           </ul>
         </div>
 

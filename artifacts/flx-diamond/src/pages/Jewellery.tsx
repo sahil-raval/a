@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
 const collections = [
@@ -31,21 +32,41 @@ const collections = [
   }
 ];
 
+const fadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
+
 export default function Jewellery() {
   return (
-    <div className="bg-background min-h-screen pt-12 pb-24">
+    <div className="bg-background min-h-screen pt-32 pb-24">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <motion.div 
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}
+          className="text-center max-w-3xl mx-auto mb-16"
+        >
           <h1 className="font-serif text-4xl md:text-5xl text-primary mb-6">High Jewellery Collections</h1>
           <p className="text-muted-foreground leading-relaxed">
             Exclusive ready-to-wear pieces and bespoke commissions for private clients and retail partners. 
             Crafted to exacting standards, featuring the finest GIA certified stones from our inventory.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {collections.map((collection) => (
-            <div key={collection.id} className="group relative overflow-hidden bg-white border border-border">
+          {collections.map((collection, i) => (
+            <motion.div 
+              key={collection.id} 
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0, y: 30 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1 } }
+              }}
+              className="group relative overflow-hidden bg-white border border-border"
+            >
               <div className="aspect-[4/3] bg-muted/20 p-12 flex items-center justify-center relative">
                 <img 
                   src={collection.image} 
@@ -58,12 +79,12 @@ export default function Jewellery() {
                 <p className="text-sm text-muted-foreground mb-6">{collection.description}</p>
                 <div className="flex justify-between items-center text-xs uppercase tracking-wider font-medium">
                   <span className="text-muted-foreground">{collection.items}</span>
-                  <Button variant="link" className="rounded-none text-primary hover:text-accent p-0 h-auto font-medium tracking-wider">
+                  <Button variant="link" className="rounded-none text-primary hover:text-accent p-0 h-auto font-medium tracking-wider" data-testid={`btn-jewellery-enquire-${collection.id}`}>
                     Enquire Now →
                   </Button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
