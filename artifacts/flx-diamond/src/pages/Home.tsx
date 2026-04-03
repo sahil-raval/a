@@ -101,58 +101,146 @@ const BUYER_TYPES = [
   }
 ];
 
+/* ── Web Audio API ocean sound generator ────────────────
+   Creates realistic layered ocean waves with no file dependency.
+   Three noise layers: deep rumble + mid whoosh + foam spray.
+   Each layer has its own LFO for a natural wave rhythm.
+──────────────────────────────────────────────────────── */
+function buildOceanSound(ctx: AudioContext): () => void {
+  const SR = ctx.sampleRate;
+
+  const makeNoise = (seconds = 4) => {
+    const len = seconds * SR;
+    const buf = ctx.createBuffer(1, len, SR);
+    const d   = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.loop   = true;
+    return src;
+  };
+
+  const masterGain = ctx.createGain();
+  masterGain.gain.value = 0.35;
+  masterGain.connect(ctx.destination);
+
+  // ── Layer 1: deep ocean rumble (lowpass ~350Hz) ──
+  const n1   = makeNoise(6);
+  const lp1  = ctx.createBiquadFilter();
+  lp1.type            = "lowpass";
+  lp1.frequency.value = 350;
+  lp1.Q.value         = 0.6;
+  const g1 = ctx.createGain();
+  g1.gain.value = 0.7;
+  n1.connect(lp1); lp1.connect(g1); g1.connect(masterGain);
+
+  // LFO-1: slow wave swell ~0.07 Hz
+  const lfo1 = ctx.createOscillator();
+  lfo1.type            = "sine";
+  lfo1.frequency.value = 0.07;
+  const lfoG1 = ctx.createGain();
+  lfoG1.gain.value = 0.22;
+  lfo1.connect(lfoG1); lfoG1.connect(g1.gain);
+
+  // ── Layer 2: mid-range whoosh (bandpass ~700Hz) ──
+  const n2  = makeNoise(5);
+  const bp  = ctx.createBiquadFilter();
+  bp.type            = "bandpass";
+  bp.frequency.value = 700;
+  bp.Q.value         = 0.9;
+  const g2 = ctx.createGain();
+  g2.gain.value = 0.18;
+  n2.connect(bp); bp.connect(g2); g2.connect(masterGain);
+
+  // LFO-2: slightly faster, offset phase ~0.11 Hz
+  const lfo2 = ctx.createOscillator();
+  lfo2.type            = "sine";
+  lfo2.frequency.value = 0.11;
+  const lfoG2 = ctx.createGain();
+  lfoG2.gain.value = 0.12;
+  lfo2.connect(lfoG2); lfoG2.connect(g2.gain);
+
+  // ── Layer 3: foam / spray texture (highpass ~2200Hz) ──
+  const n3  = makeNoise(3);
+  const hp  = ctx.createBiquadFilter();
+  hp.type            = "highpass";
+  hp.frequency.value = 2200;
+  hp.Q.value         = 0.4;
+  const g3 = ctx.createGain();
+  g3.gain.value = 0.045;
+  n3.connect(hp); hp.connect(g3); g3.connect(masterGain);
+
+  // LFO-3: fastest, foam bursts ~0.17 Hz
+  const lfo3 = ctx.createOscillator();
+  lfo3.type            = "sine";
+  lfo3.frequency.value = 0.17;
+  const lfoG3 = ctx.createGain();
+  lfoG3.gain.value = 0.04;
+  lfo3.connect(lfoG3); lfoG3.connect(g3.gain);
+
+  // Start everything
+  [n1, n2, n3, lfo1, lfo2, lfo3].forEach(n => n.start());
+
+  // Fade in over 3 seconds
+  masterGain.gain.setValueAtTime(0, ctx.currentTime);
+  masterGain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 3);
+
+  return () => {
+    masterGain.gain.setValueAtTime(masterGain.gain.value, ctx.currentTime);
+    masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+    setTimeout(() => [n1, n2, n3, lfo1, lfo2, lfo3].forEach(n => { try { n.stop(); } catch {} }), 1600);
+  };
+}
+
 /* ══════════════════════════════════════════════════════
    COMPONENT
 ══════════════════════════════════════════════════════ */
 export default function Home() {
-  const [isMuted, setIsMuted]           = useState(true);
-  const [soundReady, setSoundReady]     = useState(false);
-  const [selected, setSelected]         = useState<string | null>(null);
-  const audioRef  = useRef<HTMLAudioElement | null>(null);
+  const [isMuted, setIsMuted]   = useState(true);
+  const [selected, setSelected] = useState<string | null>(null);
   const videoRef  = useRef<HTMLVideoElement | null>(null);
   const answerRef = useRef<HTMLDivElement | null>(null);
+  const ctxRef    = useRef<AudioContext | null>(null);
+  const stopRef   = useRef<(() => void) | null>(null);
 
-  /* Start ocean audio on first user gesture */
+  /* Start ocean sound on first user gesture */
   useEffect(() => {
     let started = false;
-    const tryPlay = () => {
+    const tryStart = () => {
       if (started) return;
       started = true;
-      if (audioRef.current) {
-        audioRef.current.volume = 0.28;
-        audioRef.current.play().then(() => {
-          setIsMuted(false);
-          setSoundReady(true);
-        }).catch(() => {
-          setSoundReady(true); // show toggle even if blocked
-        });
+      try {
+        const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+        ctxRef.current = ctx;
+        stopRef.current = buildOceanSound(ctx);
+        setIsMuted(false);
+      } catch (e) {
+        console.warn("Web Audio not available", e);
       }
-      document.removeEventListener("click",  tryPlay);
-      document.removeEventListener("scroll", tryPlay);
-      document.removeEventListener("touchstart", tryPlay);
+      document.removeEventListener("click",      tryStart);
+      document.removeEventListener("scroll",     tryStart);
+      document.removeEventListener("touchstart", tryStart);
     };
-    document.addEventListener("click",      tryPlay);
-    document.addEventListener("scroll",     tryPlay);
-    document.addEventListener("touchstart", tryPlay);
+    document.addEventListener("click",      tryStart);
+    document.addEventListener("scroll",     tryStart);
+    document.addEventListener("touchstart", tryStart);
     return () => {
-      document.removeEventListener("click",      tryPlay);
-      document.removeEventListener("scroll",     tryPlay);
-      document.removeEventListener("touchstart", tryPlay);
+      document.removeEventListener("click",      tryStart);
+      document.removeEventListener("scroll",     tryStart);
+      document.removeEventListener("touchstart", tryStart);
     };
   }, []);
 
   const toggleMute = useCallback(() => {
-    setIsMuted(m => {
-      const next = !m;
-      if (audioRef.current) {
-        if (!next) {
-          audioRef.current.play().catch(() => {});
-        } else {
-          audioRef.current.pause();
-        }
-      }
-      return next;
-    });
+    const ctx = ctxRef.current;
+    if (!ctx) return;
+    if (ctx.state === "running") {
+      ctx.suspend();
+      setIsMuted(true);
+    } else {
+      ctx.resume();
+      setIsMuted(false);
+    }
   }, []);
 
   const handleSelect = (id: string) => {
@@ -258,14 +346,6 @@ export default function Home() {
           {isMuted ? <VolumeX size={13} /> : <Volume2 size={13} />}
           <span className="hidden sm:inline">{isMuted ? "Hear the Ocean" : "Ocean Sound On"}</span>
         </button>
-
-        {/* Hidden audio */}
-        <audio
-          ref={audioRef}
-          src="https://www.soundjay.com/nature/sounds/ocean-waves-1.mp3"
-          loop
-          preload="auto"
-        />
 
         {/* Hero copy — bottom-left editorial */}
         <div className="relative z-10 w-full px-8 md:px-16 lg:px-24 pb-20 md:pb-24">
