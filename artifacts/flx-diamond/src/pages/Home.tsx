@@ -294,32 +294,6 @@ export default function Home() {
         {/* Ocean shimmer strip */}
         <div className="absolute inset-0 ocean-shimmer" style={{ opacity: 0.7 }} />
 
-        {/* Three animated wave layers at bottom */}
-        <div className="wave-layer" style={{ animationDuration: "14s", height: "110px", opacity: 0.55 }}>
-          <svg viewBox="0 0 1440 110" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path d="M0,40 C200,80 400,15 600,45 C800,75 1000,20 1200,50 C1320,65 1380,35 1440,40 L1440,110 L0,110 Z"
-              fill="rgba(28,169,201,0.22)" />
-            <path d="M1440,40 C1640,80 1840,15 2040,45 C2240,75 2440,20 2640,50 C2760,65 2820,35 2880,40 L2880,110 L1440,110 Z"
-              fill="rgba(28,169,201,0.22)" />
-          </svg>
-        </div>
-        <div className="wave-layer-swell" style={{ animationDuration: "10s", height: "70px", opacity: 0.35 }}>
-          <svg viewBox="0 0 1440 70" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path d="M0,25 C300,55 600,5 900,30 C1100,48 1280,18 1440,25 L1440,70 L0,70 Z"
-              fill="rgba(28,169,201,0.3)" />
-            <path d="M1440,25 C1740,55 2040,5 2340,30 C2540,48 2720,18 2880,25 L2880,70 L1440,70 Z"
-              fill="rgba(28,169,201,0.3)" />
-          </svg>
-        </div>
-        <div className="wave-layer" style={{ animationDuration: "19s", animationDirection: "reverse", height: "50px", opacity: 0.2 }}>
-          <svg viewBox="0 0 1440 50" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }}>
-            <path d="M0,18 C240,40 480,5 720,20 C960,35 1200,10 1440,18 L1440,50 L0,50 Z"
-              fill="rgba(255,255,255,0.5)" />
-            <path d="M1440,18 C1680,40 1920,5 2160,20 C2400,35 2640,10 2880,18 L2880,50 L1440,50 Z"
-              fill="rgba(255,255,255,0.5)" />
-          </svg>
-        </div>
-
         {/* Floating particles */}
         {PARTICLES.map((p, i) => (
           <div
