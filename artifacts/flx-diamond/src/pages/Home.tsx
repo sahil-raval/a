@@ -263,18 +263,20 @@ export default function Home() {
       ══════════════════════════════════════════════════ */}
       <section className="relative h-screen flex items-end overflow-hidden" style={{ background: "#010d1a" }}>
 
-        {/* Video background */}
+        {/* Video background — 4K UHD (3840×2160) */}
         <video
           ref={videoRef}
           className="absolute inset-0 w-full h-full object-cover"
-          src="/hero-ocean.mp4"
           poster="/great-ocean-road_1.jpg"
           autoPlay
           muted
           loop
           playsInline
           aria-hidden="true"
-        />
+        >
+          <source src="/hero-ocean-4k.mp4" type="video/mp4" />
+          <source src="/hero-ocean.mp4" type="video/mp4" />
+        </video>
 
         {/* Deep ocean overlays — layered for depth */}
         <div
