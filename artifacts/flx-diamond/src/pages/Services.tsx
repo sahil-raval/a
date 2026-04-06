@@ -275,7 +275,7 @@ export default function Services() {
       {/* ══ HERO ══ */}
       <section
         className="relative overflow-hidden pt-32 md:pt-44 pb-20 md:pb-36 px-6"
-        style={{ background: "#010d1a" }}
+        style={{ background: "#02274A" }}
       >
         {/* Grid texture */}
         <div
@@ -373,7 +373,7 @@ export default function Services() {
       {/* ══ CLOSING CTA ══ */}
       <section
         className="relative overflow-hidden py-24 md:py-36 px-6"
-        style={{ background: "#010d1a" }}
+        style={{ background: "#02274A" }}
       >
         <div
           className="absolute pointer-events-none"

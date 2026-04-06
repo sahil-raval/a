@@ -418,7 +418,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           2b. FL DIAMOND SHOWCASE — Visual proof
       ══════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden" style={{ background: "#010d1a" }}>
+      <section className="relative overflow-hidden" style={{ background: "#02274A" }}>
         {/* Grid texture */}
         <div className="absolute inset-0 opacity-[0.03]" style={{
           backgroundImage: "linear-gradient(rgba(28,169,201,1) 1px, transparent 1px), linear-gradient(90deg, rgba(28,169,201,1) 1px, transparent 1px)",
