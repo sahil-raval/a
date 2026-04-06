@@ -39,7 +39,7 @@ export function Footer() {
 
         <div className="max-w-7xl mx-auto px-6 py-20 md:py-28 flex flex-col md:flex-row items-start md:items-end justify-between gap-12">
 
-          {/* Big FLX wordmark */}
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -47,22 +47,16 @@ export function Footer() {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <Link href="/" data-testid="footer-logo" className="inline-block group">
-              <div
-                className="font-serif leading-none tracking-[0.12em] select-none"
+              <img
+                src="/flx-logo-v2-trimmed.png"
+                alt="FLX Diamond"
                 style={{
-                  fontSize: "clamp(4rem, 10vw, 8rem)",
-                  color: "#C9A227",
-                  opacity: 0.9,
+                  height: "clamp(56px, 8vw, 96px)",
+                  width: "auto",
+                  mixBlendMode: "screen",
+                  opacity: 0.92,
                 }}
-              >
-                FLX
-              </div>
-              <div
-                className="text-[9px] tracking-[0.55em] uppercase mt-1"
-                style={{ color: "rgba(201,162,39,0.45)" }}
-              >
-                Diamonds
-              </div>
+              />
             </Link>
           </motion.div>
 
