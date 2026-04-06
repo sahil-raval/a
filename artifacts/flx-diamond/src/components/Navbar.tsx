@@ -53,9 +53,9 @@ export function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center shrink-0" data-testid="nav-logo">
           <img
-            src="/flx-logo-trimmed.png"
+            src="/flx-logo-v2-trimmed.png"
             alt="FLX Diamond"
-            style={{ height: "40px", width: "auto" }}
+            style={{ height: "44px", width: "auto", mixBlendMode: "screen" }}
           />
         </Link>
 
@@ -99,7 +99,7 @@ export function Navbar() {
             <SheetContent side="right" className="bg-[#02274A] border-none text-white w-full sm:max-w-sm p-0">
               <div className="flex flex-col h-full">
                 <div className="p-6 border-b flex items-center" style={{ borderColor: "rgba(28,169,201,0.12)" }}>
-                  <img src="/flx-logo-trimmed.png" alt="FLX Diamond" style={{ height: "36px", width: "auto" }} />
+                  <img src="/flx-logo-v2-trimmed.png" alt="FLX Diamond" style={{ height: "40px", width: "auto", mixBlendMode: "screen" }} />
                 </div>
                 <div className="flex-1 py-10 px-6 flex flex-col gap-7">
                   {links.map((link) => (
