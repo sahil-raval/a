@@ -50,20 +50,13 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 h-20 flex items-center justify-between">
 
-        {/* Logo — gold FLX (brand mark) */}
-        <Link href="/" className="flex items-center gap-3 shrink-0" data-testid="nav-logo">
-          <span
-            className="font-serif text-2xl font-semibold tracking-[0.2em]"
-            style={{ color: "#C9A227" }}
-          >
-            FLX
-          </span>
-          <span
-            className="text-[9px] tracking-[0.38em] font-medium hidden sm:inline-block"
-            style={{ color: "rgba(201,162,39,0.6)" }}
-          >
-            DIAMONDS
-          </span>
+        {/* Logo */}
+        <Link href="/" className="flex items-center shrink-0" data-testid="nav-logo">
+          <img
+            src="/flx-logo-trimmed.png"
+            alt="FLX Diamond"
+            style={{ height: "40px", width: "auto" }}
+          />
         </Link>
 
         {/* Desktop links */}
@@ -106,8 +99,7 @@ export function Navbar() {
             <SheetContent side="right" className="bg-[#02274A] border-none text-white w-full sm:max-w-sm p-0">
               <div className="flex flex-col h-full">
                 <div className="p-6 border-b flex items-center" style={{ borderColor: "rgba(28,169,201,0.12)" }}>
-                  <span className="font-serif text-2xl font-semibold tracking-[0.2em]" style={{ color: "#C9A227" }}>FLX</span>
-                  <span className="ml-3 text-[9px] tracking-[0.38em]" style={{ color: "rgba(201,162,39,0.55)" }}>DIAMONDS</span>
+                  <img src="/flx-logo-trimmed.png" alt="FLX Diamond" style={{ height: "36px", width: "auto" }} />
                 </div>
                 <div className="flex-1 py-10 px-6 flex flex-col gap-7">
                   {links.map((link) => (
