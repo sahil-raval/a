@@ -23,7 +23,7 @@ const CONTACTS = [
 
 export function Footer() {
   return (
-    <footer style={{ background: "#010d1a", fontFamily: "'Inter', sans-serif" }}>
+    <footer style={{ background: "#02274A", fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Editorial banner ── */}
       <div className="relative overflow-hidden" style={{ borderTop: "1px solid rgba(28,169,201,0.15)" }}>
@@ -83,7 +83,7 @@ export function Footer() {
       {/* ── Main grid ── */}
       <div
         className="max-w-7xl mx-auto px-6 pb-16"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
       >
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-14">
 
@@ -190,7 +190,7 @@ export function Footer() {
       {/* ── GIA trust bar ── */}
       <div
         className="max-w-7xl mx-auto px-6 py-8"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
       >
         <div className="flex flex-wrap gap-x-10 gap-y-2">
           {[
@@ -213,7 +213,7 @@ export function Footer() {
       {/* ── Bottom bar ── */}
       <div
         className="max-w-7xl mx-auto px-6 py-6 flex flex-col sm:flex-row justify-between items-center gap-3"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
       >
         <p className="text-[9px] tracking-[0.3em] uppercase" style={{ color: "rgba(255,255,255,0.15)" }}>
           &copy; {new Date().getFullYear()} FLX Diamonds Pty Ltd &mdash; Geelong, Victoria, Australia
