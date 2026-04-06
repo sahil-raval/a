@@ -328,16 +328,9 @@ export default function Contact() {
 
             <motion.h1 variants={up}
               className="font-serif"
-              style={{ fontSize: "clamp(3.2rem, 6vw, 5.8rem)", lineHeight: 0.92, color: "white" }}
+              style={{ fontSize: "clamp(2.8rem, 5.5vw, 5rem)", lineHeight: 1.08, color: "white" }}
             >
-              Let's<br />
-              <span style={{
-                WebkitTextStroke: "1px rgba(255,255,255,0.4)",
-                color: "transparent",
-                fontStyle: "italic",
-              }}>
-                talk.
-              </span>
+              Get in touch.
             </motion.h1>
 
             <motion.div variants={up} style={{ display: "flex", alignItems: "center", gap: "12px" }}>
