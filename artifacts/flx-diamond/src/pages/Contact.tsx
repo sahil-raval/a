@@ -20,7 +20,7 @@ function FloatInput({
           top: lifted ? "0px" : "30px",
           fontSize: lifted ? "9px" : "13px",
           letterSpacing: lifted ? "0.45em" : "0.04em",
-          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.55)",
+          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(2,39,74,0.5)" : "rgba(2,39,74,0.55)",
           textTransform: "uppercase",
           transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
           pointerEvents: "none",
@@ -42,9 +42,9 @@ function FloatInput({
           height: "44px",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.22)"}`,
+          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(2,39,74,0.2)"}`,
           outline: "none",
-          color: "rgba(255,255,255,0.9)",
+          color: "#02274A",
           fontSize: "13px",
           fontFamily: "'Inter', sans-serif",
           transition: "border-color 0.2s ease",
@@ -72,7 +72,7 @@ function FloatSelect({
           top: lifted ? "0px" : "30px",
           fontSize: lifted ? "9px" : "13px",
           letterSpacing: lifted ? "0.45em" : "0.04em",
-          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.55)",
+          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(2,39,74,0.5)" : "rgba(2,39,74,0.55)",
           textTransform: "uppercase",
           transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
           pointerEvents: "none",
@@ -93,9 +93,9 @@ function FloatSelect({
           height: "44px",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.22)"}`,
+          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(2,39,74,0.2)"}`,
           outline: "none",
-          color: value ? "rgba(255,255,255,0.9)" : "transparent",
+          color: value ? "#02274A" : "transparent",
           fontSize: "13px",
           fontFamily: "'Inter', sans-serif",
           transition: "border-color 0.2s ease",
@@ -104,9 +104,9 @@ function FloatSelect({
           cursor: "pointer",
         }}
       >
-        <option value="" disabled style={{ background: "#02274A" }} />
+        <option value="" disabled style={{ background: "#F4F8FC" }} />
         {options.map(o => (
-          <option key={o.value} value={o.value} style={{ background: "#02274A", color: "white" }}>
+          <option key={o.value} value={o.value} style={{ background: "#F4F8FC", color: "#02274A" }}>
             {o.label}
           </option>
         ))}
@@ -117,10 +117,10 @@ function FloatSelect({
         viewBox="0 0 10 6"
         style={{
           position: "absolute", right: "4px", bottom: "16px",
-          opacity: 0.55, pointerEvents: "none",
+          opacity: 0.45, pointerEvents: "none",
         }}
       >
-        <path d="M1 1l4 4 4-4" stroke="white" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+        <path d="M1 1l4 4 4-4" stroke="#02274A" strokeWidth="1.5" fill="none" strokeLinecap="round" />
       </svg>
     </div>
   );
@@ -142,7 +142,7 @@ function FloatTextarea({
           top: lifted ? "0px" : "30px",
           fontSize: lifted ? "9px" : "13px",
           letterSpacing: lifted ? "0.45em" : "0.04em",
-          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(255,255,255,0.45)" : "rgba(255,255,255,0.55)",
+          color: lifted && focused ? "#1CA9C9" : lifted ? "rgba(2,39,74,0.5)" : "rgba(2,39,74,0.55)",
           textTransform: "uppercase",
           transition: "all 0.22s cubic-bezier(0.22,1,0.36,1)",
           pointerEvents: "none",
@@ -163,9 +163,9 @@ function FloatTextarea({
           width: "100%",
           background: "transparent",
           border: "none",
-          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(255,255,255,0.22)"}`,
+          borderBottom: `1px solid ${focused ? "#1CA9C9" : "rgba(2,39,74,0.2)"}`,
           outline: "none",
-          color: "rgba(255,255,255,0.9)",
+          color: "#02274A",
           fontSize: "13px",
           fontFamily: "'Inter', sans-serif",
           transition: "border-color 0.2s ease",
@@ -188,42 +188,26 @@ function DiamondWireframe() {
     >
       <svg
         viewBox="0 0 400 400"
-        style={{ width: "100%", height: "100%", opacity: 0.07 }}
+        style={{ width: "100%", height: "100%", opacity: 0.09 }}
         fill="none"
       >
-        {/* Outer diamond */}
-        <polygon
-          points="200,20 380,200 200,380 20,200"
-          stroke="#1CA9C9" strokeWidth="0.8"
-        />
-        {/* Inner cross lines */}
+        <polygon points="200,20 380,200 200,380 20,200" stroke="#1CA9C9" strokeWidth="0.8" />
         <line x1="200" y1="20" x2="200" y2="380" stroke="#1CA9C9" strokeWidth="0.5" />
         <line x1="20" y1="200" x2="380" y2="200" stroke="#1CA9C9" strokeWidth="0.5" />
-        {/* Diagonal facets */}
         <line x1="200" y1="20" x2="380" y2="200" stroke="#1CA9C9" strokeWidth="0.5" />
         <line x1="380" y1="200" x2="200" y2="380" stroke="#1CA9C9" strokeWidth="0.5" />
         <line x1="200" y1="380" x2="20" y2="200" stroke="#1CA9C9" strokeWidth="0.5" />
         <line x1="20" y1="200" x2="200" y2="20" stroke="#1CA9C9" strokeWidth="0.5" />
-        {/* Inner facet ring */}
-        <polygon
-          points="200,80 320,200 200,320 80,200"
-          stroke="#1CA9C9" strokeWidth="0.6"
-        />
+        <polygon points="200,80 320,200 200,320 80,200" stroke="#1CA9C9" strokeWidth="0.6" />
         <line x1="200" y1="80" x2="320" y2="200" stroke="#1CA9C9" strokeWidth="0.4" />
         <line x1="320" y1="200" x2="200" y2="320" stroke="#1CA9C9" strokeWidth="0.4" />
         <line x1="200" y1="320" x2="80" y2="200" stroke="#1CA9C9" strokeWidth="0.4" />
         <line x1="80" y1="200" x2="200" y2="80" stroke="#1CA9C9" strokeWidth="0.4" />
-        {/* Core diamond */}
-        <polygon
-          points="200,140 260,200 200,260 140,200"
-          stroke="#1CA9C9" strokeWidth="0.8"
-        />
-        {/* Table facets from outer to inner */}
+        <polygon points="200,140 260,200 200,260 140,200" stroke="#1CA9C9" strokeWidth="0.8" />
         <line x1="200" y1="20" x2="200" y2="140" stroke="#1CA9C9" strokeWidth="0.3" />
         <line x1="380" y1="200" x2="260" y2="200" stroke="#1CA9C9" strokeWidth="0.3" />
         <line x1="200" y1="380" x2="200" y2="260" stroke="#1CA9C9" strokeWidth="0.3" />
         <line x1="20" y1="200" x2="140" y2="200" stroke="#1CA9C9" strokeWidth="0.3" />
-        {/* Corner to inner ring diagonals */}
         <line x1="200" y1="20" x2="80" y2="200" stroke="#1CA9C9" strokeWidth="0.25" />
         <line x1="380" y1="200" x2="200" y2="80" stroke="#1CA9C9" strokeWidth="0.25" />
         <line x1="200" y1="380" x2="320" y2="200" stroke="#1CA9C9" strokeWidth="0.25" />
@@ -233,7 +217,7 @@ function DiamondWireframe() {
   );
 }
 
-/* ─── Glowing teal orb ─────────────────────────────────────── */
+/* ─── Soft teal orb ─────────────────────────────────────────── */
 function TealOrb({ x, y, size, opacity }: { x: string; y: string; size: number; opacity: number }) {
   return (
     <div
@@ -242,11 +226,11 @@ function TealOrb({ x, y, size, opacity }: { x: string; y: string; size: number; 
         left: x, top: y,
         width: size, height: size,
         borderRadius: "50%",
-        background: "radial-gradient(circle, #1CA9C9, transparent 70%)",
+        background: "radial-gradient(circle, rgba(28,169,201,0.35), transparent 70%)",
         opacity,
         transform: "translate(-50%, -50%)",
         pointerEvents: "none",
-        filter: "blur(40px)",
+        filter: "blur(60px)",
       }}
     />
   );
@@ -280,7 +264,7 @@ export default function Contact() {
   return (
     <div
       style={{
-        background: "#02274A",
+        background: "#F4F8FC",
         minHeight: "100vh",
         fontFamily: "'Inter', sans-serif",
         position: "relative",
@@ -288,16 +272,16 @@ export default function Contact() {
       }}
     >
       {/* ── ambient glow orbs ── */}
-      <TealOrb x="75%" y="30%" size={500} opacity={0.08} />
-      <TealOrb x="20%" y="70%" size={300} opacity={0.05} />
+      <TealOrb x="75%" y="30%" size={500} opacity={0.25} />
+      <TealOrb x="20%" y="70%" size={300} opacity={0.18} />
 
-      {/* ── grid texture ── */}
+      {/* ── subtle grid texture ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(28,169,201,0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(28,169,201,0.025) 1px, transparent 1px)
+            linear-gradient(rgba(2,39,74,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(2,39,74,0.03) 1px, transparent 1px)
           `,
           backgroundSize: "80px 80px",
         }}
@@ -310,7 +294,7 @@ export default function Contact() {
           height: "1px",
           background: "linear-gradient(90deg, transparent 0%, #1CA9C9 30%, rgba(28,169,201,0.3) 70%, transparent 100%)",
           marginTop: "80px",
-          opacity: 0.6,
+          opacity: 0.7,
         }}
       />
 
@@ -341,12 +325,12 @@ export default function Contact() {
             <motion.h1
               variants={up}
               className="font-serif leading-[0.95]"
-              style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)", color: "rgba(255,255,255,0.92)" }}
+              style={{ fontSize: "clamp(3rem, 6vw, 5.5rem)", color: "#02274A" }}
             >
               Let's<br />
               <span
                 style={{
-                  WebkitTextStroke: "1px rgba(255,255,255,0.35)",
+                  WebkitTextStroke: "1px rgba(2,39,74,0.28)",
                   color: "transparent",
                 }}
               >
@@ -359,7 +343,7 @@ export default function Contact() {
               <div className="w-5 h-px mt-1.5" style={{ background: "rgba(28,169,201,0.35)" }} />
             </motion.div>
 
-            <motion.p variants={up} className="text-sm leading-relaxed max-w-xs" style={{ color: "rgba(255,255,255,0.65)" }}>
+            <motion.p variants={up} className="text-sm leading-relaxed max-w-xs" style={{ color: "rgba(2,39,74,0.65)" }}>
               All enquiries are handled personally under strict commercial confidence. No sales process — just a direct conversation.
             </motion.p>
           </div>
@@ -372,7 +356,7 @@ export default function Contact() {
             className="relative z-10 mt-12 lg:mt-0 space-y-6"
           >
             {/* Horizontal rule */}
-            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.12)" }} />
+            <div className="w-full h-px" style={{ background: "rgba(2,39,74,0.1)" }} />
 
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-6 lg:gap-5">
               {[
@@ -385,8 +369,8 @@ export default function Contact() {
                     {icon}
                   </span>
                   <div>
-                    <p className="text-[8px] uppercase tracking-[0.45em] mb-1" style={{ color: "rgba(255,255,255,0.45)" }}>{label}</p>
-                    <p className="text-[12px] leading-snug" style={{ color: teal ? "#1CA9C9" : "rgba(255,255,255,0.75)" }}>
+                    <p className="text-[8px] uppercase tracking-[0.45em] mb-1" style={{ color: "rgba(2,39,74,0.45)" }}>{label}</p>
+                    <p className="text-[12px] leading-snug" style={{ color: teal ? "#1CA9C9" : "rgba(2,39,74,0.75)" }}>
                       {value}
                     </p>
                   </div>
@@ -394,11 +378,11 @@ export default function Contact() {
               ))}
             </div>
 
-            <div className="w-full h-px" style={{ background: "rgba(255,255,255,0.12)" }} />
+            <div className="w-full h-px" style={{ background: "rgba(2,39,74,0.1)" }} />
 
             <div className="flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full" style={{ background: "#1CA9C9", opacity: 0.8 }} />
-              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "rgba(255,255,255,0.4)" }}>
+              <p className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "rgba(2,39,74,0.45)" }}>
                 B2B Trade Enquiries Only
               </p>
             </div>
@@ -408,7 +392,7 @@ export default function Contact() {
         {/* ── Vertical divider — desktop only ── */}
         <div
           className="hidden lg:block self-stretch w-px my-20"
-          style={{ background: "linear-gradient(180deg, transparent 0%, rgba(28,169,201,0.25) 30%, rgba(28,169,201,0.25) 70%, transparent 100%)" }}
+          style={{ background: "linear-gradient(180deg, transparent 0%, rgba(28,169,201,0.3) 30%, rgba(28,169,201,0.3) 70%, transparent 100%)" }}
         />
 
         {/* ── RIGHT PANEL — Form ── */}
@@ -423,15 +407,14 @@ export default function Contact() {
             className="absolute top-12 right-8 hidden lg:block"
             style={{
               width: "120px", height: "120px",
-              border: "1px solid rgba(28,169,201,0.08)",
-              borderRadius: "0",
+              border: "1px solid rgba(28,169,201,0.12)",
             }}
           />
           <div
             className="absolute top-12 right-8 hidden lg:block"
             style={{
               width: "80px", height: "80px",
-              border: "1px solid rgba(28,169,201,0.05)",
+              border: "1px solid rgba(28,169,201,0.07)",
               margin: "20px",
             }}
           />
@@ -447,7 +430,6 @@ export default function Contact() {
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 className="w-full text-center space-y-8 py-16"
               >
-                {/* Animated checkmark diamond */}
                 <div className="mx-auto" style={{ width: "80px", height: "80px", position: "relative" }}>
                   <svg viewBox="0 0 80 80" fill="none" style={{ width: "80px", height: "80px" }}>
                     <polygon points="40,4 76,40 40,76 4,40" stroke="#1CA9C9" strokeWidth="1" />
@@ -465,17 +447,17 @@ export default function Contact() {
                 </div>
 
                 <div className="space-y-3">
-                  <h2 className="font-serif text-3xl" style={{ color: "rgba(255,255,255,0.88)" }}>
+                  <h2 className="font-serif text-3xl" style={{ color: "#02274A" }}>
                     Enquiry received.
                   </h2>
-                  <p className="text-sm leading-relaxed max-w-sm mx-auto" style={{ color: "rgba(255,255,255,0.62)" }}>
+                  <p className="text-sm leading-relaxed max-w-sm mx-auto" style={{ color: "rgba(2,39,74,0.65)" }}>
                     We will respond personally within one business day. All correspondence is treated as commercially confidential.
                   </p>
                 </div>
 
                 <div
                   className="inline-flex items-center gap-2 px-5 py-2 border"
-                  style={{ borderColor: "rgba(28,169,201,0.2)" }}
+                  style={{ borderColor: "rgba(28,169,201,0.3)" }}
                 >
                   <span className="text-[9px] uppercase tracking-[0.4em]" style={{ color: "#1CA9C9" }}>
                     help@flxdiamond.com
@@ -485,8 +467,8 @@ export default function Contact() {
                 <div>
                   <Link href="/services">
                     <button
-                      className="text-[10px] uppercase tracking-[0.3em] transition-colors hover:text-white"
-                      style={{ color: "rgba(255,255,255,0.3)", background: "none", border: "none", cursor: "pointer" }}
+                      className="text-[10px] uppercase tracking-[0.3em] transition-colors hover:text-[#1CA9C9]"
+                      style={{ color: "rgba(2,39,74,0.45)", background: "none", border: "none", cursor: "pointer" }}
                     >
                       ← Browse our services
                     </button>
@@ -504,10 +486,10 @@ export default function Contact() {
               >
                 {/* Form header */}
                 <div className="mb-8 space-y-1">
-                  <p className="text-[9px] uppercase tracking-[0.55em]" style={{ color: "rgba(255,255,255,0.45)" }}>
+                  <p className="text-[9px] uppercase tracking-[0.55em]" style={{ color: "rgba(2,39,74,0.5)" }}>
                     Enquiry Form
                   </p>
-                  <div className="w-8 h-px" style={{ background: "rgba(28,169,201,0.35)" }} />
+                  <div className="w-8 h-px" style={{ background: "rgba(28,169,201,0.4)" }} />
                 </div>
 
                 {/* Name row */}
@@ -531,13 +513,11 @@ export default function Contact() {
 
                 <FloatTextarea label="Message" testId="input-message" value={form.message} onChange={v => set("message", v)} required />
 
-                {/* Spacer */}
                 <div style={{ height: "20px" }} />
 
-                {/* Submit */}
                 <SubmitButton />
 
-                <p className="text-center pt-3 text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.35)" }}>
+                <p className="text-center pt-3 text-[9px] uppercase tracking-[0.3em]" style={{ color: "rgba(2,39,74,0.4)" }}>
                   All correspondence is commercially confidential
                 </p>
               </motion.form>
@@ -549,18 +529,18 @@ export default function Contact() {
       {/* ── Bottom strip ── */}
       <div
         className="relative max-w-7xl mx-auto px-8 md:px-12 py-5 flex flex-wrap justify-between items-center gap-3"
-        style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
+        style={{ borderTop: "1px solid rgba(2,39,74,0.1)" }}
       >
         <div className="flex flex-wrap gap-x-8 gap-y-1">
           {["GIA Certified", "47 Years Mastery", "B2B Only", "Commercial Confidence"].map(t => (
             <span key={t} className="flex items-center gap-2">
-              <span className="w-1 h-1 rounded-full" style={{ background: "rgba(28,169,201,0.6)" }} />
-              <span className="text-[8px] uppercase tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.38)" }}>{t}</span>
+              <span className="w-1 h-1 rounded-full" style={{ background: "rgba(28,169,201,0.7)" }} />
+              <span className="text-[8px] uppercase tracking-[0.3em]" style={{ color: "rgba(2,39,74,0.45)" }}>{t}</span>
             </span>
           ))}
         </div>
         <Link href="/faq">
-          <span className="text-[9px] uppercase tracking-[0.3em] transition-colors hover:text-[#1CA9C9]" style={{ color: "rgba(255,255,255,0.45)", cursor: "pointer" }}>
+          <span className="text-[9px] uppercase tracking-[0.3em] transition-colors hover:text-[#1CA9C9]" style={{ color: "rgba(2,39,74,0.55)", cursor: "pointer" }}>
             Read FAQ →
           </span>
         </Link>
@@ -584,7 +564,7 @@ function SubmitButton() {
         height: "52px",
         background: "transparent",
         border: "1px solid",
-        borderColor: hovered ? "#1CA9C9" : "rgba(255,255,255,0.28)",
+        borderColor: hovered ? "#1CA9C9" : "rgba(2,39,74,0.25)",
         cursor: "pointer",
         overflow: "hidden",
         transition: "border-color 0.3s ease",
@@ -609,7 +589,7 @@ function SubmitButton() {
           fontSize: "10px",
           letterSpacing: "0.3em",
           textTransform: "uppercase",
-          color: hovered ? "#02274A" : "rgba(255,255,255,0.7)",
+          color: hovered ? "white" : "rgba(2,39,74,0.75)",
           transition: "color 0.3s ease",
           fontWeight: 500,
         }}
