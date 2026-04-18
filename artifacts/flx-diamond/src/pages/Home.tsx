@@ -699,7 +699,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           3. IF → FL OPPORTUNITY
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
 
           {/* Left — copy */}
@@ -793,7 +793,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           4. QUALIFIER — "What brings you here today?"
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-6xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="mb-14">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
@@ -892,7 +892,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           6. CRAFT — Mastery in micro-millimeters
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-24 items-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="space-y-6">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
@@ -951,7 +951,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           7. THREE SERVICES
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -1028,7 +1028,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           8. FEATURED INVENTORY
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-4">
             <div>
@@ -1159,7 +1159,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           10. HERITAGE — Babu Vekariya
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto">
           <motion.div
             initial="hidden"
@@ -1301,7 +1301,7 @@ export default function Home() {
       {/* ══════════════════════════════════════════════════
           13. ENQUIRY FORM
       ══════════════════════════════════════════════════ */}
-      <section className="py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-[10px] uppercase tracking-[0.4em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>Direct Access</p>

@@ -312,7 +312,7 @@ export default function Contact() {
                       <div style={{ width: "28px", height: "1px", background: "#1CA9C9" }} />
                     </div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 20px" }}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2" style={{ gap: "0 20px" }}>
                       <FloatInput label="First Name" testId="input-firstname" value={form.firstName} onChange={v => set("firstName", v)} required />
                       <FloatInput label="Last Name"  testId="input-lastname"  value={form.lastName}  onChange={v => set("lastName", v)}  required />
                     </div>

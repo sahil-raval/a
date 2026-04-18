@@ -68,7 +68,7 @@ export default function About() {
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
           <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
-            FLX Diamonds was built around one craftsman's 47 years of accumulated knowledge —
+            FLX Diamonds was built around one craftsman's 47 years of accumulated knowledge,
             knowledge that cannot be certified, cannot be replicated, and cannot be rushed.
           </motion.p>
         </motion.div>

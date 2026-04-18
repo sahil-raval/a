@@ -85,10 +85,10 @@ export function Footer() {
         className="max-w-7xl mx-auto px-6 pb-16"
         style={{ borderTop: "1px solid rgba(255,255,255,0.1)" }}
       >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 pt-14">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 pt-14">
 
           {/* Brand column */}
-          <div className="col-span-2 md:col-span-1 space-y-6">
+          <div className="sm:col-span-2 md:col-span-1 space-y-6">
             <p className="text-[9px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
               Est. 1978
             </p>
@@ -151,7 +151,7 @@ export function Footer() {
           </div>
 
           {/* Trusted Partners */}
-          <div className="space-y-6">
+          <div className="sm:col-span-2 md:col-span-1 space-y-6">
             <p className="text-[9px] uppercase tracking-[0.45em] font-medium" style={{ color: "rgba(255,255,255,0.45)" }}>
               Trusted By
             </p>
