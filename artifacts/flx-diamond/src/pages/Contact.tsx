@@ -212,7 +212,7 @@ export default function Contact() {
               fontSize: "14px", lineHeight: 1.8,
               color: "rgba(2,39,74,0.5)", maxWidth: "340px", marginBottom: "56px",
             }}>
-              All enquiries are handled personally under strict commercial confidence. No sales process — just a direct conversation.
+              All enquiries are handled personally under strict commercial confidence. No sales process, just a direct conversation.
             </motion.p>
 
             {/* Contact details */}

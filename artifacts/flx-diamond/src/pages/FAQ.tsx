@@ -22,15 +22,15 @@ const FAQ_CATEGORIES = [
     faqs: [
       {
         q: "What does the IF→FL conversion actually involve?",
-        a: "The conversion is a precision micro-regrind of one or more facets that carry the surface-level characteristic preventing FL grade. GIA grades a stone as IF when there are no internal inclusions visible under 10× magnification, but allows minor surface blemishes. When a stone is held at IF by a surface feature — such as a natural, extra facet, or surface graining — and that feature is on or near an accessible facet, it can be removed by a controlled regrind. Material removal is typically under 0.01mm. The stone is then re-submitted to GIA for re-grading.",
+        a: "The conversion is a precision micro-regrind of one or more facets that carry the surface-level characteristic preventing FL grade. GIA grades a stone as IF when there are no internal inclusions visible under 10× magnification, but allows minor surface blemishes. When a stone is held at IF by a surface feature (such as a natural, extra facet, or surface graining) and that feature is on or near an accessible facet, it can be removed by a controlled regrind. Material removal is typically under 0.01mm. The stone is then re-submitted to GIA for re-grading.",
       },
       {
         q: "How do you assess whether a stone is a candidate for conversion?",
-        a: "Assessment starts with the GIA certificate. We read the comments and characteristics fields to identify what is holding the stone at IF grade. We then examine the stone physically under magnification to confirm the location, depth, and accessibility of the surface feature. Not every IF stone is convertible — if the characteristic is too deep, in an inaccessible location, or removal would cause meaningful carat loss, we will tell you clearly and decline to proceed.",
+        a: "Assessment starts with the GIA certificate. We read the comments and characteristics fields to identify what is holding the stone at IF grade. We then examine the stone physically under magnification to confirm the location, depth, and accessibility of the surface feature. Not every IF stone is convertible. If the characteristic is too deep, in an inaccessible location, or removal would cause meaningful carat loss, we will tell you clearly and decline to proceed.",
       },
       {
         q: "Does conversion always succeed?",
-        a: "We do not proceed with conversions we are not confident in. If we assess a stone and determine the risk of failure — whether from an inaccessible feature, unexpected depth, or geometry that limits facet access — we will decline and explain why. If we do proceed, the success rate is extremely high. We have not had a GIA re-submission rejected on a stone we assessed as convertible.",
+        a: "We do not proceed with conversions we are not confident in. If we assess a stone and determine the risk of failure from an inaccessible feature, unexpected depth, or problematic facet geometry, we will decline and explain why. If we do proceed, the success rate is extremely high. We have not had a GIA re-submission rejected on a stone we assessed as convertible.",
       },
       {
         q: "What happens to the GIA certificate after conversion?",
@@ -38,7 +38,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Can any shape of diamond be converted?",
-        a: "Round brilliants are the most accessible because the facet geometry is standardised and predictable. Most other standard cuts — ovals, cushions, pears, emeralds — can also be assessed, but the complexity varies. We assess each stone individually. Unusual or antique cuts may require more detailed evaluation before we can give a conversion assessment.",
+        a: "Round brilliants are the most accessible because the facet geometry is standardised and predictable. Most other standard cuts (ovals, cushions, pears, emeralds) can also be assessed, but the complexity varies. We assess each stone individually. Unusual or antique cuts may require more detailed evaluation before we can give a conversion assessment.",
       },
     ],
   },
@@ -57,11 +57,11 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Does GIA document the conversion on the new certificate?",
-        a: "No. GIA grades the stone as presented. The new FL certificate reflects the stone's current condition and grade — it does not reference the prior IF grade or the conversion. The conversion history is documented by us and provided to you separately.",
+        a: "No. GIA grades the stone as presented. The new FL certificate reflects the stone's current condition and grade. It does not reference the prior IF grade or the conversion. The conversion history is documented by us and provided to you separately.",
       },
       {
         q: "What colour and clarity grades are maintained through conversion?",
-        a: "Conversion affects clarity grade only. Colour grade is not impacted by a facet regrind. The FL re-grade applies only to the clarity characteristic. All other attributes — colour, cut, carat weight (within rounding threshold), and fluorescence — are re-examined and graded fresh by GIA on re-submission.",
+        a: "Conversion affects clarity grade only. Colour grade is not impacted by a facet regrind. The FL re-grade applies only to the clarity characteristic. All other attributes, including colour, cut, carat weight (within rounding threshold), and fluorescence, are re-examined and graded fresh by GIA on re-submission.",
       },
     ],
   },
@@ -72,7 +72,7 @@ const FAQ_CATEGORIES = [
     faqs: [
       {
         q: "What is the minimum carat weight for conversion?",
-        a: "We assess stones from 0.50ct upward. Below this threshold, the economics of conversion — assessment, regrind, GIA submission, and handling — do not justify the process for most buyers. We will consider smaller stones only in the context of a parcel or ongoing trade relationship.",
+        a: "We assess stones from 0.50ct upward. Below this threshold, the economics of conversion (assessment, regrind, GIA submission, and handling) do not justify the process for most buyers. We will consider smaller stones only in the context of a parcel or ongoing trade relationship.",
       },
       {
         q: "Do you publish pricing for the conversion service?",
@@ -80,7 +80,7 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Is there a minimum order quantity for diamond supply?",
-        a: "There is no minimum number of stones per enquiry. We supply individual stones as well as parcels. For ongoing supply relationships, we typically work with partners who engage at least quarterly — but this is a practical preference rather than a formal minimum.",
+        a: "There is no minimum number of stones per enquiry. We supply individual stones as well as parcels. For ongoing supply relationships, we typically work with partners who engage at least quarterly, though this is a practical preference rather than a formal minimum.",
       },
       {
         q: "Do you offer trade pricing?",
@@ -122,11 +122,11 @@ const FAQ_CATEGORIES = [
       },
       {
         q: "Do you require an NDA before discussing a potential engagement?",
-        a: "For general enquiries, we do not require a formal NDA — we operate under implied confidentiality. For trade partnerships and advisory engagements where sensitive sourcing strategy or pricing information is involved, we will propose a mutual NDA as a matter of course.",
+        a: "For general enquiries, we do not require a formal NDA. We operate under implied confidentiality. For trade partnerships and advisory engagements where sensitive sourcing strategy or pricing information is involved, we will propose a mutual NDA as a matter of course.",
       },
       {
         q: "Will you recommend us to other buyers?",
-        a: "We do not discuss one client's engagement with another. We may, with permission, provide a reference contact for buyers seeking third-party validation — but this is only done with the explicit consent of the reference party, and we tell you it is happening.",
+        a: "We do not discuss one client's engagement with another. We may, with permission, provide a reference contact for buyers seeking third-party validation, but only with the explicit consent of the reference party, and we tell you it is happening.",
       },
       {
         q: "How do you handle enquiries that do not proceed to an engagement?",
@@ -332,7 +332,7 @@ export default function FAQ() {
             </motion.h2>
             <motion.p variants={up} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
               All enquiries are handled personally and under commercial confidence.
-              There is no sales team — just a direct conversation with people who know the subject.
+              There is no sales team, just a direct conversation with people who know the subject.
             </motion.p>
           </div>
           <motion.div variants={up} className="flex flex-col sm:flex-row gap-4">

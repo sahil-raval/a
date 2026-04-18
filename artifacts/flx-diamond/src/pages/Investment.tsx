@@ -21,12 +21,12 @@ const PILLARS = [
   },
   {
     title: "Value Transparency",
-    body: "GIA certification provides an objective, globally recognised benchmark. The conversion process is documented and verifiable — eliminating the opacity that characterises many alternative asset classes.",
+    body: "GIA certification provides an objective, globally recognised benchmark. The conversion process is documented and verifiable, eliminating the opacity that characterises many alternative asset classes.",
   },
 ];
 
 const PROCESS = [
-  { step: "01", title: "Initial Conversation", body: "We discuss your acquisition objectives, budget, and timeline — no obligation. All conversations are under commercial confidence from the first contact." },
+  { step: "01", title: "Initial Conversation", body: "We discuss your acquisition objectives, budget, and timeline. No obligation. All conversations are under commercial confidence from the first contact." },
   { step: "02", title: "Strategy Alignment", body: "We outline a diamond acquisition approach specific to your parameters: carat range, colour, conversion candidacy, and expected hold period." },
   { step: "03", title: "Stone Identification", body: "We source and assess candidates from our network. Where conversion is viable, we provide an assessment of projected FL outcome and associated pricing." },
   { step: "04", title: "Acquisition & Documentation", body: "Stones are acquired and converted or supplied with full GIA certification, provenance documentation, and written acquisition rationale for portfolio records." },
@@ -76,7 +76,7 @@ export default function Investment() {
             </p>
             <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
               We advise a small number of private buyers and family offices on diamond acquisition strategy.
-              Referral or introduction preferred — direct enquiry also welcomed.
+              Referral or introduction preferred, though direct enquiry is also welcomed.
             </p>
           </motion.div>
         </motion.div>
@@ -107,7 +107,7 @@ export default function Investment() {
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
             <motion.p variants={up} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
               GIA-certified FL diamonds command a material premium over IF at commercial scale.
-              The cost of conversion — regrind, GIA re-submission, and handling — is predictable
+              The cost of conversion (regrind, GIA re-submission, and handling) is predictable
               and substantially below that premium in the majority of viable cases.
             </motion.p>
             <motion.p variants={up} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>

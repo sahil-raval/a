@@ -25,7 +25,7 @@ const ARTICLES = [
     title: "IF to FL: The Hidden Opportunity in Diamond Grading",
     date: "February 28, 2026",
     category: "Investment",
-    excerpt: "How precise evaluation and masterful regrinding can elevate an Internally Flawless stone to Flawless — unlocking significant premiums without changing carat weight.",
+    excerpt: "How precise evaluation and masterful regrinding can elevate an Internally Flawless stone to Flawless, unlocking significant premiums without changing carat weight.",
     featured: false,
   },
   {
@@ -71,7 +71,7 @@ export default function Journal() {
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
           <motion.p variants={up} className="text-white/40 text-sm md:text-base leading-relaxed md:pb-3">
-            Perspectives on diamond grading, investment-grade stones, and the IF→FL conversion process —
+            Perspectives on diamond grading, investment-grade stones, and the IF→FL conversion process,
             written for trade professionals who already understand the fundamentals.
           </motion.p>
         </motion.div>

@@ -11,7 +11,7 @@ import { Volume2, VolumeX, ArrowRight, CheckCircle2, ChevronDown } from "lucide-
 const FAQS = [
   {
     q: "Do you work with lab-grown diamonds?",
-    a: "Yes. We supply both natural and lab-grown diamonds — CVD and HPHT — at competitive trade pricing. Lab-grown stones go through the same GIA grading process and are presented with full certification."
+    a: "Yes. We supply both natural and lab-grown diamonds (CVD and HPHT) at competitive trade pricing. Lab-grown stones go through the same GIA grading process and are presented with full certification."
   },
   {
     q: "Is the IF→FL conversion process confidential?",
@@ -27,7 +27,7 @@ const FAQS = [
   },
   {
     q: "Do you work with retailers and jewellers directly?",
-    a: "Yes — we operate as the quiet specialist behind serious businesses. We offer white-label sourcing and IF→FL conversion for retailers and jewellers who present our work under their own brand. Discretion is guaranteed."
+    a: "Yes, we operate as the quiet specialist behind serious businesses. We offer white-label sourcing and IF→FL conversion for retailers and jewellers who present our work under their own brand. Discretion is guaranteed."
   },
 ];
 
@@ -140,9 +140,9 @@ const BUYER_TYPES = [
     id: "upgrade",
     num: "01",
     headline: "I hold IF diamonds I want to upgrade",
-    subtext: "Your GIA certificate may reveal a path to Flawless grade — same carat weight, measurable value uplift.",
+    subtext: "Your GIA certificate may reveal a path to Flawless grade, same carat weight, measurable value uplift.",
     answer: {
-      title: "Yes — this is precisely what we do.",
+      title: "Yes, this is precisely what we do.",
       points: [
         "Send us your GIA certificate number. We read the comments for surface-characteristic indicators.",
         "If the stone qualifies, our master craftsman precision-regrounds in micro-millimeters.",
@@ -159,11 +159,11 @@ const BUYER_TYPES = [
     headline: "I need a reliable diamond supplier",
     subtext: "Natural and lab-grown, GIA certified, trade pricing. No retail. Sourced through 47 years of trusted relationships.",
     answer: {
-      title: "We supply serious trade buyers — not retail.",
+      title: "We supply serious trade buyers, not retail.",
       points: [
         "Natural diamonds: D–K colour, VVS1–SI2 clarity, 0.30ct to 10ct+.",
         "Lab-grown: high-precision CVD and HPHT at competitive trade pricing.",
-        "Pricing on application — no public catalogue, by design.",
+        "Pricing on application. No public catalogue, by design.",
         "47 years of relationships with cutters in Antwerp, Mumbai, and Surat."
       ],
       cta: "Request Trade Access",
@@ -179,9 +179,9 @@ const BUYER_TYPES = [
       title: "Diamonds are tangible, portable, stateless assets.",
       points: [
         "FL and IF in D–F colour represent the top 1% of all GIA-graded stones globally.",
-        "The IF→FL conversion creates a new GIA certificate — documented uplift.",
+        "The IF→FL conversion creates a new GIA certificate with documented uplift.",
         "We advise on stone selection, market timing, and re-sale pathways.",
-        "All stones carry full GIA certification — the global standard."
+        "All stones carry full GIA certification, the global standard."
       ],
       cta: "Explore Investment Stones",
       href: "/investment"
@@ -191,14 +191,14 @@ const BUYER_TYPES = [
     id: "partner",
     num: "04",
     headline: "I want a B2B partnership",
-    subtext: "We operate as the quiet expert behind serious businesses — white-label sourcing, discretion guaranteed.",
+    subtext: "We operate as the quiet expert behind serious businesses, offering white-label sourcing with guaranteed discretion.",
     answer: {
       title: "We are the specialist behind your sourcing.",
       points: [
         "White-label sourcing: we find and verify, you present to your clients.",
         "IF→FL conversion offered on your client's existing stones.",
         "Trusted by KGK Diamond, Venus Jewellery, and Excell Overseas.",
-        "All agreements under NDA by default — discretion is not negotiable."
+        "All agreements under NDA by default. Discretion is not negotiable."
       ],
       cta: "Discuss a Partnership",
       href: "/contact"
@@ -460,7 +460,7 @@ export default function Home() {
               variants={up}
               className="text-white/65 text-base md:text-lg font-light leading-relaxed max-w-xl"
             >
-              Your trusted B2B diamond partner — natural, lab-grown, and custom stones,
+              Your trusted B2B diamond partner for natural, lab-grown, and custom stones,
               sourced with precision. The only house performing IF→FL conversion at trade scale.
             </motion.p>
 
@@ -713,12 +713,12 @@ export default function Home() {
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
             <motion.p variants={up} className="text-white/55 text-lg leading-relaxed font-light max-w-lg">
               When a GIA certificate notes specific surface characteristics on an Internally Flawless
-              stone, there is often a viable path to Flawless grade — without leaving the same
+              stone, there is often a viable path to Flawless grade, without leaving the same
               carat weight bracket.
             </motion.p>
             <motion.p variants={up} className="text-white/35 text-sm leading-relaxed max-w-lg">
               This requires reading GIA comments with precision, then executing a micro-regrind
-              under 0.01mm — removing the surface characteristic without touching the body of the stone.
+              under 0.01mm, removing the surface characteristic without touching the body of the stone.
               It is not a shortcut. It is 47 years of judgment applied to one stone at a time.
             </motion.p>
             <motion.div variants={up} className="flex gap-4 pt-2">
@@ -743,7 +743,7 @@ export default function Home() {
               </Link>
             </motion.div>
             <motion.p variants={up} className="text-[10px] italic text-white/25 pt-1">
-              Ask us about your stone's potential — assessment is always free.
+              Ask us about your stone's potential. Assessment is always free.
             </motion.p>
           </motion.div>
 
@@ -760,7 +760,7 @@ export default function Home() {
               {
                 n: "01",
                 title: "Identify the stone",
-                body: "We read the GIA certificate comments — roughly 15–20% of IF stones carry comment types indicating a removable surface characteristic. This assessment is provided at no cost."
+                body: "We read the GIA certificate comments. Roughly 15–20% of IF stones carry comment types indicating a removable surface characteristic. This assessment is provided at no cost."
               },
               {
                 n: "02",
@@ -770,7 +770,7 @@ export default function Home() {
               {
                 n: "03",
                 title: "New GIA FL certificate",
-                body: "The stone is resubmitted to GIA independently. A new Flawless certificate is issued. The stone is now Flawless — verifiably, globally, permanently."
+                body: "The stone is resubmitted to GIA independently. A new Flawless certificate is issued. The stone is now Flawless, verifiably, globally, permanently."
               },
             ].map((step, i) => (
               <motion.div key={i} variants={up} className="py-8 flex items-start gap-8 group">
@@ -904,15 +904,15 @@ export default function Home() {
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
             <motion.p variants={up} className="text-[#02274A]/50 text-lg leading-relaxed font-light">
               What separates IF from FL is often less than 0.01mm. Babu Vekariya has spent
-              47 years developing the judgment to see that difference — and the precision
+              47 years developing the judgment to see that difference, and the precision
               to act on it without compromising carat weight.
             </motion.p>
             <motion.ul variants={up} className="space-y-3 pt-2">
               {[
-                "Began cutting diamonds at age 12 in 1978 — Surat, India",
+                "Began cutting diamonds at age 12 in 1978, Surat, India",
                 "Developed the IF→FL regrinding technique across four decades",
                 "Trusted by KGK Diamond, Venus Jewellery, Excell Overseas",
-                "Now operating from Geelong, Victoria — serving the world"
+                "Now operating from Geelong, Victoria, serving the world"
               ].map((f, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-[#02274A]/45">
                   <span className="shrink-0" style={{ color: "#1CA9C9" }}>—</span>
@@ -973,7 +973,7 @@ export default function Home() {
               {
                 num: "01",
                 title: "Diamond Sourcing",
-                body: "Natural GIA-certified diamonds. Lab-grown precision stones. D–K colour, VVS1–SI2 clarity, any shape, any size. Trade pricing only — no retail. Minimum order requirements apply.",
+                body: "Natural GIA-certified diamonds. Lab-grown precision stones. D–K colour, VVS1–SI2 clarity, any shape, any size. Trade pricing only, no retail. Minimum order requirements apply.",
                 sub: "Natural · Lab-Grown · Melee",
                 link: "/diamonds",
                 linkText: "View Diamond Inventory"
@@ -981,7 +981,7 @@ export default function Home() {
               {
                 num: "02",
                 title: "IF→FL Conversion",
-                body: "Send any IF stone's GIA cert number. We analyse the comments, assess viability at no cost, and — if the stone qualifies — execute the precision regrind. New GIA FL certificate issued.",
+                body: "Send any IF stone's GIA cert number. We analyse the comments, assess viability at no cost, and if the stone qualifies, execute the precision regrind. New GIA FL certificate issued.",
                 sub: "Assessment · Regrinding · New Certificate",
                 link: "/investment",
                 linkText: "Learn About Conversion"
@@ -1071,7 +1071,7 @@ export default function Home() {
             { n: "47", label: "Years of Combined Expertise",    sub: "Since Babu Vekariya began at age 12 in Surat, India, 1978." },
             { n: "GIA", label: "Certified on Every Stone",       sub: "The global standard. Every stone, every time." },
             { n: "3",   label: "Trusted Diamond Houses",         sub: "KGK Diamond, Venus Jewellery, Excell Overseas." },
-            { n: "B2B", label: "Trade Partners Only — by Design",sub: "No retail. No public pricing. Serious professionals only." },
+            { n: "B2B", label: "Trade Partners Only, by Design", sub: "No retail. No public pricing. Serious professionals only." },
           ].map((p, i) => (
             <motion.div
               key={i}
@@ -1115,7 +1115,7 @@ export default function Home() {
                 location: "Dubai",
               },
               {
-                quote: "We've used FLXDIAMONDS for white-label sourcing across three collections. Their discretion is absolute — our clients never know the source, and the quality speaks for itself.",
+                quote: "We've used FLXDIAMONDS for white-label sourcing across three collections. Their discretion is absolute. Our clients never know the source, and the quality speaks for itself.",
                 role: "Head of Procurement",
                 location: "Mumbai",
               },
@@ -1197,19 +1197,19 @@ export default function Home() {
               <p className="text-[#02274A]/55 text-lg leading-relaxed font-light">
                 Babu began cutting diamonds in 1978, aged 12, in the diamond ateliers of Surat, India.
                 By his late 20s he was among a small group of craftsmen who could reliably identify
-                and execute the IF→FL conversion — a technique requiring decades of practiced eye and
+                and execute the IF→FL conversion, a technique requiring decades of practiced eye and
                 flawless judgment to see what is invisible to most.
               </p>
               <p className="text-[#02274A]/40 text-base leading-relaxed">
                 The conversion is not a trick of grading. It requires reading the specific language
                 of a GIA certificate, understanding which surface characteristics are removable, and
-                then executing a micro-regrind of under 0.01mm — a margin where most hands simply
+                then executing a micro-regrind of under 0.01mm, a margin where most hands simply
                 cannot operate with confidence.
               </p>
               <p className="text-[#02274A]/40 text-base leading-relaxed">
                 Over four decades that mastery refined into the process behind FLX Diamonds.
                 Now based in Geelong, Victoria, we bring that level of craft to serious buyers
-                and trade partners worldwide — quietly, without fanfare.
+                and trade partners worldwide, quietly and without fanfare.
               </p>
               <div className="flex gap-4 pt-4">
                 <Link href="/about">

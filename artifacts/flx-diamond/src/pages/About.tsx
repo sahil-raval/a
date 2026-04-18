@@ -115,13 +115,13 @@ export default function About() {
           >
             <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               Babu began cutting diamonds in 1978, aged 12, apprenticed to craftsmen in the diamond ateliers
-              of Surat. The work in those ateliers was exacting — every error came out of the stone's value,
+              of Surat. The work in those ateliers was exacting: every error came out of the stone's value,
               which meant every error came out of his reputation.
             </motion.p>
             <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               By his late 20s he had developed what most craftsmen in the industry never acquire: the ability to read
               a GIA report not as a grade, but as a map. He could identify which surface inclusions were
-              responsible for holding a stone at IF grade — and determine, often by examination alone,
+              responsible for holding a stone at IF grade, and could determine, often by examination alone,
               whether those characteristics sat within reach of a micro-regrind.
             </motion.p>
             <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
@@ -162,7 +162,7 @@ export default function About() {
               <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                 When the only barrier to FL is a surface-level characteristic, a precision micro-regrind
                 of the affected facet can eliminate it entirely. The operation is measured in hundredths
-                of a millimetre — typically under 0.01mm of material removal. Executed correctly,
+                of a millimetre, typically under 0.01mm of material removal. Executed correctly,
                 carat weight is preserved within GIA rounding thresholds and the stone re-grades as FL.
               </motion.p>
             </div>

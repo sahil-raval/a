@@ -19,12 +19,12 @@ const SERVICES = [
     title: "IF → FL\nConversion",
     tagline: "The conversion that redefines a stone's commercial ceiling.",
     body: [
-      "We assess Internally Flawless (IF) diamonds for the specific surface characteristics that hold them below FL grade. Where removal is viable — without meaningful carat loss — we execute a precision micro-regrind of the affected facet and re-submit the stone to GIA for FL certification.",
+      "We assess Internally Flawless (IF) diamonds for the specific surface characteristics that hold them below FL grade. Where removal is viable, with no meaningful carat loss, we execute a precision micro-regrind of the affected facet and re-submit the stone to GIA for FL certification.",
       "The result is a GIA-certified Flawless diamond with verified carat weight, documented conversion history, and a new certificate. For the buyer or portfolio holder, FL carries a material premium over IF that justifies the conversion cost many times over at commercial scale.",
     ],
     qualifies: [
       "IF diamonds with surface-only characteristics (naturals, extra facets, surface graining)",
-      "Minimum 0.50ct — conversion economics justify from this threshold upward",
+      "Minimum 0.50ct; conversion economics justify from this threshold upward",
       "Round brilliant or other standard cuts with accessible facet geometry",
       "Stones accompanied by current GIA grading report",
     ],
@@ -44,7 +44,7 @@ const SERVICES = [
     title: "Premium FL\nInventory",
     tagline: "GIA-certified Flawless diamonds. Verified, consistent, available to trade.",
     body: [
-      "Beyond conversion, we maintain a curated inventory of GIA-certified FL and IF diamonds sourced through our established trade network. Each stone is individually verified before we make it available — we do not list stones we have not handled.",
+      "Beyond conversion, we maintain a curated inventory of GIA-certified FL and IF diamonds sourced through our established trade network. Each stone is individually verified before we make it available. We do not list stones we have not handled.",
       "Supply arrangements can be structured as one-off purchases, ongoing allocation agreements, or standing requests against specific parameters (carat range, shape, colour, fluorescence).",
     ],
     qualifies: [
@@ -70,7 +70,7 @@ const SERVICES = [
     tagline: "For buyers approaching diamonds as a capital asset rather than a product.",
     body: [
       "FL-grade diamonds at meaningful carat weights have historically functioned as a portable, non-correlated store of value. The IF→FL conversion represents a specific arbitrage: the cost of regrinding is predictable, the FL premium over IF is documented, and the GIA certification makes the value transparent.",
-      "We advise a small number of private buyers and family offices on diamond acquisition strategy — helping them understand what they are buying, at what price relative to the market, and what realistic exit routes look like.",
+      "We advise a small number of private buyers and family offices on diamond acquisition strategy, helping them understand what they are buying, at what price relative to the market, and what realistic exit routes look like.",
     ],
     qualifies: [
       "Private buyers considering diamonds as a component of a broader asset strategy",
@@ -79,12 +79,12 @@ const SERVICES = [
       "Referral or introduction preferred; direct enquiry welcomed",
     ],
     delivers: [
-      "Honest assessment of diamonds as an investment class — including limitations",
+      "Honest assessment of diamonds as an investment class, including its limitations",
       "Acquisition sourcing at trade-adjacent pricing where possible",
       "Documentation of purchase rationale for portfolio records",
       "Ongoing relationship for future acquisition or disposition advisory",
     ],
-    turnaround: "Initial call within one week — advisory structured individually",
+    turnaround: "Initial call within one week; advisory structured individually",
     dark: true,
   },
   {
@@ -94,12 +94,12 @@ const SERVICES = [
     title: "Structured B2B\nRelationships",
     tagline: "For serious buyers who need a reliable, long-term supply relationship.",
     body: [
-      "We work with a limited number of trade partners on an ongoing basis — typically jewellery manufacturers, diamond traders, or high-end retailers who need consistent access to our conversion service or FL inventory across production seasons.",
+      "We work with a limited number of trade partners on an ongoing basis, typically jewellery manufacturers, diamond traders, or high-end retailers who need consistent access to our conversion service or FL inventory across production seasons.",
       "A trade partnership is not a subscription or a volume discount scheme. It is an agreement to communicate directly, work within agreed parameters, and handle commercial matters with the discretion that the diamond trade demands.",
     ],
     qualifies: [
       "Established businesses with verifiable trade history",
-      "Buyers requiring regular volume — at least 4 engagements per year",
+      "Buyers requiring regular volume, at least 4 engagements per year",
       "Partners willing to operate within agreed NDA and confidentiality terms",
       "Businesses where a direct relationship with the principal is appropriate",
     ],
@@ -406,7 +406,7 @@ export default function Services() {
             We handle all enquiries directly and under strict commercial confidence.
           </motion.h2>
           <motion.p variants={fade} className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.3)" }}>
-            There is no sales process — only an honest conversation about whether we are the right fit.
+            There is no sales process, only an honest conversation about whether we are the right fit.
           </motion.p>
 
           <motion.div variants={fade} className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
