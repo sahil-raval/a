@@ -55,7 +55,7 @@ export default function About() {
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="grid md:grid-cols-2 gap-10 md:gap-20 items-end"
+          className="grid md:grid-cols-2 gap-10 md:gap-20 items-center"
         >
           <div className="space-y-5 md:space-y-6">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
@@ -67,7 +67,7 @@ export default function About() {
             </motion.h1>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
-          <motion.p variants={up} className="text-sm md:text-base leading-relaxed md:pb-3" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <motion.p variants={up} className="text-sm md:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
             FLX Diamonds was built around one craftsman's 47 years of accumulated knowledge —
             knowledge that cannot be certified, cannot be replicated, and cannot be rushed.
           </motion.p>

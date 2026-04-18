@@ -314,7 +314,7 @@ export default function Services() {
             What We Do
           </motion.p>
 
-          <div className="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-end">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-16 lg:gap-24 items-center">
             <div>
               <motion.h1
                 variants={fade}
