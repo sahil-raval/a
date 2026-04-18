@@ -687,7 +687,7 @@ export default function Home() {
                 className="flex flex-col items-center py-6 px-4 gap-1"
                 style={{ background: "rgba(28,169,201,0.04)", borderRight: i < 2 ? "1px solid rgba(28,169,201,0.12)" : undefined }}
               >
-                <span className="font-serif text-2xl md:text-3xl text-white">{item.stat}</span>
+                <span className="text-2xl md:text-3xl text-white font-light tabular-nums">{item.stat}</span>
                 <span className="text-[9px] uppercase tracking-[0.3em] text-center" style={{ color: "rgba(255,255,255,0.35)" }}>{item.label}</span>
               </div>
             ))}
@@ -775,7 +775,7 @@ export default function Home() {
             ].map((step, i) => (
               <motion.div key={i} variants={up} className="py-8 flex items-start gap-8 group">
                 <span
-                  className="font-serif text-3xl shrink-0 leading-none transition-colors"
+                  className="text-3xl shrink-0 leading-none transition-colors font-light tabular-nums"
                   style={{ color: "#1CA9C9", opacity: 0.5 }}
                 >
                   {step.n}
@@ -823,7 +823,7 @@ export default function Home() {
                 tabIndex={0}
                 onKeyDown={(e) => e.key === "Enter" && handleSelect(bt.id)}
               >
-                <div className="font-serif text-3xl text-[#02274A]/15 mb-5 leading-none">{bt.num}</div>
+                <div className="text-3xl text-[#02274A]/15 mb-5 leading-none font-light tabular-nums">{bt.num}</div>
                 <h3 className="font-serif text-lg text-[#02274A] mb-3 leading-snug">{bt.headline}</h3>
                 <p className="text-[#02274A]/45 text-xs leading-relaxed">{bt.subtext}</p>
                 <div
@@ -1006,7 +1006,7 @@ export default function Home() {
                 onMouseEnter={e => (e.currentTarget.style.background = "#04385E")}
                 onMouseLeave={e => (e.currentTarget.style.background = "#02274A")}
               >
-                <span className="font-serif text-4xl" style={{ color: "#1CA9C9", opacity: 0.4 }}>{svc.num}</span>
+                <span className="text-4xl font-light tabular-nums" style={{ color: "#1CA9C9", opacity: 0.4 }}>{svc.num}</span>
                 <div>
                   <h3 className="font-serif text-2xl text-white mb-1">{svc.title}</h3>
                   <p className="text-[9px] uppercase tracking-widest mb-3" style={{ color: "rgba(28,169,201,0.5)" }}>{svc.sub}</p>
@@ -1082,7 +1082,7 @@ export default function Home() {
               className="p-8 border border-[#02274A]/8"
               style={{ background: "#F4F8FC" }}
             >
-              <div className="font-serif text-4xl mb-2" style={{ color: "#1CA9C9" }}>{p.n}</div>
+              <div className="text-4xl mb-2 font-light tabular-nums" style={{ color: "#1CA9C9" }}>{p.n}</div>
               <div className="text-[9px] uppercase tracking-[0.2em] text-[#02274A] mb-3 font-medium">{p.label}</div>
               <p className="text-xs text-[#02274A]/40 leading-relaxed">{p.sub}</p>
             </motion.div>
@@ -1186,7 +1186,7 @@ export default function Home() {
                 ].map((s, i) => (
                   <div key={i} className="flex justify-between items-baseline border-b py-3" style={{ borderColor: "#02274A0f" }}>
                     <span className="text-[10px] uppercase tracking-widest text-[#02274A]/35">{s.label}</span>
-                    <span className="font-serif text-base text-[#02274A]">{s.value}</span>
+                    <span className="text-base text-[#02274A]">{s.value}</span>
                   </div>
                 ))}
               </motion.div>

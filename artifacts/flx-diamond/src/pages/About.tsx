@@ -100,7 +100,7 @@ export default function About() {
               ].map((s, i) => (
                 <div key={i} className="flex justify-between items-baseline border-b py-3" style={{ borderColor: "#02274A10" }}>
                   <span className="text-[10px] uppercase tracking-widest" style={{ color: "rgba(2,39,74,0.35)" }}>{s.label}</span>
-                  <span className="font-serif text-sm text-[#02274A]">{s.value}</span>
+                  <span className="text-sm text-[#02274A]">{s.value}</span>
                 </div>
               ))}
             </motion.div>
@@ -181,7 +181,7 @@ export default function About() {
                 { step: "04", title: "GIA Re-submission", body: "The stone is submitted to GIA for re-grading. A new FL certificate is issued. The conversion is documented and verifiable." },
               ].map((s) => (
                 <motion.div key={s.step} variants={up} className="flex gap-6 items-start p-5 border" style={{ borderColor: "rgba(28,169,201,0.12)", background: "rgba(28,169,201,0.04)" }}>
-                  <span className="font-serif text-2xl shrink-0" style={{ color: "rgba(28,169,201,0.4)" }}>{s.step}</span>
+                  <span className="text-xl shrink-0 font-medium tabular-nums" style={{ color: "rgba(28,169,201,0.4)" }}>{s.step}</span>
                   <div>
                     <p className="text-white text-sm font-medium tracking-wide mb-1">{s.title}</p>
                     <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.38)" }}>{s.body}</p>

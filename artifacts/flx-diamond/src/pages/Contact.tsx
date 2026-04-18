@@ -241,7 +241,7 @@ export default function Contact() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="flex items-center justify-center lg:w-1/2 xl:w-7/12"
-            style={{ padding: "clamp(100px, 10vw, 120px) clamp(24px, 5vw, 64px) clamp(40px, 5vw, 64px)" }}
+            style={{ padding: "clamp(32px, 8vw, 120px) clamp(24px, 5vw, 64px) clamp(40px, 5vw, 64px)" }}
           >
             <div style={{
               width: "100%", maxWidth: "520px",

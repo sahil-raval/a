@@ -138,7 +138,7 @@ export default function Investment() {
                 style={{ borderColor: "rgba(255,255,255,0.06)" }}
               >
                 <span className="text-[11px] leading-snug" style={{ color: "rgba(255,255,255,0.38)" }}>{row.label}</span>
-                <span className="font-serif text-sm shrink-0" style={{ color: "rgba(255,255,255,0.8)" }}>{row.value}</span>
+                <span className="text-sm shrink-0 tabular-nums" style={{ color: "rgba(255,255,255,0.8)" }}>{row.value}</span>
               </motion.div>
             ))}
             <p className="text-[9px] mt-3" style={{ color: "rgba(255,255,255,0.2)" }}>

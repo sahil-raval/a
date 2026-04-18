@@ -158,7 +158,7 @@ function ServiceBlock({ s, index }: { s: typeof SERVICES[number]; index: number 
             {s.label}
           </span>
           <span className="w-8 md:w-12 h-px" style={{ background: "rgba(28,169,201,0.3)" }} />
-          <span className="font-serif text-sm" style={{ color: muted }}>
+          <span className="text-sm tabular-nums" style={{ color: muted }}>
             {s.number}
           </span>
         </motion.div>
