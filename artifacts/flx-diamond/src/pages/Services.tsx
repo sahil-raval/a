@@ -274,7 +274,7 @@ export default function Services() {
 
       {/* ══ HERO ══ */}
       <section
-        className="relative overflow-hidden pt-32 md:pt-44 pb-20 md:pb-36 px-6"
+        className="relative overflow-hidden pt-28 md:pt-40 pb-20 md:pb-36 px-8 md:px-14 lg:px-20"
         style={{ background: "#02274A" }}
       >
         {/* Grid texture */}

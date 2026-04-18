@@ -178,7 +178,7 @@ export default function FAQ() {
     <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
-      <section className="pt-32 md:pt-44 pb-20 md:pb-28 px-6" style={{ background: "#02274A" }}>
+      <section className="pt-28 md:pt-40 pb-20 md:pb-28 px-8 md:px-14 lg:px-20" style={{ background: "#02274A" }}>
         <motion.div
           initial="hidden"
           animate="visible"
