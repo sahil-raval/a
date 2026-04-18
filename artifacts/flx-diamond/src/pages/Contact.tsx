@@ -160,23 +160,20 @@ export default function Contact() {
   const handleSubmit = (e: React.FormEvent) => { e.preventDefault(); setSubmitted(true); };
 
   return (
-    <div style={{ fontFamily: "'Inter', sans-serif", minHeight: "100vh", position: "relative", overflow: "hidden" }}>
-
-      {/* ── Light background ── */}
-      <div style={{ position: "fixed", inset: 0, zIndex: 0, background: "#F4F8FC" }} />
+    <div style={{ fontFamily: "'Inter', sans-serif", background: "#F4F8FC", position: "relative" }}>
 
       {/* Teal radial glow top-right */}
       <div style={{
-        position: "fixed", top: "-8%", right: "-4%", zIndex: 0,
+        position: "absolute", top: 0, right: 0, zIndex: 0,
         width: "600px", height: "600px", borderRadius: "50%",
         background: "radial-gradient(circle, rgba(28,169,201,0.08) 0%, transparent 65%)",
-        pointerEvents: "none",
+        pointerEvents: "none", transform: "translate(20%, -20%)",
       }} />
       {/* Navy radial tint bottom-left */}
       <div style={{
-        position: "fixed", bottom: "-5%", left: "20%", zIndex: 0,
+        position: "absolute", bottom: "10%", left: "20%", zIndex: 0,
         width: "500px", height: "500px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(2,39,74,0.05) 0%, transparent 65%)",
+        background: "radial-gradient(circle, rgba(2,39,74,0.04) 0%, transparent 65%)",
         pointerEvents: "none",
       }} />
 
