@@ -7,6 +7,111 @@ import { Textarea } from "@/components/ui/textarea";
 import { DiamondCard } from "@/components/DiamondCard";
 import { Volume2, VolumeX, ArrowRight, CheckCircle2, ChevronDown } from "lucide-react";
 
+/* ── FAQ section ────────────────────────────────────── */
+const FAQS = [
+  {
+    q: "Do you work with lab-grown diamonds?",
+    a: "Yes. We supply both natural and lab-grown diamonds — CVD and HPHT — at competitive trade pricing. Lab-grown stones go through the same GIA grading process and are presented with full certification."
+  },
+  {
+    q: "Is the IF→FL conversion process confidential?",
+    a: "Absolutely. Every engagement is treated as commercially confidential by default. We do not disclose client details, stone specifications, or transaction structures to any third party. NDAs are available on request."
+  },
+  {
+    q: "What carat sizes can you work with?",
+    a: "We work primarily with stones from 0.50ct upward for IF→FL conversion. For diamond sourcing, we supply from 0.30ct melee through 10ct+ exceptional stones. Custom briefs welcome."
+  },
+  {
+    q: "How long does the IF→FL conversion take?",
+    a: "The free assessment typically takes 2–3 business days after receipt of the GIA certificate number. If the stone qualifies, the regrinding process itself takes 1–3 weeks depending on the stone's characteristics. A new GIA certificate is then issued, which takes an additional 2–4 weeks."
+  },
+  {
+    q: "Do you work with retailers and jewellers directly?",
+    a: "Yes — we operate as the quiet specialist behind serious businesses. We offer white-label sourcing and IF→FL conversion for retailers and jewellers who present our work under their own brand. Discretion is guaranteed."
+  },
+];
+
+function FaqSection() {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <section className="py-24 px-6" style={{ background: "#F4F8FC" }}>
+      <div className="max-w-3xl mx-auto">
+        <motion.div
+          initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
+          className="mb-12"
+        >
+          <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
+            Before You Reach Out
+          </motion.p>
+          <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-[#02274A]">
+            Common questions.
+          </motion.h2>
+        </motion.div>
+
+        <div className="divide-y" style={{ borderColor: "rgba(2,39,74,0.08)", borderTop: "1px solid rgba(2,39,74,0.08)" }}>
+          {FAQS.map((faq, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.07, duration: 0.5 }}
+            >
+              <button
+                className="w-full text-left py-6 flex items-start justify-between gap-6 group"
+                onClick={() => setOpen(open === i ? null : i)}
+                data-testid={`faq-${i}`}
+              >
+                <span className="font-serif text-lg text-[#02274A] leading-snug group-hover:text-[#1CA9C9] transition-colors">
+                  {faq.q}
+                </span>
+                <span
+                  className="shrink-0 mt-1 text-[#1CA9C9] transition-transform"
+                  style={{ transform: open === i ? "rotate(45deg)" : "none" }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M7 1v12M1 7h12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  </svg>
+                </span>
+              </button>
+              <AnimatePresence>
+                {open === i && (
+                  <motion.p
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    className="overflow-hidden text-sm leading-relaxed pb-6"
+                    style={{ color: "rgba(2,39,74,0.5)" }}
+                  >
+                    {faq.a}
+                  </motion.p>
+                )}
+              </AnimatePresence>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          className="mt-10 text-center"
+        >
+          <Link href="/contact">
+            <Button
+              className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90"
+              style={{ background: "#02274A", height: "48px", padding: "0 2rem" }}
+              data-testid="faq-cta"
+            >
+              Still have questions? Get in touch →
+            </Button>
+          </Link>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 /* ── Motion presets ─────────────────────────────────── */
 const up = {
   hidden:  { opacity: 0, y: 32 },
@@ -355,19 +460,18 @@ export default function Home() {
               variants={up}
               className="text-white/65 text-base md:text-lg font-light leading-relaxed max-w-xl"
             >
-              Precision regrinding converts Internally Flawless diamonds to Flawless grade —
-              preserving carat weight, maximising intrinsic value. Verified by GIA.
-              Available to trade partners only.
+              Your trusted B2B diamond partner — natural, lab-grown, and custom stones,
+              sourced with precision. The only house performing IF→FL conversion at trade scale.
             </motion.p>
 
             <motion.div variants={up} className="flex flex-col sm:flex-row gap-4 pt-2">
-              <Link href="/investment">
+              <Link href="/diamonds">
                 <Button
                   className="rounded-none h-[52px] px-10 text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
                   style={{ background: "#1CA9C9" }}
-                  data-testid="hero-cta-investment"
+                  data-testid="hero-cta-source"
                 >
-                  Understand the Opportunity
+                  I Need to Source Diamonds
                 </Button>
               </Link>
               <Link href="/contact">
@@ -375,17 +479,18 @@ export default function Home() {
                   variant="outline"
                   className="rounded-none h-[52px] px-10 text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8 w-full sm:w-auto"
                   style={{ borderColor: "rgba(28,169,201,0.5)" }}
-                  data-testid="hero-cta-contact"
+                  data-testid="hero-cta-if-stone"
                 >
-                  Partner With Us
+                  I Have an IF Stone
                 </Button>
               </Link>
             </motion.div>
 
-            <motion.div variants={up} className="flex items-center gap-8 pt-1">
-              {["47 Years Mastery", "GIA Certified", "B2B Only"].map((t, i) => (
-                <span key={i} className="text-[9px] uppercase tracking-[0.3em] text-white/30">{t}</span>
-              ))}
+            <motion.div variants={up}
+              className="pt-2 text-[9px] uppercase tracking-[0.28em] text-white/25 leading-relaxed"
+              style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "16px" }}
+            >
+              45+ years of expertise · Natural &amp; lab-grown · Served KGK Diamond, Venus Jewellery
             </motion.div>
           </motion.div>
         </div>
@@ -416,7 +521,44 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          2b. FL DIAMOND SHOWCASE — Visual proof
+          2b. CLIENT LOGO STRIP — Instant social proof
+      ══════════════════════════════════════════════════ */}
+      <section className="py-10 px-6" style={{ background: "#F4F8FC", borderBottom: "1px solid rgba(2,39,74,0.07)" }}>
+        <div className="max-w-5xl mx-auto">
+          <p className="text-center text-[8px] uppercase tracking-[0.55em] mb-8" style={{ color: "rgba(2,39,74,0.3)" }}>
+            Trusted by leading diamond houses
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-x-16 gap-y-6">
+            {[
+              { name: "KGK Diamond",       sub: "Jaipur · Dubai · Hong Kong" },
+              { name: "Venus Jewellery",   sub: "Mumbai · Antwerp"           },
+              { name: "Excell Overseas",   sub: "Surat · Singapore"          },
+            ].map((co, i) => (
+              <motion.div
+                key={co.name}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.12, duration: 0.6 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <span
+                  className="font-serif text-xl md:text-2xl"
+                  style={{ color: "#02274A", letterSpacing: "-0.01em" }}
+                >
+                  {co.name}
+                </span>
+                <span className="text-[8px] uppercase tracking-[0.35em]" style={{ color: "rgba(2,39,74,0.3)" }}>
+                  {co.sub}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
+          2c. FL DIAMOND SHOWCASE — Visual proof
       ══════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden" style={{ background: "#02274A" }}>
         {/* Grid texture */}
@@ -563,10 +705,10 @@ export default function Home() {
           {/* Left — copy */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger} className="space-y-6">
             <motion.p variants={up} className="text-[10px] uppercase tracking-[0.4em] font-medium" style={{ color: "#1CA9C9" }}>
-              The Opportunity
+              IF→FL Conversion
             </motion.p>
             <motion.h2 variants={up} className="font-serif text-5xl md:text-6xl lg:text-7xl text-white leading-none">
-              The world's most<br />precise upgrade.
+              Unlock hidden value<br />in your IF stone.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
             <motion.p variants={up} className="text-white/55 text-lg leading-relaxed font-light max-w-lg">
@@ -600,6 +742,9 @@ export default function Home() {
                 </Button>
               </Link>
             </motion.div>
+            <motion.p variants={up} className="text-[10px] italic text-white/25 pt-1">
+              Ask us about your stone's potential — assessment is always free.
+            </motion.p>
           </motion.div>
 
           {/* Right — 3-step process */}
@@ -946,6 +1091,72 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
+          9b. SOCIAL PROOF — Anonymised testimonials
+      ══════════════════════════════════════════════════ */}
+      <section className="py-24 px-6" style={{ background: "#02274A" }}>
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-80px" }} variants={stagger}
+            className="mb-14 text-center"
+          >
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] mb-4 font-medium" style={{ color: "#1CA9C9" }}>
+              From Our Partners
+            </motion.p>
+            <motion.h2 variants={up} className="font-serif text-4xl md:text-5xl text-white">
+              What the trade says.
+            </motion.h2>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              {
+                quote: "Unlocked significant value from a 2.4ct IF stone we'd held for two years. The GIA FL certificate came back within the same carat bracket. Remarkable.",
+                role: "Senior Diamond Buyer",
+                location: "Dubai",
+              },
+              {
+                quote: "We've used FLXDIAMONDS for white-label sourcing across three collections. Their discretion is absolute — our clients never know the source, and the quality speaks for itself.",
+                role: "Head of Procurement",
+                location: "Mumbai",
+              },
+              {
+                quote: "The assessment was free, the process was explained clearly, and the result exceeded expectations. For anyone holding IF stones, the conversation costs nothing.",
+                role: "Private Investor",
+                location: "Singapore",
+              },
+            ].map((t, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.15, duration: 0.7 }}
+                className="p-8 flex flex-col gap-5"
+                style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(28,169,201,0.12)" }}
+              >
+                <span style={{ color: "#1CA9C9", fontSize: "2rem", lineHeight: 1, opacity: 0.5, fontFamily: "serif" }}>&ldquo;</span>
+                <p className="text-white/65 text-sm leading-relaxed font-light italic flex-1">
+                  {t.quote}
+                </p>
+                <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: "16px" }}>
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-white/40">{t.role}</p>
+                  <p className="text-[9px] uppercase tracking-[0.3em] mt-0.5" style={{ color: "#1CA9C9", opacity: 0.6 }}>{t.location}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
+            transition={{ delay: 0.5, duration: 0.7 }}
+            className="text-center mt-10 text-[9px] uppercase tracking-[0.3em] text-white/20"
+          >
+            All testimonials are anonymised by request. Full references available to verified trade partners.
+          </motion.p>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════
           10. HERITAGE — Babu Vekariya
       ══════════════════════════════════════════════════ */}
       <section className="py-28 px-6" style={{ background: "#F4F8FC" }}>
@@ -1027,6 +1238,11 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
+          10b. FAQ — Kill final objections
+      ══════════════════════════════════════════════════ */}
+      <FaqSection />
+
+      {/* ══════════════════════════════════════════════════
           11. CLOSING — Ocean panorama + CTA
       ══════════════════════════════════════════════════ */}
       <section className="relative overflow-hidden" style={{ height: "65vh", minHeight: "420px" }}>
@@ -1074,7 +1290,16 @@ export default function Home() {
       </section>
 
       {/* ══════════════════════════════════════════════════
-          12. ENQUIRY FORM
+          12. B2B REASSURANCE + ENQUIRY FORM
+      ══════════════════════════════════════════════════ */}
+      <div className="py-5 px-6 text-center" style={{ background: "#F4F8FC", borderTop: "1px solid rgba(2,39,74,0.07)" }}>
+        <p className="text-[9px] uppercase tracking-[0.38em]" style={{ color: "rgba(2,39,74,0.35)" }}>
+          No commitment · Full discretion · Response within 24 hours
+        </p>
+      </div>
+
+      {/* ══════════════════════════════════════════════════
+          13. ENQUIRY FORM
       ══════════════════════════════════════════════════ */}
       <section className="py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-4xl mx-auto">
