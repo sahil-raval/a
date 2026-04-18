@@ -221,7 +221,7 @@ export default function Contact() {
               {[
                 { label: "Location", value: "Geelong, Victoria, Australia" },
                 { label: "Email",    value: "help@flxdiamond.com", teal: true },
-                { label: "Phone",    value: "+91 91042 90971  ·  +91 99982 17496" },
+                { label: "Phone",    value: "0474 817 548  ·  +91 99982 17496" },
               ].map(({ label, value, teal }: any) => (
                 <motion.div key={label} variants={up} style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   <span style={{ fontSize: "8px", letterSpacing: "0.42em", textTransform: "uppercase", color: "rgba(2,39,74,0.3)" }}>

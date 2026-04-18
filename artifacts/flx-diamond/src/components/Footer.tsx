@@ -16,7 +16,7 @@ const NAV_RIGHT = [
 
 const CONTACTS = [
   { label: "Email",     value: "help@flxdiamond.com",    teal: true  },
-  { label: "Australia", value: "+91 91042 90971",         teal: false },
+  { label: "Australia", value: "0474 817 548",              teal: false },
   { label: "India",     value: "+91 99982 17496",         teal: false },
   { label: "Location",  value: "Geelong, VIC, Australia", teal: false },
 ];
