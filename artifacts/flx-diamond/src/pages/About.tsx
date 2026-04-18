@@ -113,18 +113,18 @@ export default function About() {
             variants={stagger}
             className="lg:col-span-2 space-y-6 lg:pt-16"
           >
-            <motion.p variants={up} className="text-lg leading-relaxed font-light" style={{ color: "rgba(2,39,74,0.6)" }}>
+            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               Babu began cutting diamonds in 1978, aged 12, apprenticed to craftsmen in the diamond ateliers
               of Surat. The work in those ateliers was exacting — every error came out of the stone's value,
               which meant every error came out of his reputation.
             </motion.p>
-            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.45)" }}>
+            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               By his late 20s he had developed what most craftsmen in the industry never acquire: the ability to read
               a GIA report not as a grade, but as a map. He could identify which surface inclusions were
               responsible for holding a stone at IF grade — and determine, often by examination alone,
               whether those characteristics sat within reach of a micro-regrind.
             </motion.p>
-            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.45)" }}>
+            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               The IF→FL conversion is not taught formally. It is developed over a career of failed attempts,
               successful recoveries, and accumulated judgment. Of the craftsmen who attempt it with regularity,
               only a handful can execute consistently at commercial scale without meaningful carat loss.
