@@ -50,21 +50,24 @@ export default function About() {
     <div className="" style={{ fontFamily: "'Inter', sans-serif" }}>
 
       {/* ── Hero ── */}
-      <section className="pt-28 md:pt-40 pb-20 md:pb-28 px-8 md:px-14 lg:px-20 text-center" style={{ background: "#02274A" }}>
+      <section className="pt-28 md:pt-40 pb-20 md:pb-28 px-8 md:px-14 lg:px-20" style={{ background: "#02274A" }}>
         <motion.div
           initial="hidden"
           animate="visible"
           variants={stagger}
-          className="max-w-3xl mx-auto space-y-6"
+          className="grid md:grid-cols-2 gap-10 md:gap-20 items-end"
         >
-          <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
-            Our Story
-          </motion.p>
-          <motion.h1 variants={up} className="font-serif text-5xl md:text-7xl text-white leading-tight">
-            Heritage.<br />Mastery.<br />
-            <span style={{ color: "rgba(255,255,255,0.3)" }}>Quiet Confidence.</span>
-          </motion.h1>
-          <motion.p variants={up} className="text-white/40 text-base leading-relaxed max-w-xl mx-auto pt-4">
+          <div className="space-y-5 md:space-y-6">
+            <motion.p variants={up} className="text-[10px] uppercase tracking-[0.45em] font-medium" style={{ color: "#1CA9C9" }}>
+              Our Story
+            </motion.p>
+            <motion.h1 variants={up} className="font-serif leading-[1.05]" style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)", color: "rgba(255,255,255,0.92)" }}>
+              Heritage.<br />Mastery.<br />
+              <span style={{ color: "rgba(255,255,255,0.22)" }}>Quiet Confidence.</span>
+            </motion.h1>
+            <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
+          </div>
+          <motion.p variants={up} className="text-sm md:text-base leading-relaxed md:pb-3" style={{ color: "rgba(255,255,255,0.4)" }}>
             FLX Diamonds was built around one craftsman's 47 years of accumulated knowledge —
             knowledge that cannot be certified, cannot be replicated, and cannot be rushed.
           </motion.p>
