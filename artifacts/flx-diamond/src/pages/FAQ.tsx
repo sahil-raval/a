@@ -235,7 +235,7 @@ export default function FAQ() {
       </div>
 
       {/* ── FAQ content ── */}
-      <section className="py-14 md:py-20 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto grid lg:grid-cols-4 gap-10 lg:gap-16">
 
           {/* Sidebar — hidden on mobile/tablet, visible on lg+ */}
@@ -314,7 +314,7 @@ export default function FAQ() {
       </section>
 
       {/* ── Closing CTA ── */}
-      <section className="py-16 md:py-20 px-6" style={{ background: "#02274A" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
         <motion.div
           initial="hidden"
           whileInView="visible"

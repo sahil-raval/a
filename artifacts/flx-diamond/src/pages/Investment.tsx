@@ -68,13 +68,13 @@ export default function Investment() {
             </motion.h1>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
-          <motion.div variants={up} className="space-y-4 md:pb-3">
-            <p className="text-sm md:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.36)" }}>
+          <motion.div variants={up} className="space-y-4">
+            <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
               FL-grade diamonds at meaningful carat weights have historically functioned as a portable,
               non-correlated store of value. The IF→FL conversion represents a specific, documentable arbitrage:
               buy IF, convert to FL, hold or sell at FL pricing.
             </p>
-            <p className="text-sm leading-relaxed" style={{ color: "rgba(255,255,255,0.28)" }}>
+            <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
               We advise a small number of private buyers and family offices on diamond acquisition strategy.
               Referral or introduction preferred — direct enquiry also welcomed.
             </p>
@@ -83,7 +83,7 @@ export default function Investment() {
       </section>
 
       {/* ── The Opportunity ── */}
-      <section className="py-16 md:py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 md:gap-20 items-start">
 
           <motion.div
@@ -149,7 +149,7 @@ export default function Investment() {
       </section>
 
       {/* ── Why Diamonds ── */}
-      <section className="py-16 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#F4F8FC" }}>
         <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
           <motion.div
             initial="hidden"
@@ -194,7 +194,7 @@ export default function Investment() {
       </section>
 
       {/* ── Process ── */}
-      <section className="py-16 md:py-28 px-6" style={{ background: "#02274A" }}>
+      <section className="py-20 md:py-28 px-6" style={{ background: "#02274A" }}>
         <div className="max-w-7xl mx-auto space-y-12 md:space-y-16">
           <motion.div
             initial="hidden"

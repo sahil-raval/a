@@ -67,7 +67,7 @@ export default function About() {
             </motion.h1>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
-          <motion.p variants={up} className="text-sm md:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.4)" }}>
+          <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
             FLX Diamonds was built around one craftsman's 47 years of accumulated knowledge —
             knowledge that cannot be certified, cannot be replicated, and cannot be rushed.
           </motion.p>
@@ -153,13 +153,13 @@ export default function About() {
                 <span style={{ color: "rgba(255,255,255,0.3)" }}>actually requires.</span>
               </motion.h2>
               <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
-              <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+              <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                 GIA grades Internally Flawless (IF) stones based on the absence of internal inclusions,
                 but allows for minor surface blemishes such as naturals, extra facets, or surface graining.
                 FL grade requires that neither internal nor external characteristics are present under
                 10× magnification by a trained grader.
               </motion.p>
-              <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.45)" }}>
+              <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                 When the only barrier to FL is a surface-level characteristic, a precision micro-regrind
                 of the affected facet can eliminate it entirely. The operation is measured in hundredths
                 of a millimetre — typically under 0.01mm of material removal. Executed correctly,
@@ -184,7 +184,7 @@ export default function About() {
                   <span className="text-xl shrink-0 font-medium tabular-nums" style={{ color: "rgba(28,169,201,0.4)" }}>{s.step}</span>
                   <div>
                     <p className="text-white text-sm font-medium tracking-wide mb-1">{s.title}</p>
-                    <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.38)" }}>{s.body}</p>
+                    <p className="text-[13px] leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>{s.body}</p>
                   </div>
                 </motion.div>
               ))}

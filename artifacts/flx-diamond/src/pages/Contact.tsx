@@ -186,7 +186,7 @@ export default function Contact() {
           {/* LEFT — headline + contact info */}
           <motion.div
             initial="hidden" animate="visible" variants={stagger}
-            className="flex flex-col justify-center lg:w-1/2 xl:w-5/12"
+            className="flex flex-col justify-start lg:w-1/2 xl:w-5/12"
             style={{ padding: "clamp(110px, 14vw, 160px) clamp(32px, 6vw, 80px) clamp(48px, 6vw, 80px)" }}
           >
             <motion.p variants={up} style={{
