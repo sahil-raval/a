@@ -297,9 +297,9 @@ export default function FAQ() {
 
                   {/* Mobile CTA — shown below FAQ list on small screens */}
                   <div className="pt-10 lg:hidden">
-                    <Link href="/contact">
+                    <Link href="/contact" className="block">
                       <Button
-                        className="rounded-none text-[10px] uppercase tracking-[0.2em] text-white hover:opacity-90"
+                        className="w-full rounded-none text-[10px] uppercase tracking-[0.2em] text-white hover:opacity-90"
                         style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
                         data-testid="btn-faq-mobile-contact"
                       >

@@ -98,9 +98,9 @@ function FaqSection() {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="mt-10 text-center"
         >
-          <Link href="/contact">
+          <Link href="/contact" className="block w-full sm:inline-block sm:w-auto">
             <Button
-              className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90"
+              className="rounded-none text-xs uppercase tracking-[0.12em] sm:tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
               style={{ background: "#02274A", height: "48px", padding: "0 2rem" }}
               data-testid="faq-cta"
             >
@@ -722,20 +722,20 @@ export default function Home() {
               under 0.01mm, removing the surface characteristic without touching the body of the stone.
               It is not a shortcut. It is 47 years of judgment applied to one stone at a time.
             </motion.p>
-            <motion.div variants={up} className="flex gap-4 pt-2">
-              <Link href="/investment">
+            <motion.div variants={up} className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+              <Link href="/investment" className="block">
                 <Button
-                  className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90"
+                  className="rounded-none text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
                   style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
                   data-testid="btn-iftfl-learn"
                 >
                   How It Works
                 </Button>
               </Link>
-              <Link href="/contact">
+              <Link href="/contact" className="block">
                 <Button
                   variant="outline"
-                  className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8"
+                  className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:bg-white/8 w-full sm:w-auto"
                   style={{ borderColor: "rgba(28,169,201,0.4)", height: "48px", padding: "0 2rem" }}
                   data-testid="btn-iftfl-submit"
                 >
@@ -872,9 +872,9 @@ export default function Home() {
                       <p className="text-[#02274A]/25 text-sm italic font-serif leading-relaxed text-right hidden md:block max-w-xs">
                         "Every answer begins with understanding exactly what you need."
                       </p>
-                      <Link href={selectedBuyer.answer.href}>
+                      <Link href={selectedBuyer.answer.href} className="block w-full sm:w-auto">
                         <Button
-                          className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:opacity-90 font-medium"
+                          className="rounded-none text-xs uppercase tracking-[0.18em] text-white hover:opacity-90 font-medium w-full sm:w-auto"
                           style={{ background: "#1CA9C9", height: "48px", padding: "0 2rem" }}
                           data-testid={`qualifier-cta-${selectedBuyer.id}`}
                         >
