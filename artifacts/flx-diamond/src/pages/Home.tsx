@@ -430,12 +430,12 @@ export default function Home() {
         </button>
 
         {/* Hero copy — bottom-left editorial */}
-        <div className="relative z-10 w-full px-8 md:px-16 lg:px-24 pb-20 md:pb-24">
+        <div className="relative z-10 w-full px-8 md:px-16 lg:px-24 pt-24 pb-12 sm:pb-20 md:pb-24">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={stagger}
-            className="max-w-2xl space-y-7"
+            className="max-w-2xl space-y-4 sm:space-y-7"
           >
             <motion.p
               variants={up}
@@ -447,7 +447,7 @@ export default function Home() {
 
             <motion.h1
               variants={up}
-              className="font-serif text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none"
+              className="font-serif text-[2.6rem] sm:text-[3.6rem] md:text-[5rem] lg:text-[6.5rem] text-white leading-none"
               style={{ letterSpacing: "-0.02em" }}
             >
               From IF<br />to FL.
@@ -459,13 +459,13 @@ export default function Home() {
 
             <motion.p
               variants={up}
-              className="text-white/65 text-base md:text-lg font-light leading-relaxed max-w-xl"
+              className="text-white/65 text-sm sm:text-base md:text-lg font-light leading-relaxed max-w-xl"
             >
               Your trusted B2B diamond partner for natural, lab-grown, and custom stones,
               sourced with precision. The only house performing IF→FL conversion at trade scale.
             </motion.p>
 
-            <motion.div variants={up} className="flex flex-col sm:flex-row gap-4 pt-2">
+            <motion.div variants={up} className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-1 sm:pt-2">
               <Link href="/diamonds">
                 <Button
                   className="rounded-none h-[52px] px-10 text-xs uppercase tracking-[0.18em] font-medium text-white hover:opacity-90 w-full sm:w-auto"
