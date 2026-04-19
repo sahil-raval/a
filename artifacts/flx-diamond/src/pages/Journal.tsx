@@ -1,10 +1,11 @@
 import { motion } from "framer-motion";
+import { EASE } from "@/lib/motion";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 
 const up = {
   hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
 };
 const stagger = {
   hidden: {},
@@ -91,7 +92,7 @@ export default function Journal() {
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: EASE }}
             className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center p-8 md:p-14"
             style={{ background: "white", border: "1px solid rgba(2,39,74,0.08)" }}
           >
@@ -153,7 +154,7 @@ export default function Journal() {
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ delay: i * 0.1, duration: 0.6, ease: EASE }}
                 className="py-10 grid md:grid-cols-[180px_1fr_auto] gap-6 md:gap-12 items-start group"
               >
                 <div className="space-y-1">

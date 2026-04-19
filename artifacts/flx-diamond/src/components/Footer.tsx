@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
+import { EASE } from "@/lib/motion";
 
 const NAV_LEFT = [
   { href: "/diamonds",   label: "Diamonds" },
@@ -44,7 +45,7 @@ export function Footer() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, ease: EASE }}
           >
             <Link href="/" data-testid="footer-logo" className="inline-block group">
               <img
@@ -65,7 +66,7 @@ export function Footer() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.8, delay: 0.15, ease: EASE }}
             className="max-w-sm text-right md:pb-3"
           >
             <p

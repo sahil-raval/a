@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EASE } from "@/lib/motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -80,7 +81,7 @@ function FaqSection() {
                     initial={{ opacity: 0, height: 0 }}
                     animate={{ opacity: 1, height: "auto" }}
                     exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.3, ease: EASE }}
                     className="overflow-hidden text-sm leading-relaxed pb-6"
                     style={{ color: "rgba(2,39,74,0.5)" }}
                   >
@@ -115,7 +116,7 @@ function FaqSection() {
 /* ── Motion presets ─────────────────────────────────── */
 const up = {
   hidden:  { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] } }
+  visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: EASE } }
 };
 const stagger = {
   hidden:  {},
@@ -597,7 +598,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 1, ease: EASE }}
             >
               <div className="relative aspect-[4/3] md:aspect-[4/3] overflow-hidden">
                 <img
@@ -628,7 +629,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 1, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1, delay: 0.15, ease: EASE }}
               >
                 <div className="relative aspect-square md:aspect-[5/4] overflow-hidden">
                   <img
@@ -649,7 +650,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1, delay: 0.3, ease: EASE }}
               >
                 <div className="relative aspect-square md:aspect-[5/4] overflow-hidden">
                   <img

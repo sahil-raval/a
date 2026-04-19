@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { EASE } from "@/lib/motion";
 import { Link } from "wouter";
 
 const fade = {
   hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.85, ease: EASE } },
 };
 const stagger = {
   hidden: {},

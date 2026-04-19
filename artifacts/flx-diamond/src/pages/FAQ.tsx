@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EASE } from "@/lib/motion";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Plus, Minus } from "lucide-react";
 
 const up = {
   hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: EASE } },
 };
 
 const stagger = {
@@ -156,7 +157,7 @@ function FAQItem({ q, a, isOpen, onToggle }: { q: string; a: string; isOpen: boo
           <motion.div
             key="body"
             initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }}
+            animate={{ height: "auto", opacity: 1, transition: { duration: 0.35, ease: EASE } }}
             exit={{ height: 0, opacity: 0, transition: { duration: 0.25 } }}
             style={{ overflow: "hidden" }}
           >
