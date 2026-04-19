@@ -712,7 +712,7 @@ export default function Home() {
               Unlock hidden value<br />in your IF stone.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
-            <motion.p variants={up} className="text-white/55 text-lg leading-relaxed font-light max-w-lg">
+            <motion.p variants={up} className="text-white/55 text-sm sm:text-base md:text-lg leading-relaxed font-light max-w-lg">
               When a GIA certificate notes specific surface characteristics on an Internally Flawless
               stone, there is often a viable path to Flawless grade, without leaving the same
               carat weight bracket.
@@ -903,7 +903,7 @@ export default function Home() {
               Mastery in<br />micro-millimeters.
             </motion.h2>
             <motion.div variants={up}><span className="ocean-line" /></motion.div>
-            <motion.p variants={up} className="text-[#02274A]/50 text-lg leading-relaxed font-light">
+            <motion.p variants={up} className="text-[#02274A]/50 text-sm sm:text-base md:text-lg leading-relaxed font-light">
               What separates IF from FL is often less than 0.01mm. Babu Vekariya has spent
               47 years developing the judgment to see that difference, and the precision
               to act on it without compromising carat weight.
@@ -1195,19 +1195,19 @@ export default function Home() {
 
             {/* Right — narrative */}
             <motion.div variants={up} className="lg:col-span-2 space-y-6 pt-2 lg:pt-14">
-              <p className="text-[#02274A]/55 text-lg leading-relaxed font-light">
+              <p className="text-[#02274A]/55 text-sm sm:text-base md:text-lg leading-relaxed font-light">
                 Babu began cutting diamonds in 1978, aged 12, in the diamond ateliers of Surat, India.
                 By his late 20s he was among a small group of craftsmen who could reliably identify
                 and execute the IF→FL conversion, a technique requiring decades of practiced eye and
                 flawless judgment to see what is invisible to most.
               </p>
-              <p className="text-[#02274A]/40 text-base leading-relaxed">
+              <p className="text-[#02274A]/40 text-sm sm:text-base leading-relaxed">
                 The conversion is not a trick of grading. It requires reading the specific language
                 of a GIA certificate, understanding which surface characteristics are removable, and
                 then executing a micro-regrind of under 0.01mm, a margin where most hands simply
                 cannot operate with confidence.
               </p>
-              <p className="text-[#02274A]/40 text-base leading-relaxed">
+              <p className="text-[#02274A]/40 text-sm sm:text-base leading-relaxed">
                 Over four decades that mastery refined into the process behind FLX Diamonds.
                 Now based in Geelong, Victoria, we bring that level of craft to serious buyers
                 and trade partners worldwide, quietly and without fanfare.

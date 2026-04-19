@@ -68,7 +68,7 @@ export default function About() {
             </motion.h1>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
-          <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+          <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
             FLX Diamonds was built around one craftsman's 47 years of accumulated knowledge,
             knowledge that cannot be certified, cannot be replicated, and cannot be rushed.
           </motion.p>
@@ -114,18 +114,18 @@ export default function About() {
             variants={stagger}
             className="lg:col-span-2 space-y-6 lg:pt-16"
           >
-            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
+            <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               Babu began cutting diamonds in 1978, aged 12, apprenticed to craftsmen in the diamond ateliers
               of Surat. The work in those ateliers was exacting: every error came out of the stone's value,
               which meant every error came out of his reputation.
             </motion.p>
-            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
+            <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               By his late 20s he had developed what most craftsmen in the industry never acquire: the ability to read
               a GIA report not as a grade, but as a map. He could identify which surface inclusions were
               responsible for holding a stone at IF grade, and could determine, often by examination alone,
               whether those characteristics sat within reach of a micro-regrind.
             </motion.p>
-            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
+            <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.5)" }}>
               The IF→FL conversion is not taught formally. It is developed over a career of failed attempts,
               successful recoveries, and accumulated judgment. Of the craftsmen who attempt it with regularity,
               only a handful can execute consistently at commercial scale without meaningful carat loss.
@@ -154,13 +154,13 @@ export default function About() {
                 <span style={{ color: "rgba(255,255,255,0.3)" }}>actually requires.</span>
               </motion.h2>
               <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
-              <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+              <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                 GIA grades Internally Flawless (IF) stones based on the absence of internal inclusions,
                 but allows for minor surface blemishes such as naturals, extra facets, or surface graining.
                 FL grade requires that neither internal nor external characteristics are present under
                 10× magnification by a trained grader.
               </motion.p>
-              <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+              <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
                 When the only barrier to FL is a surface-level characteristic, a precision micro-regrind
                 of the affected facet can eliminate it entirely. The operation is measured in hundredths
                 of a millimetre, typically under 0.01mm of material removal. Executed correctly,
@@ -212,7 +212,7 @@ export default function About() {
               <span style={{ color: "rgba(2,39,74,0.3)" }}>hold their own standard.</span>
             </motion.h2>
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
-            <motion.p variants={up} className="text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.45)" }}>
+            <motion.p variants={up} className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(2,39,74,0.45)" }}>
               Over four decades, Babu's craft earned the trust of established names in the diamond and
               jewellery trade. These are relationships built on consistent output, not on contracts alone.
             </motion.p>

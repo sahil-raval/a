@@ -70,12 +70,12 @@ export default function Investment() {
             <motion.span variants={up} className="block w-10 h-px" style={{ background: "#1CA9C9" }} />
           </div>
           <motion.div variants={up} className="space-y-4">
-            <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
               FL-grade diamonds at meaningful carat weights have historically functioned as a portable,
               non-correlated store of value. The IF→FL conversion represents a specific, documentable arbitrage:
               buy IF, convert to FL, hold or sell at FL pricing.
             </p>
-            <p className="text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
+            <p className="text-sm sm:text-base leading-relaxed" style={{ color: "rgba(255,255,255,0.42)" }}>
               We advise a small number of private buyers and family offices on diamond acquisition strategy.
               Referral or introduction preferred, though direct enquiry is also welcomed.
             </p>
