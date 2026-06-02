@@ -14,7 +14,7 @@ const SERVICE_ID  = "service_6caf4r6";
 const TEMPLATE_ID = "template_sfkwidw"; // create this template in EmailJS dashboard
 const PUBLIC_KEY  = "rgu-gpZuMbktPsuRs";
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+
 const SCHEME_END = 2030;
 
 const ZONE_OPTIONS = [
