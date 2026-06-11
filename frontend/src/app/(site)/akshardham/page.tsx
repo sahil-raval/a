@@ -359,10 +359,22 @@ export default function STCCalculatorPage() {
     setZone(STATE_ZONE[s]);
   }
 
+  type SolarResult = {
+    stcs: number; rebate: number; netCost: number;
+    deemingYears: number; pctRemaining: number;
+    zoneFactor: number; zoneLabel: string;
+  };
+  type BatteryResult = {
+    stcs: number; rebate: number; netCost: number;
+    stcFactor: number; usableKwh: number; periodLabel: string;
+    tier1Kwh: number; tier2Kwh: number; tier3Kwh: number;
+    tier1Raw: number; tier2Raw: number; tier3Raw: number;
+  };
+
   function calculate() {
     const priceN = parseFloat(price) || 39;
-    let solarResult: typeof result["solar"]   | undefined;
-    let battResult:  typeof result["battery"] | undefined;
+    let solarResult: SolarResult | undefined;
+    let battResult:  BatteryResult | undefined;
 
     // ── Solar ──────────────────────────────────────────────────────────────
     if (mode === "solar" || mode === "both") {
