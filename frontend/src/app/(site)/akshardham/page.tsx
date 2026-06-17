@@ -389,7 +389,7 @@ export default function STCCalculatorPage() {
         zone:             result.zoneLabel,
         install_date:     installDate,
         deeming_years:    String(result.deemingYears),
-        calculator_mode:  hasBattery ? (result.solar ? "Solar PV + Battery" : "Battery") : "Solar PV",
+        calculator_mode:  hasBattery ? (result.solarStcs > 0 ? "Solar PV + Battery" : "Battery") : "Solar PV",
 
         // ── Solar ─────────────────────────────────────────────────────────────
         system_kw:        `${result.kw} kW`,
