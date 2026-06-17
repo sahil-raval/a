@@ -377,24 +377,60 @@ export default function STCCalculatorPage() {
     setSendStatus("sending");
     try {
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-        client_name:    clientName,
-        client_email:   clientEmail,
-        client_phone:   clientPhone,
-        reference_id:   refId || "N/A",
-        notes:          notes || "None",
-        postcode, zone: result.zoneLabel, install_date: installDate,
-        system_kw:      `${result.kw} kW`,
-        deeming_years:  String(result.deemingYears),
-        solar_stcs:     String(result.solarStcs),
-        battery_stcs:   String(result.battStcs),
-        total_stcs:     String(result.totalStcs),
-        stc_price:      `$${result.stcPriceN}`,
-        stc_rebate:     fmt(result.totalStcVal),
-        total_ex_gst:   fmt(result.totalExGst),
-        total_incl_gst: fmt(result.totalInclGst),
-        selling_price:  fmt(result.sellingPrice),
-        after_vic:      result.applyVicRebate ? fmt(result.afterVic) : "N/A",
-        extras:         result.extraBreakdown.map(e => `${e.label}: ${fmt(e.cost)}`).join(", ") || "None",
+        // ── Client ──────────────────────────────────────────────────────────
+        client_name:      clientName,
+        client_email:     clientEmail,
+        client_phone:     clientPhone || "N/A",
+        reference_id:     refId || "N/A",
+        notes:            notes || "None",
+
+        // ── Installation ─────────────────────────────────────────────────────
+        postcode,
+        zone:             result.zoneLabel,
+        install_date:     installDate,
+        deeming_years:    String(result.deemingYears),
+        calculator_mode:  hasBattery ? (result.solar ? "Solar PV + Battery" : "Battery") : "Solar PV",
+
+        // ── Solar ─────────────────────────────────────────────────────────────
+        system_kw:        `${result.kw} kW`,
+        num_panels:       numPanels,
+        inverter_kw:      `${inverterKw} kW`,
+        inverter_cost:    fmt(parseFloat(inverterCost) || 0),
+        panel_cost:       fmt(result.panelCost),
+        racking_cost:     fmt(result.racking),
+        panel_install:    fmt(result.panelInstall),
+        solar_stcs:       String(result.solarStcs),
+        solar_rebate:     fmt(result.solarRebate),
+
+        // ── Battery ───────────────────────────────────────────────────────────
+        battery_kwh:      hasBattery ? `${battKwh} kWh` : "N/A",
+        battery_modules:  hasBattery ? `${battModules} × $${battModuleCost}` : "N/A",
+        battery_cost:     hasBattery ? fmt(result.batteryCost) : "N/A",
+        battery_install:  hasBattery ? fmt(result.battInst) : "N/A",
+        battery_factor:   hasBattery ? `${result.battFactor} STCs/kWh` : "N/A",
+        battery_period:   hasBattery ? result.battPeriodLabel : "N/A",
+        battery_stcs:     String(result.battStcs),
+        battery_rebate:   hasBattery ? fmt(result.battRebate) : "N/A",
+
+        // ── Other costs ───────────────────────────────────────────────────────
+        elec_misc:        fmt(result.elecMisc),
+        freight:          fmt(result.freight),
+        commission:       fmt(result.commission),
+        extras:           result.extraBreakdown.length > 0
+                            ? result.extraBreakdown.map(e => `${e.label}: ${fmt(e.cost)}`).join(", ")
+                            : "None",
+        extras_total:     fmt(result.extraTotal),
+
+        // ── Totals ────────────────────────────────────────────────────────────
+        total_ex_gst:     fmt(result.totalExGst),
+        gst:              fmt(result.gst),
+        total_incl_gst:   fmt(result.totalInclGst),
+        total_stcs:       String(result.totalStcs),
+        stc_price:        `$${result.stcPriceN}`,
+        stc_rebate:       fmt(result.totalStcVal),
+        selling_price:    fmt(result.sellingPrice),
+        vic_rebate_applied: result.applyVicRebate ? "Yes" : "No",
+        after_vic:        result.applyVicRebate ? fmt(result.afterVic) : "N/A",
       }, PUBLIC_KEY);
       setSendStatus("success");
       setShowPopup(true);
