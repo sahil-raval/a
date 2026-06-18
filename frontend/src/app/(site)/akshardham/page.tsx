@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import emailjs from "@emailjs/browser";
 import {
   Sun, BatteryCharging, Zap, Info, ChevronDown, ChevronUp,
-  Calculator, ArrowRight, CheckCircle, X, MapPin, DollarSign,
+  Calculator as CalcIcon, ArrowRight, CheckCircle, X, MapPin, DollarSign, Lock,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,13 +12,15 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
-const SERVICE_ID  = "service_6caf4r6";
-const TEMPLATE_ID = "template_sfkwidw";
-const PUBLIC_KEY  = "rgu-gpZuMbktPsuRs";
+const SERVICE_ID   = "service_6caf4r6";
+const TEMPLATE_ID  = "template_sfkwidw";
+const PUBLIC_KEY   = "rgu-gpZuMbktPsuRs";
+const PAGE_PASSWORD = "Akshardham@01";
 
 const SCHEME_END  = 2030;
 const MAX_DEEMING = 10;
-const VIC_REBATE  = 2800; // Solar Victoria fixed rebate
+const VIC_REBATE  = 2800;
+const STC_PRICE   = 37; // Fixed
 
 // ─── Postcode → Zone ──────────────────────────────────────────────────────────
 function getZoneFromPostcode(pc: string): { zone: number; factor: number; label: string } | null {
@@ -93,16 +95,23 @@ function calcBatterySTCs(usableKwh: number, stcFactor: number) {
   return { totalStcs: Math.floor(r1 + r2 + r3), t1, t2, t3, r1, r2, r3 };
 }
 
-// ─── Extra costs config ───────────────────────────────────────────────────────
-type ExtraKey =
+// ─── Extra costs ──────────────────────────────────────────────────────────────
+type FixedExtraKey =
   | "doubleStorey" | "bollards" | "smokeAlarms" | "canopy"
   | "cementTile" | "fireRatedSheet" | "switchboardUpgrade"
-  | "multipleStrings" | "partialBackup" | "fullBackup"
-  | "tileRoof" | "accessHire";
+  | "partialBackup" | "fullBackup" | "tileRoof";
 
-type ExtraConfig = { label: string; cost: number | null; note?: string };
+type VariableExtraKey =
+  | "multipleStrings" | "accessHire"
+  | "tilt" | "evCharger" | "hotWaterUnit"
+  | "panelsLandscape" | "extraCableRun";
+
+type ExtraKey = FixedExtraKey | VariableExtraKey;
+
+type ExtraConfig = { label: string; cost: number | null };
 
 const EXTRA_COSTS: Record<ExtraKey, ExtraConfig> = {
+  // Fixed
   doubleStorey:       { label: "Double storey",           cost: 500  },
   bollards:           { label: "Bollards",                cost: 200  },
   smokeAlarms:        { label: "Smoke alarms",            cost: 100  },
@@ -110,17 +119,23 @@ const EXTRA_COSTS: Record<ExtraKey, ExtraConfig> = {
   cementTile:         { label: "Cement tile",             cost: 100  },
   fireRatedSheet:     { label: "Fire rated cement sheet", cost: 100  },
   switchboardUpgrade: { label: "Switchboard upgrade",     cost: 750  },
-  multipleStrings:    { label: "Multiple strings",        cost: null, note: "Enter cost" },
   partialBackup:      { label: "Partial backup",          cost: 450  },
   fullBackup:         { label: "Full backup",             cost: 2000 },
   tileRoof:           { label: "Tile / Kliplok roof",     cost: 400  },
-  accessHire:         { label: "Access hire",             cost: null, note: "Enter cost" },
+  // Variable
+  multipleStrings:    { label: "Multiple strings",        cost: null },
+  accessHire:         { label: "Access hire",             cost: null },
+  tilt:               { label: "Tilt",                    cost: null },
+  evCharger:          { label: "EV charger",              cost: null },
+  hotWaterUnit:       { label: "Hot water unit",          cost: null },
+  panelsLandscape:    { label: "Panels in landscape",     cost: null },
+  extraCableRun:      { label: "Extra cable run",         cost: null },
 };
 
 function todayStr() { return new Date().toISOString().split("T")[0]; }
 function fmt(n: number) { return n.toLocaleString("en-AU", { style: "currency", currency: "AUD", minimumFractionDigits: 2 }); }
 
-// ─── UI helpers ───────────────────────────────────────────────────────────────
+// ─── UI Components ────────────────────────────────────────────────────────────
 function Tooltip({ text }: { text: string }) {
   const [open, setOpen] = useState(false);
   return (
@@ -138,10 +153,10 @@ function Tooltip({ text }: { text: string }) {
   );
 }
 
-function Field({ label, value, onChange, unit, min, max, step, tooltip, placeholder, prefix }: {
-  label: string; value: string; onChange: (v: string) => void;
+function Field({ label, value, onChange, unit, min, max, step, tooltip, placeholder, prefix, readOnly }: {
+  label: string; value: string; onChange?: (v: string) => void;
   unit?: string; min?: string; max?: string; step?: string;
-  tooltip?: string; placeholder?: string; prefix?: string;
+  tooltip?: string; placeholder?: string; prefix?: string; readOnly?: boolean;
 }) {
   return (
     <div className="space-y-1.5">
@@ -150,9 +165,10 @@ function Field({ label, value, onChange, unit, min, max, step, tooltip, placehol
       </label>
       <div className="relative flex items-center">
         {prefix && <span className="absolute left-3 text-xs text-muted-foreground pointer-events-none">{prefix}</span>}
-        <input type="number" value={value} onChange={e => onChange(e.target.value)}
+        <input type="number" value={value} onChange={e => onChange?.(e.target.value)}
           placeholder={placeholder} min={min ?? "0"} max={max} step={step}
-          className={`w-full h-10 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all ${prefix ? "pl-6 pr-16" : "px-3 pr-16"}`} />
+          readOnly={readOnly}
+          className={`w-full h-10 rounded-lg border border-input text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all ${prefix ? "pl-6 pr-16" : "px-3 pr-16"} ${readOnly ? "bg-slate-100 dark:bg-slate-700 text-muted-foreground cursor-not-allowed" : "bg-slate-50 dark:bg-slate-800"}`} />
         {unit && <span className="absolute right-3 text-xs text-muted-foreground pointer-events-none whitespace-nowrap">{unit}</span>}
       </div>
     </div>
@@ -160,12 +176,11 @@ function Field({ label, value, onChange, unit, min, max, step, tooltip, placehol
 }
 
 function SectionLabel({ icon: Icon, label, color }: {
-  icon: React.ElementType; label: string; color: "blue" | "amber" | "green" | "primary" | "slate";
+  icon: React.ElementType; label: string; color: "blue" | "amber" | "primary" | "slate";
 }) {
   const c: Record<string, string> = {
     blue:    "bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-950/30 dark:text-blue-400 dark:border-blue-800",
     amber:   "bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800",
-    green:   "bg-green-50 text-green-700 border-green-200 dark:bg-green-950/30 dark:text-green-400 dark:border-green-800",
     primary: "bg-primary/10 text-primary border-primary/20",
     slate:   "bg-slate-100 text-slate-600 border-slate-200 dark:bg-slate-800 dark:text-slate-400 dark:border-slate-700",
   };
@@ -176,11 +191,11 @@ function SectionLabel({ icon: Icon, label, color }: {
   );
 }
 
-function BRow({ label, value, total, sub, indent }: {
-  label: string; value: string; total?: boolean; sub?: boolean; indent?: boolean;
+function BRow({ label, value, total, indent }: {
+  label: string; value: string; total?: boolean; indent?: boolean;
 }) {
   return (
-    <div className={`flex justify-between items-center py-2 border-b border-border last:border-0 text-sm ${total ? "font-bold" : ""} ${sub ? "opacity-70" : ""}`}>
+    <div className={`flex justify-between items-center py-2 border-b border-border last:border-0 text-sm ${total ? "font-bold" : ""}`}>
       <span className={`${total ? "text-primary" : "text-muted-foreground"} ${indent ? "pl-4" : ""}`}>{label}</span>
       <span className={total ? "text-primary" : "text-foreground"}>{value}</span>
     </div>
@@ -189,16 +204,14 @@ function BRow({ label, value, total, sub, indent }: {
 
 function ResultCard({ label, value, sub, highlight, accent, large }: {
   label: string; value: string; sub?: string; highlight?: boolean;
-  accent?: "blue" | "amber" | "green"; large?: boolean;
+  accent?: "blue" | "amber"; large?: boolean;
 }) {
   const box = accent === "blue"  ? "bg-blue-50 border-blue-200 dark:bg-blue-950/30 dark:border-blue-800"
             : accent === "amber" ? "bg-amber-50 border-amber-200 dark:bg-amber-950/30 dark:border-amber-800"
-            : accent === "green" ? "bg-green-50 border-green-200 dark:bg-green-950/30 dark:border-green-800"
             : highlight          ? "bg-primary/10 border-primary/20"
             :                     "bg-slate-100 dark:bg-slate-800 border-transparent";
   const txt = accent === "blue"  ? "text-blue-600 dark:text-blue-400"
             : accent === "amber" ? "text-amber-600 dark:text-amber-400"
-            : accent === "green" ? "text-green-700 dark:text-green-400"
             : highlight          ? "text-primary"
             :                     "text-foreground";
   return (
@@ -217,13 +230,77 @@ function SuccessPopup({ onClose }: { onClose: () => void }) {
       <div className="relative bg-white dark:bg-slate-900 rounded-2xl shadow-2xl p-8 max-w-md w-full text-center">
         <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"><X className="w-5 h-5" /></button>
         <div className="flex justify-center mb-4">
-          <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center">
-            <CheckCircle className="w-9 h-9 text-green-600" />
+          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center">
+            <CheckCircle className="w-9 h-9 text-blue-600" />
           </div>
         </div>
         <h2 className="text-2xl font-bold mb-2">Quote Sent!</h2>
-        <p className="text-slate-500 dark:text-slate-400 mb-6">Your quote estimate has been sent to our team. We'll be in touch within 24 hours.</p>
+        <p className="text-slate-500 dark:text-slate-400 mb-6">Your quote estimate has been sent to the APM Energy team. We'll be in touch within 24 hours.</p>
         <Button onClick={onClose} className="w-full" size="lg">Sounds good!</Button>
+      </div>
+    </div>
+  );
+}
+
+// ─── Password Gate ────────────────────────────────────────────────────────────
+function PasswordGate({ onUnlock }: { onUnlock: () => void }) {
+  const [pw, setPw] = useState("");
+  const [error, setError] = useState(false);
+  const [show, setShow] = useState(false);
+
+  function attempt() {
+    if (pw === PAGE_PASSWORD) {
+      onUnlock();
+    } else {
+      setError(true);
+      setPw("");
+      setTimeout(() => setError(false), 2000);
+    }
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center px-4">
+      <div className="w-full max-w-sm">
+        <div className="text-center mb-8">
+          <div className="inline-flex w-16 h-16 rounded-2xl bg-primary/10 items-center justify-center mb-4">
+            <Lock className="h-8 w-8 text-primary" />
+          </div>
+          <h1 className="text-2xl font-bold text-foreground">APM Energy</h1>
+          <p className="text-sm text-muted-foreground mt-1">Quote Calculator — Staff Access Only</p>
+        </div>
+        <Card className="border shadow-lg">
+          <CardContent className="pt-6 space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="pw">Password</Label>
+              <div className="relative">
+                <Input
+                  id="pw"
+                  type={show ? "text" : "password"}
+                  value={pw}
+                  onChange={e => setPw(e.target.value)}
+                  onKeyDown={e => e.key === "Enter" && attempt()}
+                  placeholder="Enter password"
+                  className={error ? "border-red-400 focus-visible:ring-red-400" : ""}
+                  autoFocus
+                />
+                <button
+                  type="button"
+                  onClick={() => setShow(s => !s)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  {show ? "Hide" : "Show"}
+                </button>
+              </div>
+              {error && <p className="text-xs text-red-500 font-medium">Incorrect password. Try again.</p>}
+            </div>
+            <Button onClick={attempt} className="w-full" size="lg">
+              <Lock className="mr-2 h-4 w-4" /> Unlock
+            </Button>
+          </CardContent>
+        </Card>
+        <p className="text-center text-xs text-muted-foreground mt-4">
+          Contact your administrator if you need access.
+        </p>
       </div>
     </div>
   );
@@ -234,54 +311,73 @@ const FAQS = [
   { q: "What is an STC?", a: "A Small-scale Technology Certificate represents approximately 1 MWh of renewable electricity. When you install solar or a battery, you create STCs which your installer typically claims on your behalf as an upfront discount on the system price." },
   { q: "How is my STC zone determined?", a: "The CER assigns each Australian postcode to one of four zones based on solar irradiance. Zone 1 (NT, Far North QLD) earns the most STCs. Zone 4 (VIC, TAS, ACT) earns fewer. Zone is automatically detected from your postcode." },
   { q: "What is the deeming period?", a: "The number of years from your installation date to 31 December 2030, when the STC scheme ends. A 2026 install earns 5 deeming years. Installing earlier means more STCs." },
+  { q: "How is system capacity calculated?", a: "System capacity (kW) = Number of panels × Panel wattage ÷ 1000. For example, 14 panels × 475W ÷ 1000 = 6.65 kW. This is calculated automatically." },
   { q: "How are battery STCs calculated?", a: "Battery STCs use a tapering rule on usable kWh: first 14 kWh at 100% of the STC factor, next 14 kWh at 60%, and 28-50 kWh at 15%. The factor steps down every 6 months and is auto-selected from your installation date." },
   { q: "What is the VIC rebate?", a: "The Solar Victoria rebate provides eligible VIC households with a $1,400 rebate (with a matching interest-free loan of $1,400, totalling $2,800 off your system price). This is applied after the STC discount." },
-  { q: "What are extra costs?", a: "Site-specific costs that may apply to your installation: double-storey access, switchboard upgrades, tile roofs, battery backup configurations, etc. Select Yes for any that apply and they will be added to the quote." },
 ];
 
 // ─── Main ─────────────────────────────────────────────────────────────────────
 export default function STCCalculatorPage() {
-  // System config
+  // ── Auth ────────────────────────────────────────────────────────────────────
+  const [unlocked, setUnlocked] = useState(false);
+  if (!unlocked) return <PasswordGate onUnlock={() => setUnlocked(true)} />;
+
+  return <Calculator />;
+}
+
+function Calculator() {
+  // ── Installation ─────────────────────────────────────────────────────────
   const [installDate, setInstallDate] = useState(todayStr());
   const [postcode, setPostcode]       = useState("");
   const [postcodeError, setPostcodeError] = useState("");
 
-  // Solar
-  const [systemKw, setSystemKw]     = useState("6.6");
-  const [numPanels, setNumPanels]   = useState("14");
-  const [inverterKw, setInverterKw] = useState("5");
-  const [inverterCost, setInverterCost] = useState("1906");
-  const [stcPrice, setStcPrice]     = useState("37");
+  // ── Solar toggle ─────────────────────────────────────────────────────────
+  const [hasSolar, setHasSolar] = useState(true);
 
-  // Battery
-  const [hasBattery, setHasBattery]   = useState(false);
-  const [battKwh, setBattKwh]         = useState("10");
-  const [battModules, setBattModules] = useState("1");
+  // ── Solar inputs ─────────────────────────────────────────────────────────
+  const [numPanels, setNumPanels]       = useState("14");
+  const [panelWattage, setPanelWattage] = useState("475");   // W per panel
+  const [panelPriceCw, setPanelPriceCw] = useState("25");    // cents per watt
+  const [inverterKw, setInverterKw]     = useState("5");
+  const [inverterCost, setInverterCost] = useState("1906");
+
+  // Derived solar values
+  const systemKw    = ((parseInt(numPanels) || 0) * (parseFloat(panelWattage) || 0)) / 1000;
+  const panelCostAuto = systemKw * 1000 * ((parseFloat(panelPriceCw) || 0) / 100); // cW → $/W
+
+  // ── Battery ──────────────────────────────────────────────────────────────
+  const [hasBattery, setHasBattery]         = useState(false);
+  const [battKwh, setBattKwh]               = useState("10");
+  const [battModules, setBattModules]       = useState("1");
   const [battModuleCost, setBattModuleCost] = useState("2170");
   const [battInstallCost, setBattInstallCost] = useState("2000");
 
-  // VIC rebate
+  // ── VIC rebate ───────────────────────────────────────────────────────────
   const [applyVicRebate, setApplyVicRebate] = useState(false);
 
-  // Extra costs — enabled/disabled + custom cost for variable ones
+  // ── Extra costs ──────────────────────────────────────────────────────────
   const [extras, setExtras] = useState<Record<ExtraKey, boolean>>({
     doubleStorey: false, bollards: false, smokeAlarms: false, canopy: false,
     cementTile: false, fireRatedSheet: false, switchboardUpgrade: false,
-    multipleStrings: false, partialBackup: false, fullBackup: false,
-    tileRoof: false, accessHire: false,
+    partialBackup: false, fullBackup: false, tileRoof: false,
+    multipleStrings: false, accessHire: false,
+    tilt: false, evCharger: false, hotWaterUnit: false,
+    panelsLandscape: false, extraCableRun: false,
   });
-  const [extraCustomCosts, setExtraCustomCosts] = useState<Record<string, string>>({
-    multipleStrings: "", accessHire: "",
-  });
+  const [extraCustomCosts, setExtraCustomCosts] = useState<Record<string, string>>({});
+  // "Other" extra
+  const [otherEnabled, setOtherEnabled] = useState(false);
+  const [otherName, setOtherName]       = useState("");
+  const [otherCost, setOtherCost]       = useState("");
 
-  // Client
+  // ── Client ───────────────────────────────────────────────────────────────
   const [clientName, setClientName]   = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [refId, setRefId]             = useState("");
   const [notes, setNotes]             = useState("");
 
-  // UI
+  // ── UI ────────────────────────────────────────────────────────────────────
   const [faqOpen, setFaqOpen]       = useState<number | null>(null);
   const [showPopup, setShowPopup]   = useState(false);
   const [sendStatus, setSendStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
@@ -293,25 +389,33 @@ export default function STCCalculatorPage() {
   const battPeriod   = getBatteryPeriod(installDate);
   const battFactor   = BATTERY_STC_FACTORS[battPeriod] ?? 6.8;
 
-  // ── Core calculation ────────────────────────────────────────────────────────
+  function toggleExtra(k: ExtraKey) {
+    setExtras(p => ({ ...p, [k]: !p[k] }));
+    setResult(null);
+  }
+
+  // ── Core calculation ──────────────────────────────────────────────────────
   function computeQuote() {
-    const kw          = parseFloat(systemKw)       || 0;
-    const panels      = parseInt(numPanels)         || 0;
-    const invCost     = parseFloat(inverterCost)    || 0;
-    const stcPriceN   = parseFloat(stcPrice)        || 37;
+    const kw          = systemKw;
+    const panels      = parseInt(numPanels) || 0;
+    const invCost     = parseFloat(inverterCost) || 0;
     const battKwhN    = hasBattery ? (parseFloat(battKwh) || 0) : 0;
     const modules     = hasBattery ? (parseInt(battModules) || 0) : 0;
     const modCost     = hasBattery ? (parseFloat(battModuleCost) || 0) : 0;
     const battInst    = hasBattery ? (parseFloat(battInstallCost) || 0) : 0;
 
-    // Base costs (from spreadsheet formulas)
-    const panelCost    = 0.25 * kw * 1000;
-    const racking      = Math.ceil(panels / 3) * 100;
+    // Solar costs — only if hasSolar
+    const panelCost    = hasSolar ? panelCostAuto : 0;
+    const racking      = hasSolar ? Math.ceil(panels / 3) * 100 : 0;
+    const panelInstall = hasSolar ? 0.3 * kw * 1000 : 0;
+
+    // Battery costs
     const batteryCost  = modules * modCost;
-    const panelInstall = 0.3 * kw * 1000;
-    const elecMisc     = 400;
-    const freight      = 300;
-    const commission   = 1500;
+
+    // Shared
+    const elecMisc   = 400;
+    const freight    = 300;
+    const commission = 1500;
 
     // Extra costs
     let extraTotal = 0;
@@ -322,33 +426,36 @@ export default function STCCalculatorPage() {
       const cost = cfg.cost !== null
         ? cfg.cost
         : (parseFloat(extraCustomCosts[k] || "0") || 0);
-      if (cost > 0) {
-        extraTotal += cost;
-        extraBreakdown.push({ label: cfg.label, cost });
-      }
+      if (cost > 0) { extraTotal += cost; extraBreakdown.push({ label: cfg.label, cost }); }
     });
+    // Other
+    const otherCostN = otherEnabled ? (parseFloat(otherCost) || 0) : 0;
+    if (otherEnabled && otherCostN > 0) {
+      extraTotal += otherCostN;
+      extraBreakdown.push({ label: otherName || "Other", cost: otherCostN });
+    }
 
-    const totalExGst = panelCost + racking + invCost + batteryCost
-                     + panelInstall + battInst + elecMisc + freight
-                     + commission + extraTotal;
-    const gst         = totalExGst * 0.1;
+    const totalExGst   = panelCost + racking + invCost + batteryCost
+                       + panelInstall + battInst + elecMisc + freight
+                       + commission + extraTotal;
+    const gst          = totalExGst * 0.1;
     const totalInclGst = totalExGst + gst;
 
     // STCs
     const zoneFactor  = zoneInfo?.factor ?? 1.185;
-    const solarStcs   = Math.floor(kw * zoneFactor * deemingYears);
-    const solarRebate = solarStcs * stcPriceN;
+    const solarStcs   = hasSolar ? Math.floor(kw * zoneFactor * deemingYears) : 0;
+    const solarRebate = solarStcs * STC_PRICE;
 
     let battStcs = 0; let battRebate = 0;
     let battBreakdown = { t1: 0, t2: 0, t3: 0, r1: 0, r2: 0, r3: 0 };
     if (hasBattery && battKwhN > 0) {
       const { totalStcs, t1, t2, t3, r1, r2, r3 } = calcBatterySTCs(battKwhN, battFactor);
-      battStcs = totalStcs; battRebate = battStcs * stcPriceN;
+      battStcs = totalStcs; battRebate = battStcs * STC_PRICE;
       battBreakdown = { t1, t2, t3, r1, r2, r3 };
     }
 
-    const totalStcs   = solarStcs + battStcs;
-    const totalStcVal = (totalStcs) * stcPriceN;
+    const totalStcs    = solarStcs + battStcs;
+    const totalStcVal  = totalStcs * STC_PRICE;
     const sellingPrice = totalInclGst - totalStcVal;
     const afterVic     = applyVicRebate ? sellingPrice - VIC_REBATE : sellingPrice;
 
@@ -358,10 +465,10 @@ export default function STCCalculatorPage() {
       totalExGst, gst, totalInclGst,
       solarStcs, solarRebate, battStcs, battRebate,
       totalStcs, totalStcVal, sellingPrice, afterVic,
-      battBreakdown, battPeriodLabel: INSTALL_PERIOD_OPTIONS.find(o => o.value === battPeriod)?.label ?? battPeriod,
+      battBreakdown,
+      battPeriodLabel: INSTALL_PERIOD_OPTIONS.find(o => o.value === battPeriod)?.label ?? battPeriod,
       zoneFactor, zoneLabel: zoneInfo?.label ?? "Zone not detected",
-      deemingYears, stcPriceN, kw, panels, battKwhN, battFactor,
-      applyVicRebate,
+      deemingYears, kw, panels, battKwhN, battFactor, applyVicRebate,
     };
   }
 
@@ -377,60 +484,51 @@ export default function STCCalculatorPage() {
     setSendStatus("sending");
     try {
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-        // ── Client ──────────────────────────────────────────────────────────
-        client_name:      clientName,
-        client_email:     clientEmail,
-        client_phone:     clientPhone || "N/A",
-        reference_id:     refId || "N/A",
-        notes:            notes || "None",
-
-        // ── Installation ─────────────────────────────────────────────────────
+        client_name:        clientName,
+        client_email:       clientEmail,
+        client_phone:       clientPhone || "N/A",
+        reference_id:       refId || "N/A",
+        notes:              notes || "None",
         postcode,
-        zone:             result.zoneLabel,
-        install_date:     installDate,
-        deeming_years:    String(result.deemingYears),
-        calculator_mode:  hasBattery ? (result.solarStcs > 0 ? "Solar PV + Battery" : "Battery") : "Solar PV",
-
-        // ── Solar ─────────────────────────────────────────────────────────────
-        system_kw:        `${result.kw} kW`,
-        num_panels:       numPanels,
-        inverter_kw:      `${inverterKw} kW`,
-        inverter_cost:    fmt(parseFloat(inverterCost) || 0),
-        panel_cost:       fmt(result.panelCost),
-        racking_cost:     fmt(result.racking),
-        panel_install:    fmt(result.panelInstall),
-        solar_stcs:       String(result.solarStcs),
-        solar_rebate:     fmt(result.solarRebate),
-
-        // ── Battery ───────────────────────────────────────────────────────────
-        battery_kwh:      hasBattery ? `${battKwh} kWh` : "N/A",
-        battery_modules:  hasBattery ? `${battModules} × $${battModuleCost}` : "N/A",
-        battery_cost:     hasBattery ? fmt(result.batteryCost) : "N/A",
-        battery_install:  hasBattery ? fmt(result.battInst) : "N/A",
-        battery_factor:   hasBattery ? `${result.battFactor} STCs/kWh` : "N/A",
-        battery_period:   hasBattery ? result.battPeriodLabel : "N/A",
-        battery_stcs:     String(result.battStcs),
-        battery_rebate:   hasBattery ? fmt(result.battRebate) : "N/A",
-
-        // ── Other costs ───────────────────────────────────────────────────────
-        elec_misc:        fmt(result.elecMisc),
-        freight:          fmt(result.freight),
-        commission:       fmt(result.commission),
-        extras:           result.extraBreakdown.length > 0
-                            ? result.extraBreakdown.map(e => `${e.label}: ${fmt(e.cost)}`).join(", ")
-                            : "None",
-        extras_total:     fmt(result.extraTotal),
-
-        // ── Totals ────────────────────────────────────────────────────────────
-        total_ex_gst:     fmt(result.totalExGst),
-        gst:              fmt(result.gst),
-        total_incl_gst:   fmt(result.totalInclGst),
-        total_stcs:       String(result.totalStcs),
-        stc_price:        `$${result.stcPriceN}`,
-        stc_rebate:       fmt(result.totalStcVal),
-        selling_price:    fmt(result.sellingPrice),
+        zone:               result.zoneLabel,
+        install_date:       installDate,
+        deeming_years:      String(result.deemingYears),
+        calculator_mode:    hasSolar && hasBattery ? "Solar PV + Battery" : hasBattery ? "Battery only" : "Solar PV only",
+        system_kw:          `${result.kw.toFixed(3)} kW`,
+        num_panels:         numPanels,
+        panel_wattage:      `${panelWattage} W`,
+        panel_price_cw:     `${panelPriceCw} c/W`,
+        inverter_kw:        `${inverterKw} kW`,
+        inverter_cost:      fmt(parseFloat(inverterCost) || 0),
+        panel_cost:         fmt(result.panelCost),
+        racking_cost:       fmt(result.racking),
+        panel_install:      fmt(result.panelInstall),
+        solar_stcs:         String(result.solarStcs),
+        solar_rebate:       fmt(result.solarRebate),
+        battery_kwh:        hasBattery ? `${battKwh} kWh` : "N/A",
+        battery_modules:    hasBattery ? `${battModules} × $${battModuleCost}` : "N/A",
+        battery_cost:       hasBattery ? fmt(result.batteryCost) : "N/A",
+        battery_install:    hasBattery ? fmt(result.battInst) : "N/A",
+        battery_factor:     hasBattery ? `${result.battFactor} STCs/kWh` : "N/A",
+        battery_period:     hasBattery ? result.battPeriodLabel : "N/A",
+        battery_stcs:       String(result.battStcs),
+        battery_rebate:     hasBattery ? fmt(result.battRebate) : "N/A",
+        elec_misc:          fmt(result.elecMisc),
+        freight:            fmt(result.freight),
+        commission:         fmt(result.commission),
+        extras:             result.extraBreakdown.length > 0
+                              ? result.extraBreakdown.map(e => `${e.label}: ${fmt(e.cost)}`).join(", ")
+                              : "None",
+        extras_total:       fmt(result.extraTotal),
+        total_ex_gst:       fmt(result.totalExGst),
+        gst:                fmt(result.gst),
+        total_incl_gst:     fmt(result.totalInclGst),
+        total_stcs:         String(result.totalStcs),
+        stc_price:          `$${STC_PRICE}`,
+        stc_rebate:         fmt(result.totalStcVal),
+        selling_price:      fmt(result.sellingPrice),
         vic_rebate_applied: result.applyVicRebate ? "Yes" : "No",
-        after_vic:        result.applyVicRebate ? fmt(result.afterVic) : "N/A",
+        after_vic:          result.applyVicRebate ? fmt(result.afterVic) : "N/A",
       }, PUBLIC_KEY);
       setSendStatus("success");
       setShowPopup(true);
@@ -438,10 +536,7 @@ export default function STCCalculatorPage() {
     } catch { setSendStatus("error"); }
   }
 
-  function toggleExtra(k: ExtraKey) {
-    setExtras(p => ({ ...p, [k]: !p[k] }));
-    setResult(null);
-  }
+  const battKwhN = parseFloat(battKwh) || 0;
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -454,9 +549,9 @@ export default function STCCalculatorPage() {
             <span className="h-1.5 w-1.5 rounded-full bg-primary" />
             Australian government solar rebate
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Solar & Battery Quote Calculator</h1>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">Solar &amp; Battery Quote Calculator</h1>
           <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-            Calculate your full system price — including STC rebate, GST, and optional VIC rebate — using official CER formulas.
+            Full system price including STC rebate, GST and optional VIC rebate — using official CER formulas.
           </p>
         </div>
       </section>
@@ -479,7 +574,6 @@ export default function STCCalculatorPage() {
             </CardHeader>
             <CardContent className="pt-5 space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {/* Date */}
                 <div className="space-y-1.5">
                   <label className="flex items-center text-sm font-medium text-foreground">
                     Expected installation date
@@ -494,7 +588,6 @@ export default function STCCalculatorPage() {
                     </p>
                   )}
                 </div>
-                {/* Postcode */}
                 <div className="space-y-1.5">
                   <label className="flex items-center text-sm font-medium text-foreground">
                     Installation postcode
@@ -505,12 +598,8 @@ export default function STCCalculatorPage() {
                     placeholder="e.g. 3217"
                     className={`w-full h-10 rounded-lg border bg-slate-50 dark:bg-slate-800 text-foreground px-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 transition-all ${postcodeError ? "border-red-400" : "border-input focus:border-primary"}`} />
                   {postcodeError && <p className="text-xs text-red-500">{postcodeError}</p>}
-                  {zoneInfo && !postcodeError && (
-                    <p className="text-xs text-primary font-medium">→ {zoneInfo.label} detected</p>
-                  )}
-                  {postcode.length === 4 && !zoneInfo && (
-                    <p className="text-xs text-amber-600">Postcode not recognised.</p>
-                  )}
+                  {zoneInfo && !postcodeError && <p className="text-xs text-primary font-medium">→ {zoneInfo.label} detected</p>}
+                  {postcode.length === 4 && !zoneInfo && <p className="text-xs text-amber-600">Postcode not recognised.</p>}
                 </div>
               </div>
             </CardContent>
@@ -519,47 +608,74 @@ export default function STCCalculatorPage() {
           {/* ── Solar System ── */}
           <Card className="border shadow-md">
             <CardHeader className="pb-4 border-b border-border">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center text-blue-600 shrink-0">
-                  <Sun className="h-5 w-5" />
-                </div>
-                <div>
-                  <CardTitle className="text-lg">Solar panel system</CardTitle>
-                  <p className="text-xs text-muted-foreground mt-0.5">Panel capacity, inverter and STC spot price.</p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="pt-5 space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="System capacity" value={systemKw} onChange={v => { setSystemKw(v); setResult(null); }}
-                  unit="kW" step="0.001" max="100"
-                  tooltip="Total installed panel capacity in kW. Used to calculate panel cost ($0.25/W), install cost ($0.30/W) and solar STCs." />
-                <Field label="Number of panels" value={numPanels} onChange={v => { setNumPanels(v); setResult(null); }}
-                  unit="panels" step="1"
-                  tooltip="Used to calculate racking cost (ceil(panels÷3) × $100)." />
-                <Field label="Inverter size" value={inverterKw} onChange={v => { setInverterKw(v); setResult(null); }}
-                  unit="kW" step="0.5"
-                  tooltip="Inverter rated output in kW. For reference only — enter the inverter cost below." />
-                <Field label="Inverter cost" value={inverterCost} onChange={v => { setInverterCost(v); setResult(null); }}
-                  prefix="$" unit="" step="1"
-                  tooltip="Actual cost of the inverter. Defaults to $1,906 for a standard 10 kW unit." />
-                <Field label="STC spot price" value={stcPrice} onChange={v => { setStcPrice(v); setResult(null); }}
-                  prefix="$" unit="/ STC" step="0.50"
-                  tooltip="Current market price per STC. Check rec-registry.com.au. Default $37." />
-              </div>
-
-              {/* Auto-calculated cost preview */}
-              {parseFloat(systemKw) > 0 && (
-                <div className="rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 px-4 py-3 space-y-1">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-2">Auto-calculated from system size</p>
-                  <div className="grid grid-cols-3 gap-2 text-xs">
-                    <div><span className="text-muted-foreground">Panel cost</span><br /><span className="font-semibold text-foreground">{fmt(0.25 * (parseFloat(systemKw)||0) * 1000)}</span></div>
-                    <div><span className="text-muted-foreground">Racking</span><br /><span className="font-semibold text-foreground">{fmt(Math.ceil((parseInt(numPanels)||0)/3)*100)}</span></div>
-                    <div><span className="text-muted-foreground">Panel install</span><br /><span className="font-semibold text-foreground">{fmt(0.3 * (parseFloat(systemKw)||0) * 1000)}</span></div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center text-blue-600 shrink-0">
+                    <Sun className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <CardTitle className="text-lg">Solar panel system</CardTitle>
+                    <p className="text-xs text-muted-foreground mt-0.5">Panel capacity auto-calculated from count × wattage.</p>
                   </div>
                 </div>
-              )}
-            </CardContent>
+                <button onClick={() => { setHasSolar(p => !p); setResult(null); }}
+                  className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${hasSolar ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
+                  <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${hasSolar ? "translate-x-6" : "translate-x-1"}`} />
+                </button>
+              </div>
+            </CardHeader>
+            {hasSolar && (
+              <CardContent className="pt-5 space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <Field label="Number of panels" value={numPanels}
+                    onChange={v => { setNumPanels(v); setResult(null); }}
+                    unit="panels" step="1"
+                    tooltip="Number of panels installed. System capacity = panels × wattage ÷ 1000." />
+                  <Field label="Panel wattage" value={panelWattage}
+                    onChange={v => { setPanelWattage(v); setResult(null); }}
+                    unit="W" step="5"
+                    tooltip="Rated wattage per panel. E.g. 475 W, 500 W." />
+                  <Field label="Panel price" value={panelPriceCw}
+                    onChange={v => { setPanelPriceCw(v); setResult(null); }}
+                    unit="c/W" step="0.5"
+                    tooltip="Panel cost in cents per watt. Total panel cost = system kW × 1000 × (price ÷ 100)." />
+                  <Field label="System capacity (auto)" value={systemKw.toFixed(3)}
+                    unit="kW" readOnly
+                    tooltip="Auto-calculated: panels × wattage ÷ 1000. Read-only." />
+                  <Field label="Inverter size" value={inverterKw}
+                    onChange={v => { setInverterKw(v); setResult(null); }}
+                    unit="kW" step="0.5" />
+                  <Field label="Inverter cost" value={inverterCost}
+                    onChange={v => { setInverterCost(v); setResult(null); }}
+                    prefix="$" step="1"
+                    tooltip="Actual cost of the inverter. Defaults to $1,906." />
+                </div>
+
+                {/* Auto-calc preview */}
+                {systemKw > 0 && (
+                  <div className="rounded-xl bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 px-4 py-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-blue-700 dark:text-blue-400 mb-2">Auto-calculated</p>
+                    <div className="grid grid-cols-3 gap-3 text-xs">
+                      <div>
+                        <span className="text-muted-foreground block">System capacity</span>
+                        <span className="font-bold text-foreground text-sm">{systemKw.toFixed(3)} kW</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block">Panel cost</span>
+                        <span className="font-bold text-foreground text-sm">{fmt(panelCostAuto)}</span>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground block">Panel install</span>
+                        <span className="font-bold text-foreground text-sm">{fmt(0.3 * systemKw * 1000)}</span>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Racking: {fmt(Math.ceil((parseInt(numPanels)||0)/3)*100)} · STC price: ${STC_PRICE}/STC (fixed)
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            )}
           </Card>
 
           {/* ── Battery ── */}
@@ -575,7 +691,6 @@ export default function STCCalculatorPage() {
                     <p className="text-xs text-muted-foreground mt-0.5">Optional — include battery in quote.</p>
                   </div>
                 </div>
-                {/* Toggle */}
                 <button onClick={() => { setHasBattery(p => !p); setResult(null); }}
                   className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${hasBattery ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
                   <span className={`inline-block h-4 w-4 transform rounded-full bg-white shadow transition-transform ${hasBattery ? "translate-x-6" : "translate-x-1"}`} />
@@ -589,25 +704,21 @@ export default function STCCalculatorPage() {
                     unit="kWh" step="0.5" min="5" max="100"
                     tooltip="Usable kWh from product spec. Only first 50 kWh earns STCs." />
                   <Field label="Number of modules" value={battModules} onChange={v => { setBattModules(v); setResult(null); }}
-                    unit="modules" step="1"
-                    tooltip="Number of battery modules. Battery cost = modules × cost per module." />
+                    unit="modules" step="1" />
                   <Field label="Cost per module" value={battModuleCost} onChange={v => { setBattModuleCost(v); setResult(null); }}
-                    prefix="$" unit="" step="1"
-                    tooltip="Cost per battery module. Defaults to $2,170." />
+                    prefix="$" step="1" tooltip="Cost per battery module. Defaults to $2,170." />
                   <Field label="Battery install cost" value={battInstallCost} onChange={v => { setBattInstallCost(v); setResult(null); }}
-                    prefix="$" unit="" step="1"
-                    tooltip="Labour cost to install battery. Defaults to $2,000." />
+                    prefix="$" step="1" tooltip="Labour cost to install battery. Defaults to $2,000." />
                 </div>
-                {/* Tapering preview */}
-                {parseFloat(battKwh) > 0 && (
+                {battKwhN > 0 && (
                   <div className="rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 px-4 py-3 space-y-2">
                     <p className="text-xs font-semibold uppercase tracking-widest text-amber-700 dark:text-amber-400">
-                      STC tapering preview · factor {battFactor} ({INSTALL_PERIOD_OPTIONS.find(o=>o.value===battPeriod)?.label ?? battPeriod})
+                      STC tapering · factor {battFactor} ({INSTALL_PERIOD_OPTIONS.find(o=>o.value===battPeriod)?.label ?? battPeriod})
                     </p>
                     {([
-                      { label: "Tier 1 (0-14 kWh @ 100%)",  kwh: Math.min(Math.min(parseFloat(battKwh)||0, 50), 14) },
-                      { label: "Tier 2 (14-28 kWh @ 60%)",  kwh: (parseFloat(battKwh)||0) > 14 ? Math.min(Math.min(parseFloat(battKwh)||0, 50) - 14, 14) : 0 },
-                      { label: "Tier 3 (28-50 kWh @ 15%)",  kwh: (parseFloat(battKwh)||0) > 28 ? Math.min(parseFloat(battKwh)||0, 50) - 28 : 0 },
+                      { label: "Tier 1 (0-14 kWh @ 100%)",  kwh: Math.min(Math.min(battKwhN, 50), 14) },
+                      { label: "Tier 2 (14-28 kWh @ 60%)",  kwh: battKwhN > 14 ? Math.min(Math.min(battKwhN, 50) - 14, 14) : 0 },
+                      { label: "Tier 3 (28-50 kWh @ 15%)",  kwh: battKwhN > 28 ? Math.min(battKwhN, 50) - 28 : 0 },
                     ] as const).map(({ label, kwh }) => (
                       <div key={label} className="flex justify-between text-xs">
                         <span className="text-muted-foreground">{label}</span>
@@ -633,69 +744,102 @@ export default function STCCalculatorPage() {
                 </div>
               </div>
             </CardHeader>
-            <CardContent className="pt-5">
-              <div className="space-y-2">
-                {(Object.keys(EXTRA_COSTS) as ExtraKey[]).map(k => {
-                  const cfg = EXTRA_COSTS[k];
-                  const isOn = extras[k];
-                  const isVariable = cfg.cost === null;
-                  return (
-                    <div key={k} className={`flex items-center justify-between rounded-xl border px-4 py-3 transition-all ${isOn ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
-                      <div className="flex items-center gap-3 flex-1 min-w-0">
-                        <button onClick={() => toggleExtra(k)}
-                          className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${isOn ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
-                          <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${isOn ? "translate-x-4" : "translate-x-0.5"}`} />
-                        </button>
-                        <span className="text-sm font-medium text-foreground">{cfg.label}</span>
-                        {!isVariable && cfg.cost !== null && (
-                          <span className="text-xs text-muted-foreground">{fmt(cfg.cost)}</span>
-                        )}
-                        {isVariable && (
-                          <span className="text-xs text-muted-foreground">variable</span>
-                        )}
-                      </div>
-                      {/* Variable cost input */}
-                      {isOn && isVariable && (
-                        <div className="flex items-center gap-1 ml-3">
-                          <span className="text-xs text-muted-foreground">$</span>
-                          <input
-                            type="number" min="0" step="50"
-                            value={extraCustomCosts[k] || ""}
-                            onChange={e => { setExtraCustomCosts(p => ({ ...p, [k]: e.target.value })); setResult(null); }}
-                            placeholder="0"
-                            className="w-24 h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all"
-                          />
-                        </div>
-                      )}
-                      {/* Fixed cost badge when on */}
-                      {isOn && !isVariable && cfg.cost !== null && (
-                        <span className="ml-3 text-xs font-semibold text-primary">+ {fmt(cfg.cost)}</span>
-                      )}
+            <CardContent className="pt-5 space-y-2">
+
+              {/* Fixed cost extras */}
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Fixed costs</p>
+              {(["doubleStorey","bollards","smokeAlarms","canopy","cementTile","fireRatedSheet","switchboardUpgrade","partialBackup","fullBackup","tileRoof"] as FixedExtraKey[]).map(k => {
+                const cfg = EXTRA_COSTS[k]; const isOn = extras[k];
+                return (
+                  <div key={k} className={`flex items-center justify-between rounded-xl border px-4 py-3 transition-all ${isOn ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
+                    <div className="flex items-center gap-3">
+                      <button onClick={() => toggleExtra(k)}
+                        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${isOn ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
+                        <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${isOn ? "translate-x-4" : "translate-x-0.5"}`} />
+                      </button>
+                      <span className="text-sm font-medium text-foreground">{cfg.label}</span>
+                      <span className="text-xs text-muted-foreground">{fmt(cfg.cost!)}</span>
                     </div>
-                  );
-                })}
+                    {isOn && <span className="text-xs font-semibold text-primary">+ {fmt(cfg.cost!)}</span>}
+                  </div>
+                );
+              })}
+
+              {/* Variable cost extras */}
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mt-4 mb-1">Variable costs</p>
+              {(["multipleStrings","accessHire","tilt","evCharger","hotWaterUnit","panelsLandscape","extraCableRun"] as VariableExtraKey[]).map(k => {
+                const cfg = EXTRA_COSTS[k]; const isOn = extras[k];
+                return (
+                  <div key={k} className={`flex items-center justify-between rounded-xl border px-4 py-3 transition-all ${isOn ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
+                      <button onClick={() => toggleExtra(k)}
+                        className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${isOn ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
+                        <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${isOn ? "translate-x-4" : "translate-x-0.5"}`} />
+                      </button>
+                      <span className="text-sm font-medium text-foreground">{cfg.label}</span>
+                    </div>
+                    {isOn && (
+                      <div className="flex items-center gap-1 ml-3 shrink-0">
+                        <span className="text-xs text-muted-foreground">$</span>
+                        <input type="number" min="0" step="50"
+                          value={extraCustomCosts[k] || ""}
+                          onChange={e => { setExtraCustomCosts(p => ({ ...p, [k]: e.target.value })); setResult(null); }}
+                          placeholder="0"
+                          className="w-24 h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+
+              {/* Other — name + amount */}
+              <div className={`flex flex-col gap-2 rounded-xl border px-4 py-3 transition-all ${otherEnabled ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => { setOtherEnabled(p => !p); setResult(null); }}
+                      className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${otherEnabled ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
+                      <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${otherEnabled ? "translate-x-4" : "translate-x-0.5"}`} />
+                    </button>
+                    <span className="text-sm font-medium text-foreground">Other</span>
+                  </div>
+                </div>
+                {otherEnabled && (
+                  <div className="grid grid-cols-2 gap-2 mt-1">
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">Description</label>
+                      <input type="text" value={otherName} onChange={e => { setOtherName(e.target.value); setResult(null); }}
+                        placeholder="e.g. Custom cable tray"
+                        className="w-full h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-xs text-muted-foreground">Amount ($)</label>
+                      <input type="number" min="0" step="50" value={otherCost}
+                        onChange={e => { setOtherCost(e.target.value); setResult(null); }}
+                        placeholder="0"
+                        className="w-full h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* VIC Rebate */}
-              <div className={`mt-4 flex items-center justify-between rounded-xl border px-4 py-3 transition-all ${applyVicRebate ? "border-green-300 bg-green-50 dark:bg-green-950/20 dark:border-green-800" : "border-border bg-white dark:bg-slate-900"}`}>
+              <div className={`mt-2 flex items-center justify-between rounded-xl border px-4 py-3 transition-all ${applyVicRebate ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
                 <div className="flex items-center gap-3">
                   <button onClick={() => { setApplyVicRebate(p => !p); setResult(null); }}
-                    className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${applyVicRebate ? "bg-green-600" : "bg-slate-200 dark:bg-slate-700"}`}>
+                    className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${applyVicRebate ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
                     <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${applyVicRebate ? "translate-x-4" : "translate-x-0.5"}`} />
                   </button>
-                  <div>
-                    <span className="text-sm font-medium text-foreground">Apply VIC Solar rebate</span>
-                    <span className="ml-2 text-xs text-muted-foreground">{fmt(VIC_REBATE)} off</span>
-                  </div>
+                  <span className="text-sm font-medium text-foreground">Apply VIC Solar rebate</span>
+                  <span className="text-xs text-muted-foreground">{fmt(VIC_REBATE)} off</span>
                 </div>
-                {applyVicRebate && <span className="text-xs font-semibold text-green-700 dark:text-green-400">- {fmt(VIC_REBATE)}</span>}
+                {applyVicRebate && <span className="text-xs font-semibold text-primary">– {fmt(VIC_REBATE)}</span>}
               </div>
             </CardContent>
           </Card>
 
-          {/* ── Calculate button ── */}
+          {/* ── Generate ── */}
           <Button onClick={handleCalculate} className="w-full" size="lg">
-            <Calculator className="mr-2 h-4 w-4" /> Generate quote
+            <CalcIcon className="mr-2 h-4 w-4" /> Generate quote
           </Button>
 
           {/* ── Results ── */}
@@ -709,43 +853,47 @@ export default function STCCalculatorPage() {
                   <div>
                     <CardTitle className="text-lg">Quote summary</CardTitle>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {clientName ? `For ${clientName}` : "Your estimate"}{refId ? ` · Ref: ${refId}` : ""} · Postcode {postcode} ({result.zoneLabel}) · {result.deemingYears} yr deeming
+                      {clientName ? `For ${clientName}` : "Estimate"}{refId ? ` · Ref: ${refId}` : ""} · Postcode {postcode} ({result.zoneLabel}) · {result.deemingYears} yr deeming
                     </p>
                   </div>
                 </div>
               </CardHeader>
               <CardContent className="pt-5 space-y-6">
 
-                {/* Selling price hero */}
+                {/* Price hero */}
                 <div className={`grid gap-3 ${result.applyVicRebate ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-2 sm:grid-cols-3"}`}>
-                  <ResultCard label="Total (Ex-GST)"   value={fmt(result.totalExGst)}    />
-                  <ResultCard label="Total (Incl. GST)" value={fmt(result.totalInclGst)}  />
-                  <ResultCard label="After STC rebate"  value={fmt(result.sellingPrice)}  highlight large />
+                  <ResultCard label="Total (Ex-GST)"    value={fmt(result.totalExGst)} />
+                  <ResultCard label="Total (Incl. GST)" value={fmt(result.totalInclGst)} />
+                  <ResultCard label="After STC rebate"  value={fmt(result.sellingPrice)} highlight large />
                   {result.applyVicRebate && (
-                    <ResultCard label="After VIC rebate" value={fmt(result.afterVic)} accent="green" large />
+                    <ResultCard label="After VIC rebate" value={fmt(result.afterVic)} accent="blue" large />
                   )}
                 </div>
 
-                {/* STC summary */}
+                {/* STC cards */}
                 <div className="grid grid-cols-3 gap-3">
                   <ResultCard label="Solar STCs"   value={String(result.solarStcs)}  accent="blue"  sub={fmt(result.solarRebate)} />
                   <ResultCard label="Battery STCs" value={String(result.battStcs)}   accent="amber" sub={hasBattery ? fmt(result.battRebate) : "N/A"} />
                   <ResultCard label="Total STCs"   value={String(result.totalStcs)}  highlight      sub={fmt(result.totalStcVal)} />
                 </div>
 
-                {/* Full cost breakdown */}
+                {/* Cost breakdown */}
                 <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">Cost breakdown</p>
 
-                  <SectionLabel icon={Sun} label="Solar" color="blue" />
-                  <div className="mt-2 mb-4">
-                    <BRow label={`Panel cost (0.25 × ${result.kw} kW × 1000)`}          value={fmt(result.panelCost)} />
-                    <BRow label={`Racking (ceil(${result.panels}÷3) × $100)`}           value={fmt(result.racking)} />
-                    <BRow label="Inverter"                                               value={fmt(result.invCost)} />
-                    <BRow label={`Panel install (0.30 × ${result.kw} kW × 1000)`}      value={fmt(result.panelInstall)} />
-                  </div>
+                  {hasSolar && (
+                    <>
+                      <SectionLabel icon={Sun} label="Solar" color="blue" />
+                      <div className="mt-2 mb-4">
+                        <BRow label={`Panel cost (${result.kw.toFixed(3)} kW × 1000 × ${panelPriceCw}c/W ÷ 100)`} value={fmt(result.panelCost)} />
+                        <BRow label={`Racking (ceil(${result.panels}÷3) × $100)`}                                  value={fmt(result.racking)} />
+                        <BRow label={`Inverter (${inverterKw} kW)`}                                                value={fmt(result.invCost)} />
+                        <BRow label={`Panel install (0.30 × ${result.kw.toFixed(3)} kW × 1000)`}                  value={fmt(result.panelInstall)} />
+                      </div>
+                    </>
+                  )}
 
-                  {hasBattery && result.battStcs > 0 && (
+                  {hasBattery && (
                     <>
                       <SectionLabel icon={BatteryCharging} label="Battery" color="amber" />
                       <div className="mt-2 mb-4">
@@ -757,32 +905,30 @@ export default function STCCalculatorPage() {
 
                   <SectionLabel icon={DollarSign} label="Other" color="slate" />
                   <div className="mt-2 mb-4">
-                    <BRow label="Elec. misc."   value={fmt(result.elecMisc)} />
-                    <BRow label="Freight"        value={fmt(result.freight)} />
-                    <BRow label="Commission"     value={fmt(result.commission)} />
+                    <BRow label="Elec. misc."  value={fmt(result.elecMisc)} />
+                    <BRow label="Freight"       value={fmt(result.freight)} />
+                    <BRow label="Commission"    value={fmt(result.commission)} />
                   </div>
 
                   {result.extraBreakdown.length > 0 && (
                     <>
                       <SectionLabel icon={DollarSign} label="Extra costs" color="slate" />
                       <div className="mt-2 mb-4">
-                        {result.extraBreakdown.map(e => (
-                          <BRow key={e.label} label={e.label} value={fmt(e.cost)} indent />
-                        ))}
+                        {result.extraBreakdown.map(e => <BRow key={e.label} label={e.label} value={fmt(e.cost)} indent />)}
                         <BRow label="Extra costs total" value={fmt(result.extraTotal)} />
                       </div>
                     </>
                   )}
 
-                  <div className="border-t border-border pt-3 space-y-0">
-                    <BRow label="Total (Ex-GST)"           value={fmt(result.totalExGst)} />
-                    <BRow label="GST (10%)"                value={fmt(result.gst)} />
-                    <BRow label="Total (Incl. GST)"        value={fmt(result.totalInclGst)} total />
+                  <div className="border-t border-border pt-3">
+                    <BRow label="Total (Ex-GST)"    value={fmt(result.totalExGst)} />
+                    <BRow label="GST (10%)"          value={fmt(result.gst)} />
+                    <BRow label="Total (Incl. GST)" value={fmt(result.totalInclGst)} total />
                   </div>
 
-                  <div className="border-t border-border pt-3 space-y-0 mt-3">
-                    <BRow label={`STC rebate (${result.totalStcs} STCs × $${result.stcPriceN})`} value={`– ${fmt(result.totalStcVal)}`} />
-                    <BRow label="Selling price (after STC)" value={fmt(result.sellingPrice)} total />
+                  <div className="border-t border-border pt-3 mt-3">
+                    <BRow label={`STC rebate (${result.totalStcs} STCs × $${STC_PRICE})`} value={`– ${fmt(result.totalStcVal)}`} />
+                    <BRow label="Selling price (after STC)"                               value={fmt(result.sellingPrice)} total />
                     {result.applyVicRebate && (
                       <>
                         <BRow label="VIC Solar rebate" value={`– ${fmt(VIC_REBATE)}`} />
@@ -792,29 +938,31 @@ export default function STCCalculatorPage() {
                   </div>
                 </div>
 
-                {/* STC breakdown */}
+                {/* STC detail */}
                 <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-5">
                   <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">STC calculation</p>
-                  <BRow label={`Solar: floor(${result.kw} × ${result.zoneFactor.toFixed(3)} × ${result.deemingYears} yr)`} value={`${result.solarStcs} STCs`} />
+                  {hasSolar && (
+                    <BRow label={`Solar: floor(${result.kw.toFixed(3)} × ${result.zoneFactor.toFixed(3)} × ${result.deemingYears} yr)`} value={`${result.solarStcs} STCs`} />
+                  )}
                   {hasBattery && result.battBreakdown.t1 > 0 && (
                     <>
-                      <BRow label={`Battery tier 1: ${result.battBreakdown.t1.toFixed(1)} kWh × ${result.battFactor} × 100%`} value={result.battBreakdown.r1.toFixed(2)} indent />
-                      {result.battBreakdown.t2 > 0 && <BRow label={`Battery tier 2: ${result.battBreakdown.t2.toFixed(1)} kWh × ${result.battFactor} × 60%`} value={result.battBreakdown.r2.toFixed(2)} indent />}
-                      {result.battBreakdown.t3 > 0 && <BRow label={`Battery tier 3: ${result.battBreakdown.t3.toFixed(1)} kWh × ${result.battFactor} × 15%`} value={result.battBreakdown.r3.toFixed(2)} indent />}
+                      <BRow label={`Batt. tier 1: ${result.battBreakdown.t1.toFixed(1)} kWh × ${result.battFactor} × 100%`} value={result.battBreakdown.r1.toFixed(2)} indent />
+                      {result.battBreakdown.t2 > 0 && <BRow label={`Batt. tier 2: ${result.battBreakdown.t2.toFixed(1)} kWh × ${result.battFactor} × 60%`}  value={result.battBreakdown.r2.toFixed(2)} indent />}
+                      {result.battBreakdown.t3 > 0 && <BRow label={`Batt. tier 3: ${result.battBreakdown.t3.toFixed(1)} kWh × ${result.battFactor} × 15%`}  value={result.battBreakdown.r3.toFixed(2)} indent />}
                       <BRow label={`Battery total (floored from ${(result.battBreakdown.r1+result.battBreakdown.r2+result.battBreakdown.r3).toFixed(2)})`} value={`${result.battStcs} STCs`} />
                     </>
                   )}
-                  <BRow label={`Total STCs × $${result.stcPriceN}/STC`} value={fmt(result.totalStcVal)} total />
+                  <BRow label={`Total STCs × $${STC_PRICE}/STC`} value={fmt(result.totalStcVal)} total />
                 </div>
 
                 <p className="text-xs text-muted-foreground border-t border-border pt-3 leading-relaxed">
-                  * Panel cost: $0.25/W · Racking: ceil(panels÷3) × $100 · Panel install: $0.30/W · Battery cost: modules × cost per module · GST: 10% · STC zone from postcode per CER table · Deeming years from install date to 31 Dec 2030. All prices ex-GST unless stated.
+                  * System capacity = panels × wattage ÷ 1000 · Panel cost = kW × 1000 × c/W ÷ 100 · Racking = ceil(panels÷3) × $100 · Panel install = $0.30/W · STC price fixed at ${STC_PRICE}/STC · Zone from postcode per CER table · Deeming years from install date to 31 Dec 2030.
                 </p>
               </CardContent>
             </Card>
           )}
 
-          {/* ── Send quote ── */}
+          {/* ── Send Quote ── */}
           {result && (
             <Card className="border shadow-md">
               <CardHeader className="pb-4 border-b border-border">
@@ -853,14 +1001,13 @@ export default function STCCalculatorPage() {
                     <textarea id="sNotes" value={notes} onChange={e => setNotes(e.target.value)} placeholder="Additional notes..."
                       className="w-full min-h-[80px] rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none" />
                   </div>
-                  {/* Summary */}
                   <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl px-4 py-3 text-xs text-muted-foreground space-y-1 border border-border">
                     <p className="font-medium text-foreground text-sm mb-1">Quote summary</p>
-                    <p>System: {systemKw} kW · Postcode {postcode} ({result.zoneLabel}) · {installDate}</p>
+                    {hasSolar && <p>Solar: {result.kw.toFixed(3)} kW ({numPanels} × {panelWattage}W) · {postcode} ({result.zoneLabel}) · {installDate}</p>}
                     {hasBattery && <p>Battery: {battKwh} kWh · {battModules} module(s)</p>}
                     {result.extraBreakdown.length > 0 && <p>Extras: {result.extraBreakdown.map(e => e.label).join(", ")}</p>}
                     <p>Total incl. GST: <span className="text-foreground font-semibold">{fmt(result.totalInclGst)}</span> · STC rebate: <span className="text-primary font-semibold">– {fmt(result.totalStcVal)}</span></p>
-                    <p>Selling price: <span className="text-primary font-semibold">{fmt(result.sellingPrice)}</span>{result.applyVicRebate ? ` · After VIC rebate: ${fmt(result.afterVic)}` : ""}</p>
+                    <p>Selling price: <span className="text-primary font-semibold">{fmt(result.sellingPrice)}</span>{result.applyVicRebate ? ` · After VIC: ${fmt(result.afterVic)}` : ""}</p>
                   </div>
                   {sendStatus === "error" && <p className="text-red-600 text-sm">Something went wrong. Please try again.</p>}
                   <Button type="submit" size="lg" className="w-full md:w-auto" disabled={sendStatus === "sending"}>
