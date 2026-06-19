@@ -932,7 +932,7 @@ function Calculator() {
                 {/* Commission + Margin highlight */}
                 {result.commissionValue > 0 && (
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="rounded-xl p-4 text-center space-y-1 border bg-slate-800 dark:bg-slate-900 border-slate-700">
+                    <div className="rounded-xl p-4 text-center space-y-1 border bg-primary dark:bg-slate-900 border-slate-700">
                       <p className="text-xs text-slate-400 uppercase tracking-wider leading-tight">Commission</p>
                       <p className="text-xl font-bold text-white">{fmt(result.commissionValue)}</p>
                     </div>
