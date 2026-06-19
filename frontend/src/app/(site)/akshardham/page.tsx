@@ -104,7 +104,7 @@ type FixedExtraKey =
 type VariableExtraKey =
   | "multipleStrings" | "accessHire"
   | "tilt" | "evCharger" | "hotWaterUnit"
-  | "panelsLandscape" | "extraCableRun";
+  | "panelsLandscape" | "extraCableRun" | "commission";
 
 type ExtraKey = FixedExtraKey | VariableExtraKey;
 
@@ -130,6 +130,7 @@ const EXTRA_COSTS: Record<ExtraKey, ExtraConfig> = {
   hotWaterUnit:       { label: "Hot water unit",          cost: null },
   panelsLandscape:    { label: "Panels in landscape",     cost: null },
   extraCableRun:      { label: "Extra cable run",         cost: null },
+  commission:         { label: "Commission",              cost: null },
 };
 
 function todayStr() { return new Date().toISOString().split("T")[0]; }
@@ -345,6 +346,10 @@ function Calculator() {
   const systemKw    = ((parseInt(numPanels) || 0) * (parseFloat(panelWattage) || 0)) / 1000;
   const panelCostAuto = systemKw * 1000 * ((parseFloat(panelPriceCw) || 0) / 100); // cW → $/W
 
+  // ── Battery-only inverter (shown when battery is on but solar is off) ─────
+  const [battInverterKw, setBattInverterKw]     = useState("5");
+  const [battInverterCost, setBattInverterCost] = useState("1906");
+
   // ── Battery ──────────────────────────────────────────────────────────────
   const [hasBattery, setHasBattery]         = useState(false);
   const [battKwh, setBattKwh]               = useState("10");
@@ -362,13 +367,24 @@ function Calculator() {
     partialBackup: false, fullBackup: false, tileRoof: false,
     multipleStrings: false, accessHire: false,
     tilt: false, evCharger: false, hotWaterUnit: false,
-    panelsLandscape: false, extraCableRun: false,
+    panelsLandscape: false, extraCableRun: false, commission: true,
   });
   const [extraCustomCosts, setExtraCustomCosts] = useState<Record<string, string>>({});
-  // "Other" extra
-  const [otherEnabled, setOtherEnabled] = useState(false);
-  const [otherName, setOtherName]       = useState("");
-  const [otherCost, setOtherCost]       = useState("");
+  // "Other" extras — array so user can add multiple
+  const [otherItems, setOtherItems] = useState<{name: string; cost: string}[]>([]);
+
+  function addOtherItem() {
+    setOtherItems(p => [...p, { name: "", cost: "" }]);
+    setResult(null);
+  }
+  function updateOtherItem(i: number, field: "name" | "cost", val: string) {
+    setOtherItems(p => p.map((item, idx) => idx === i ? { ...item, [field]: val } : item));
+    setResult(null);
+  }
+  function removeOtherItem(i: number) {
+    setOtherItems(p => p.filter((_, idx) => idx !== i));
+    setResult(null);
+  }
 
   // ── Client ───────────────────────────────────────────────────────────────
   const [clientName, setClientName]   = useState("");
@@ -398,7 +414,8 @@ function Calculator() {
   function computeQuote() {
     const kw          = systemKw;
     const panels      = parseInt(numPanels) || 0;
-    const invCost     = parseFloat(inverterCost) || 0;
+    // If battery only, use the battery-section inverter cost
+    const invCost     = hasSolar ? (parseFloat(inverterCost) || 0) : (hasBattery ? (parseFloat(battInverterCost) || 0) : 0);
     const battKwhN    = hasBattery ? (parseFloat(battKwh) || 0) : 0;
     const modules     = hasBattery ? (parseInt(battModules) || 0) : 0;
     const modCost     = hasBattery ? (parseFloat(battModuleCost) || 0) : 0;
@@ -415,7 +432,6 @@ function Calculator() {
     // Shared
     const elecMisc   = 400;
     const freight    = 300;
-    const commission = 1500;
 
     // Extra costs
     let extraTotal = 0;
@@ -428,16 +444,18 @@ function Calculator() {
         : (parseFloat(extraCustomCosts[k] || "0") || 0);
       if (cost > 0) { extraTotal += cost; extraBreakdown.push({ label: cfg.label, cost }); }
     });
-    // Other
-    const otherCostN = otherEnabled ? (parseFloat(otherCost) || 0) : 0;
-    if (otherEnabled && otherCostN > 0) {
-      extraTotal += otherCostN;
-      extraBreakdown.push({ label: otherName || "Other", cost: otherCostN });
-    }
+    // Other items (multiple)
+    otherItems.forEach(item => {
+      const c = parseFloat(item.cost) || 0;
+      if (c > 0) {
+        extraTotal += c;
+        extraBreakdown.push({ label: item.name || "Other", cost: c });
+      }
+    });
 
     const totalExGst   = panelCost + racking + invCost + batteryCost
                        + panelInstall + battInst + elecMisc + freight
-                       + commission + extraTotal;
+                       + extraTotal;
     const gst          = totalExGst * 0.1;
     const totalInclGst = totalExGst + gst;
 
@@ -461,7 +479,7 @@ function Calculator() {
 
     return {
       panelCost, racking, invCost, batteryCost, panelInstall,
-      battInst, elecMisc, freight, commission, extraTotal, extraBreakdown,
+      battInst, elecMisc, freight, extraTotal, extraBreakdown,
       totalExGst, gst, totalInclGst,
       solarStcs, solarRebate, battStcs, battRebate,
       totalStcs, totalStcVal, sellingPrice, afterVic,
@@ -494,28 +512,29 @@ function Calculator() {
         install_date:       installDate,
         deeming_years:      String(result.deemingYears),
         calculator_mode:    hasSolar && hasBattery ? "Solar PV + Battery" : hasBattery ? "Battery only" : "Solar PV only",
-        system_kw:          `${result.kw.toFixed(3)} kW`,
-        num_panels:         numPanels,
-        panel_wattage:      `${panelWattage} W`,
-        panel_price_cw:     `${panelPriceCw} c/W`,
-        inverter_kw:        `${inverterKw} kW`,
-        inverter_cost:      fmt(parseFloat(inverterCost) || 0),
-        panel_cost:         fmt(result.panelCost),
-        racking_cost:       fmt(result.racking),
-        panel_install:      fmt(result.panelInstall),
-        solar_stcs:         String(result.solarStcs),
-        solar_rebate:       fmt(result.solarRebate),
+        // Solar fields — only when solar is on
+        system_kw:          hasSolar ? `${result.kw.toFixed(3)} kW` : "N/A",
+        num_panels:         hasSolar ? numPanels : "N/A",
+        panel_wattage:      hasSolar ? `${panelWattage} W` : "N/A",
+        panel_price_cw:     hasSolar ? `${panelPriceCw} c/W` : "N/A",
+        inverter_kw:        hasSolar ? `${inverterKw} kW` : (hasBattery ? `${battInverterKw} kW` : "N/A"),
+        inverter_cost:      hasSolar ? fmt(parseFloat(inverterCost) || 0) : (hasBattery ? fmt(parseFloat(battInverterCost) || 0) : "N/A"),
+        panel_cost:         hasSolar ? fmt(result.panelCost) : "N/A",
+        racking_cost:       hasSolar ? fmt(result.racking) : "N/A",
+        panel_install:      hasSolar ? fmt(result.panelInstall) : "N/A",
+        solar_stcs:         hasSolar ? String(result.solarStcs) : "N/A",
+        solar_rebate:       hasSolar ? fmt(result.solarRebate) : "N/A",
+        // Battery fields — only when battery is on
         battery_kwh:        hasBattery ? `${battKwh} kWh` : "N/A",
         battery_modules:    hasBattery ? `${battModules} × $${battModuleCost}` : "N/A",
         battery_cost:       hasBattery ? fmt(result.batteryCost) : "N/A",
         battery_install:    hasBattery ? fmt(result.battInst) : "N/A",
         battery_factor:     hasBattery ? `${result.battFactor} STCs/kWh` : "N/A",
         battery_period:     hasBattery ? result.battPeriodLabel : "N/A",
-        battery_stcs:       String(result.battStcs),
+        battery_stcs:       hasBattery ? String(result.battStcs) : "N/A",
         battery_rebate:     hasBattery ? fmt(result.battRebate) : "N/A",
         elec_misc:          fmt(result.elecMisc),
         freight:            fmt(result.freight),
-        commission:         fmt(result.commission),
         extras:             result.extraBreakdown.length > 0
                               ? result.extraBreakdown.map(e => `${e.label}: ${fmt(e.cost)}`).join(", ")
                               : "None",
@@ -709,6 +728,19 @@ function Calculator() {
                     prefix="$" step="1" tooltip="Cost per battery module. Defaults to $2,170." />
                   <Field label="Battery install cost" value={battInstallCost} onChange={v => { setBattInstallCost(v); setResult(null); }}
                     prefix="$" step="1" tooltip="Labour cost to install battery. Defaults to $2,000." />
+                  {/* Inverter fields — only shown when battery is on and solar is off */}
+                  {!hasSolar && (
+                    <>
+                      <Field label="Inverter size" value={battInverterKw}
+                        onChange={v => { setBattInverterKw(v); setResult(null); }}
+                        unit="kW" step="0.5"
+                        tooltip="Inverter size for battery-only installation." />
+                      <Field label="Inverter cost" value={battInverterCost}
+                        onChange={v => { setBattInverterCost(v); setResult(null); }}
+                        prefix="$" step="1"
+                        tooltip="Cost of inverter for battery-only installation. Defaults to $1,906." />
+                    </>
+                  )}
                 </div>
                 {battKwhN > 0 && (
                   <div className="rounded-xl bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 px-4 py-3 space-y-2">
@@ -767,7 +799,7 @@ function Calculator() {
 
               {/* Variable cost extras */}
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mt-4 mb-1">Variable costs</p>
-              {(["multipleStrings","accessHire","tilt","evCharger","hotWaterUnit","panelsLandscape","extraCableRun"] as VariableExtraKey[]).map(k => {
+              {(["multipleStrings","accessHire","tilt","evCharger","hotWaterUnit","panelsLandscape","extraCableRun","commission"] as VariableExtraKey[]).map(k => {
                 const cfg = EXTRA_COSTS[k]; const isOn = extras[k];
                 return (
                   <div key={k} className={`flex items-center justify-between rounded-xl border px-4 py-3 transition-all ${isOn ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
@@ -792,34 +824,48 @@ function Calculator() {
                 );
               })}
 
-              {/* Other — name + amount */}
-              <div className={`flex flex-col gap-2 rounded-xl border px-4 py-3 transition-all ${otherEnabled ? "border-primary/30 bg-primary/5" : "border-border bg-white dark:bg-slate-900"}`}>
+              {/* Other — multiple items with + button */}
+              <div className="rounded-xl border border-border bg-white dark:bg-slate-900 px-4 py-3 space-y-3">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <button onClick={() => { setOtherEnabled(p => !p); setResult(null); }}
-                      className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${otherEnabled ? "bg-primary" : "bg-slate-200 dark:bg-slate-700"}`}>
-                      <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${otherEnabled ? "translate-x-4" : "translate-x-0.5"}`} />
-                    </button>
-                    <span className="text-sm font-medium text-foreground">Other</span>
-                  </div>
+                  <span className="text-sm font-medium text-foreground">Other</span>
+                  <button
+                    type="button"
+                    onClick={addOtherItem}
+                    className="inline-flex items-center gap-1 text-xs font-semibold text-primary border border-primary/30 bg-primary/5 hover:bg-primary/10 rounded-lg px-3 py-1.5 transition-colors"
+                  >
+                    <span className="text-base leading-none">+</span> Add item
+                  </button>
                 </div>
-                {otherEnabled && (
-                  <div className="grid grid-cols-2 gap-2 mt-1">
-                    <div className="space-y-1">
-                      <label className="text-xs text-muted-foreground">Description</label>
-                      <input type="text" value={otherName} onChange={e => { setOtherName(e.target.value); setResult(null); }}
-                        placeholder="e.g. Custom cable tray"
-                        className="w-full h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
-                    </div>
-                    <div className="space-y-1">
-                      <label className="text-xs text-muted-foreground">Amount ($)</label>
-                      <input type="number" min="0" step="50" value={otherCost}
-                        onChange={e => { setOtherCost(e.target.value); setResult(null); }}
-                        placeholder="0"
-                        className="w-full h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
-                    </div>
-                  </div>
+                {otherItems.length === 0 && (
+                  <p className="text-xs text-muted-foreground">Click + to add a custom cost item.</p>
                 )}
+                {otherItems.map((item, i) => (
+                  <div key={i} className="grid grid-cols-[1fr_auto_auto] gap-2 items-end">
+                    <div className="grid grid-cols-2 gap-2">
+                      <div className="space-y-1">
+                        <label className="text-xs text-muted-foreground">Description</label>
+                        <input type="text" value={item.name}
+                          onChange={e => updateOtherItem(i, "name", e.target.value)}
+                          placeholder="e.g. Custom cable tray"
+                          className="w-full h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
+                      </div>
+                      <div className="space-y-1">
+                        <label className="text-xs text-muted-foreground">Amount ($)</label>
+                        <input type="number" min="0" step="50" value={item.cost}
+                          onChange={e => updateOtherItem(i, "cost", e.target.value)}
+                          placeholder="0"
+                          className="w-full h-8 rounded-lg border border-input bg-slate-50 dark:bg-slate-800 text-foreground px-2 text-xs focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => removeOtherItem(i)}
+                      className="h-8 w-8 flex items-center justify-center rounded-lg border border-red-200 text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors text-sm"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
               </div>
 
               {/* VIC Rebate */}
@@ -907,7 +953,6 @@ function Calculator() {
                   <div className="mt-2 mb-4">
                     <BRow label="Elec. misc."  value={fmt(result.elecMisc)} />
                     <BRow label="Freight"       value={fmt(result.freight)} />
-                    <BRow label="Commission"    value={fmt(result.commission)} />
                   </div>
 
                   {result.extraBreakdown.length > 0 && (
