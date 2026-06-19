@@ -435,6 +435,7 @@ function Calculator() {
 
     // Extra costs
     let extraTotal = 0;
+    let commissionValue = 0; // tracked separately for margin calc
     const extraBreakdown: { label: string; cost: number }[] = [];
     (Object.keys(extras) as ExtraKey[]).forEach(k => {
       if (!extras[k]) return;
@@ -442,7 +443,11 @@ function Calculator() {
       const cost = cfg.cost !== null
         ? cfg.cost
         : (parseFloat(extraCustomCosts[k] || "0") || 0);
-      if (cost > 0) { extraTotal += cost; extraBreakdown.push({ label: cfg.label, cost }); }
+      if (cost > 0) {
+        extraTotal += cost;
+        extraBreakdown.push({ label: cfg.label, cost });
+        if (k === "commission") commissionValue = cost;
+      }
     });
     // Other items (multiple)
     otherItems.forEach(item => {
@@ -477,6 +482,11 @@ function Calculator() {
     const sellingPrice = totalInclGst - totalStcVal;
     const afterVic     = applyVicRebate ? sellingPrice - VIC_REBATE : sellingPrice;
 
+    // Margin % = Commission / (After STC Rebate) × 100
+    const marginPct = commissionValue > 0 && sellingPrice > 0
+      ? (commissionValue / sellingPrice) * 100
+      : 0;
+
     return {
       panelCost, racking, invCost, batteryCost, panelInstall,
       battInst, elecMisc, freight, extraTotal, extraBreakdown,
@@ -487,6 +497,7 @@ function Calculator() {
       battPeriodLabel: INSTALL_PERIOD_OPTIONS.find(o => o.value === battPeriod)?.label ?? battPeriod,
       zoneFactor, zoneLabel: zoneInfo?.label ?? "Zone not detected",
       deemingYears, kw, panels, battKwhN, battFactor, applyVicRebate,
+      commissionValue, marginPct,
     };
   }
 
@@ -535,6 +546,8 @@ function Calculator() {
         battery_rebate:     hasBattery ? fmt(result.battRebate) : "N/A",
         elec_misc:          fmt(result.elecMisc),
         freight:            fmt(result.freight),
+        commission:         result.commissionValue > 0 ? fmt(result.commissionValue) : "N/A",
+        margin_pct:         result.commissionValue > 0 ? `${result.marginPct.toFixed(1)}%` : "N/A",
         extras:             result.extraBreakdown.length > 0
                               ? result.extraBreakdown.map(e => `${e.label}: ${fmt(e.cost)}`).join(", ")
                               : "None",
@@ -915,6 +928,23 @@ function Calculator() {
                     <ResultCard label="After VIC rebate" value={fmt(result.afterVic)} accent="blue" large />
                   )}
                 </div>
+
+                {/* Commission + Margin highlight */}
+                {result.commissionValue > 0 && (
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-xl p-4 text-center space-y-1 border bg-slate-800 dark:bg-slate-900 border-slate-700">
+                      <p className="text-xs text-slate-400 uppercase tracking-wider leading-tight">Commission</p>
+                      <p className="text-xl font-bold text-white">{fmt(result.commissionValue)}</p>
+                    </div>
+                    <div className={`rounded-xl p-4 text-center space-y-1 border ${result.marginPct >= 15 ? "bg-blue-50 border-blue-200 dark:bg-blue-950/30 dark:border-blue-800" : "bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700"}`}>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wider leading-tight">Margin %</p>
+                      <p className={`text-xl font-bold ${result.marginPct >= 15 ? "text-blue-600 dark:text-blue-400" : "text-foreground"}`}>
+                        {result.marginPct.toFixed(1)}%
+                      </p>
+                      <p className="text-xs text-muted-foreground">commission ÷ after STC rebate</p>
+                    </div>
+                  </div>
+                )}
 
                 {/* STC cards */}
                 <div className="grid grid-cols-3 gap-3">
