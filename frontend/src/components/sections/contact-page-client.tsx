@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, CheckCircle, X } from "lucide-react";
 import type { ContactContent, SiteContent } from "@/sanity/fallbacks";
 
-const SERVICE_ID = "service_6caf4r6";
+const SERVICE_ID = "service_t5q2c7h";
 const TEMPLATE_ID = "template_rt7qy7g";
 const PUBLIC_KEY = "rgu-gpZuMbktPsuRs";
 
