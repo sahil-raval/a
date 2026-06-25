@@ -387,9 +387,9 @@ function Calculator() {
   }
 
   // ── Client ───────────────────────────────────────────────────────────────
-  const [clientName, setClientName]   = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
+  // const [clientName, setClientName]   = useState("");
+  // const [clientEmail, setClientEmail] = useState("");
+  // const [clientPhone, setClientPhone] = useState("");
   const [refId, setRefId]             = useState("");
   const [notes, setNotes]             = useState("");
 
@@ -513,9 +513,9 @@ function Calculator() {
     setSendStatus("sending");
     try {
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, {
-        client_name:        clientName,
-        client_email:       clientEmail,
-        client_phone:       clientPhone || "N/A",
+        // client_name:        clientName,
+        // client_email:       clientEmail,
+        // client_phone:       clientPhone || "N/A",
         reference_id:       refId || "N/A",
         notes:              notes || "None",
         postcode,
@@ -564,7 +564,8 @@ function Calculator() {
       }, PUBLIC_KEY);
       setSendStatus("success");
       setShowPopup(true);
-      setClientName(""); setClientEmail(""); setClientPhone(""); setRefId(""); setNotes("");
+      // setClientName(""); setClientEmail(""); setClientPhone(""); 
+      setRefId(""); setNotes("");
     } catch { setSendStatus("error"); }
   }
 
@@ -912,7 +913,7 @@ function Calculator() {
                   <div>
                     <CardTitle className="text-lg">Quote summary</CardTitle>
                     <p className="text-xs text-muted-foreground mt-0.5">
-                      {clientName ? `For ${clientName}` : "Estimate"}{refId ? ` · Ref: ${refId}` : ""} · Postcode {postcode} ({result.zoneLabel}) · {result.deemingYears} yr deeming
+                      { "Estimate"}{refId ? ` · Ref: ${refId}` : ""} · Postcode {postcode} ({result.zoneLabel}) · {result.deemingYears} yr deeming
                     </p>
                   </div>
                 </div>
@@ -1054,18 +1055,7 @@ function Calculator() {
               <CardContent className="pt-5">
                 <form onSubmit={handleSend} className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="sName">Client name</Label>
-                      <Input id="sName" value={clientName} onChange={e => setClientName(e.target.value)} placeholder="John Smith" required />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="sEmail">Email address</Label>
-                      <Input id="sEmail" type="email" value={clientEmail} onChange={e => setClientEmail(e.target.value)} placeholder="john@example.com" required />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor="sPhone">Phone</Label>
-                      <Input id="sPhone" type="tel" value={clientPhone} onChange={e => setClientPhone(e.target.value)} placeholder="+61 400 000 000" />
-                    </div>
+
                     <div className="space-y-1.5">
                       <Label htmlFor="sRef">Reference ID</Label>
                       <Input id="sRef" value={refId} onChange={e => setRefId(e.target.value)} placeholder="APM-2026-001 (optional)" />
