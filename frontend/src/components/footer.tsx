@@ -4,6 +4,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { getFooter, getSite } from "@/sanity/queries";
 import { socialIconMap } from "@/sanity/icons";
 
+
 export default async function Footer() {
   const [footer, site] = await Promise.all([getFooter(), getSite()]);
   const year = new Date().getFullYear();

@@ -1,36 +1,30 @@
-import { createClient } from "next-sanity";
-import { apiVersion, dataset, projectId, isSanityConfigured } from "./env";
+import { createClient } from "@sanity/client";
 
-// We create a client even when not configured (with a placeholder) so imports
-// don't fail. All fetch helpers gate on `isSanityConfigured` before calling.
-export const client = createClient({
-  projectId: projectId || "placeholder",
-  dataset: dataset || "production",
-  apiVersion,
-  useCdn: true,
-  perspective: "published",
-});
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || "2024-10-01";
 
-/**
- * Safe fetch wrapper. Returns `fallback` immediately when Sanity is not
- * configured or when the request fails. This lets every page render with
- * hardcoded defaults until the CMS is populated.
- */
+export const isSanityConfigured = !!projectId;
+
+export const client = projectId
+  ? createClient({
+      projectId,
+      dataset,
+      apiVersion,
+      useCdn: false,
+      perspective: "published",
+    })
+  : null;
+
 export async function sanityFetch<T>(
   query: string,
-  params: Record<string, unknown> = {},
-  fallback: T,
-): Promise<T> {
-  if (!isSanityConfigured) return fallback;
+  params?: Record<string, unknown>
+): Promise<T | null> {
+  if (!client) return null;
   try {
-    const result = await client.fetch<T>(query, params, {
-      next: { revalidate: 30 },
-    });
-    if (result === null || result === undefined) return fallback;
-    return result;
+    return await client.fetch<T>(query, params ?? {});
   } catch (err) {
-    // Surface the error in dev logs but never crash the site.
-    console.warn("[sanity] fetch failed, using fallback:", err);
-    return fallback;
+    console.warn("[Sanity] Fetch error:", err);
+    return null;
   }
 }
