@@ -18,13 +18,14 @@ export const client = projectId
 
 export async function sanityFetch<T>(
   query: string,
-  params?: Record<string, unknown>
+  params?: Record<string, unknown>,
+  _fallback?: T | null
 ): Promise<T | null> {
-  if (!client) return null;
+  if (!client) return _fallback ?? null;
   try {
     return await client.fetch<T>(query, params ?? {});
   } catch (err) {
     console.warn("[Sanity] Fetch error:", err);
-    return null;
+    return _fallback ?? null;
   }
 }
