@@ -14,4 +14,4 @@ export const writeToken = process.env.SANITY_API_WRITE_TOKEN || "";
 export const isSanityConfigured = Boolean(projectId);
 
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://apmenergy.com.au";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://www.apmenergy.com.au";

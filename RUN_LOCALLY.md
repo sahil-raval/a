@@ -53,7 +53,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-10-01
 SANITY_API_READ_TOKEN=
 SANITY_API_WRITE_TOKEN=sk...PASTE_YOUR_ADMIN_TOKEN_HERE...
-NEXT_PUBLIC_SITE_URL=https://apmenergy.com.au
+NEXT_PUBLIC_SITE_URL=https://www.apmenergy.com.au
 ```
 
 > **Important**: never commit `.env` to a public Git repo. It is already in `.gitignore`.

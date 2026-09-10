@@ -40,7 +40,7 @@ NEXT_PUBLIC_SANITY_DATASET=production
 NEXT_PUBLIC_SANITY_API_VERSION=2024-10-01
 SANITY_API_READ_TOKEN=                          # leave empty (we use public published data)
 SANITY_API_WRITE_TOKEN=skXXXXXXXXXXXXXXXXXXXXXX # ← from Step 2 — KEEP SECRET
-NEXT_PUBLIC_SITE_URL=https://apmenergy.com.au
+NEXT_PUBLIC_SITE_URL=https://www.apmenergy.com.au
 ```
 
 Then restart the frontend:
