@@ -3,6 +3,21 @@ import { HardHat, Cpu, FileText, CheckCircle2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SubpageHero } from "@/components/sections/subpage-hero";
+import type { Metadata } from "next";
+import { buildMetadata, getServiceBySlug } from "@/sanity/queries";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const service = await getServiceBySlug("engineering") as {
+    seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: unknown; noIndex?: boolean };
+  } | null;
+
+  return buildMetadata(
+    service?.seo,
+    "Engineering Services",
+    "Technical design and engineering excellence, from feasibility through to commissioning, built on Australian standards and best practice.",
+    "/services/engineering"
+  );
+}
 
 const capabilities = [
   {

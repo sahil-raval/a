@@ -2,6 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Sun, Battery, Zap, ArrowRight, BarChart3, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
+import { buildMetadata, getServiceBySlug } from "@/sanity/queries";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const service = await getServiceBySlug("solar-and-battery") as {
+    seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: unknown; noIndex?: boolean };
+  } | null;
+
+  return buildMetadata(
+    service?.seo,
+    "Solar & Battery Solutions",
+    "Generate your own clean energy and store it for when you need it most. Reduce reliance on the grid and slash your bills.",
+    "/services/solar-and-battery"
+  );
+}
 
 export default function SolarPage() {
   return (

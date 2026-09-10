@@ -4,6 +4,21 @@ import { Zap, Home, Building2, Shield, Wrench, ArrowRight, CheckCircle2 } from "
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SubpageHero } from "@/components/sections/subpage-hero";
+import type { Metadata } from "next";
+import { buildMetadata, getServiceBySlug } from "@/sanity/queries";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const service = await getServiceBySlug("ev-chargers") as {
+    seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: unknown; noIndex?: boolean };
+  } | null;
+
+  return buildMetadata(
+    service?.seo,
+    "EV Chargers",
+    "Supply and installation of electric vehicle charging solutions for homes and businesses across Australia.",
+    "/services/ev-chargers"
+  );
+}
 
 const services = [
   {

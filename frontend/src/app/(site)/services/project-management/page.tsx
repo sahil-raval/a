@@ -3,6 +3,21 @@ import { ClipboardList, Users, Clock, CheckCircle2, ArrowRight, Shield } from "l
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SubpageHero } from "@/components/sections/subpage-hero";
+import type { Metadata } from "next";
+import { buildMetadata, getServiceBySlug } from "@/sanity/queries";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const service = await getServiceBySlug("project-management") as {
+    seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: unknown; noIndex?: boolean };
+  } | null;
+
+  return buildMetadata(
+    service?.seo,
+    "Project Management",
+    "End-to-end project delivery with the precision, transparency, and accountability your investment deserves.",
+    "/services/project-management"
+  );
+}
 
 const services = [
   {

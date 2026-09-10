@@ -2,7 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Recycle, Truck, PackageCheck, Leaf, CheckCircle2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
+import { buildMetadata, getServiceBySlug } from "@/sanity/queries";
 
+export async function generateMetadata(): Promise<Metadata> {
+  const service = await getServiceBySlug("responsible-recycling") as {
+    seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: unknown; noIndex?: boolean };
+  } | null;
+
+  return buildMetadata(
+    service?.seo,
+    "Responsible Recycling",
+    "We ensure your old systems don't end up in landfill. We partner with certified recyclers to recover valuable materials and close the loop.",
+    "/services/responsible-recycling"
+  );
+}
 export default function RecyclingPage() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">

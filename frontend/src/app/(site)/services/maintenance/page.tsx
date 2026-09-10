@@ -2,6 +2,21 @@ import { Button } from "@/components/ui/button";
 import { Wrench, ShieldAlert, Clock, CheckCircle2, ArrowRight, Zap } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import type { Metadata } from "next";
+import { buildMetadata, getServiceBySlug } from "@/sanity/queries";
+
+export async function generateMetadata(): Promise<Metadata> {
+  const service = await getServiceBySlug("maintenance") as {
+    seo?: { title?: string; description?: string; keywords?: string[]; ogImage?: unknown; noIndex?: boolean };
+  } | null;
+
+  return buildMetadata(
+    service?.seo,
+    "Electrical Maintenance",
+    "Comprehensive electrical maintenance and safety checks to keep your systems running smoothly, safely, and compliantly.",
+    "/services/maintenance"
+  );
+}
 
 export default function MaintenancePage() {
   return (
