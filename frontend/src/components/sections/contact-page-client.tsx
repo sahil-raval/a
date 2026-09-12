@@ -9,6 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent } from "@/components/ui/card";
 import { MapPin, Phone, Mail, Clock, CheckCircle, X } from "lucide-react";
 import type { ContactContent, SiteContent } from "@/sanity/fallbacks";
+declare global {
+  interface Window {
+    gtag?: (...args: unknown[]) => void;
+  }
+}
 
 const SERVICE_ID = "service_t5q2c7h";
 const TEMPLATE_ID = "template_rt7qy7g";
@@ -76,25 +81,34 @@ export default function ContactPageClient({ contact, site }: ContactPageClientPr
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus("sending");
-    try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, formData, PUBLIC_KEY);
-      setStatus("success");
-      setShowPopup(true);
-      setFormData({
-        first_name: "",
-        last_name: "",
-        email: "",
-        phone: "",
-        service: "",
-        message: "",
+  e.preventDefault();
+  setStatus("sending");
+  try {
+    await emailjs.send(SERVICE_ID, TEMPLATE_ID, formData, PUBLIC_KEY);
+    setStatus("success");
+    setShowPopup(true);
+
+    // Track conversion in GA4
+    if (typeof window !== "undefined" && typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", {
+        form_name: "contact_form",
+        service_interest: formData.service || "not_specified",
       });
-    } catch (err) {
-      console.error(err);
-      setStatus("error");
     }
-  };
+
+    setFormData({
+      first_name: "",
+      last_name: "",
+      email: "",
+      phone: "",
+      service: "",
+      message: "",
+    });
+  } catch (err) {
+    console.error(err);
+    setStatus("error");
+  }
+};
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950" data-testid="contact-page">
