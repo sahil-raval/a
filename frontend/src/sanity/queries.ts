@@ -19,6 +19,10 @@ import {
   type ContactContent,
   type HowWeWorkContent,
   type ServiceContent,
+  FALLBACK_BLOG_POSTS,
+  FALLBACK_LANDING_PAGES,
+  type BlogPostContent,
+  type LandingPageContent,
 } from "./fallbacks";
 
 /* -------------------------------------------------------------------------- */
@@ -105,7 +109,16 @@ const NAV_QUERY = `*[_type == "navigation"][0]{ primaryLinks, servicesMenuItems,
 
 export async function getNavigation(): Promise<NavContent> {
   const raw = await sanityFetch<Partial<NavContent> | null>(NAV_QUERY, {}, null);
-  return merge(FALLBACK_NAV, raw);
+  const nav = merge(FALLBACK_NAV, raw);
+  // Guarantee a Blog link exists in the primary navigation, regardless of CMS data.
+  const links = [...(nav.primaryLinks || [])];
+  if (!links.some((l) => l.href === "/blog")) {
+    const contactIdx = links.findIndex((l) => l.href === "/contact");
+    const blogLink = { label: "Blog", href: "/blog" };
+    if (contactIdx >= 0) links.splice(contactIdx, 0, blogLink);
+    else links.push(blogLink);
+  }
+  return { ...nav, primaryLinks: links };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -116,7 +129,20 @@ const FOOTER_QUERY = `*[_type == "footer"][0]{ description, linkColumns, copyrig
 
 export async function getFooter(): Promise<FooterContent> {
   const raw = await sanityFetch<Partial<FooterContent> | null>(FOOTER_QUERY, {}, null);
-  return merge(FALLBACK_FOOTER, raw);
+  const footer = merge(FALLBACK_FOOTER, raw);
+  // Guarantee a Blog link appears in a footer column (prefer the "Company" column).
+  const columns = (footer.linkColumns || []).map((c) => ({ ...c, links: [...(c.links || [])] }));
+  const hasBlog = columns.some((c) => c.links.some((l) => l.href === "/blog"));
+  if (!hasBlog && columns.length) {
+    const target =
+      columns.find((c) => c.links.some((l) => l.href === "/about" || l.href === "/contact")) ||
+      columns[columns.length - 1];
+    const aboutIdx = target.links.findIndex((l) => l.href === "/about");
+    const blogLink = { label: "Blog", href: "/blog" };
+    if (aboutIdx >= 0) target.links.splice(aboutIdx + 1, 0, blogLink);
+    else target.links.push(blogLink);
+  }
+  return { ...footer, linkColumns: columns };
 }
 
 /* -------------------------------------------------------------------------- */
@@ -333,4 +359,118 @@ export async function getSiteSeoMetadata(): Promise<Metadata> {
     },
     icons: { icon: "/icon.png", apple: "/icon.png" },
   };
+}
+
+
+/* -------------------------------------------------------------------------- */
+/*  Blog                                                                      */
+/* -------------------------------------------------------------------------- */
+
+const BLOG_LIST_QUERY = `*[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc){
+  title,
+  "slug": slug.current,
+  excerpt, author, publishedAt, tags, category,
+  "coverImageUrl": coalesce(coverImage.asset->url, coverImage.externalUrl)
+}`;
+
+export async function getBlogPosts(): Promise<BlogPostContent[]> {
+  const raw = await sanityFetch<BlogPostContent[] | null>(BLOG_LIST_QUERY, {}, null);
+  if (!raw || raw.length === 0) return FALLBACK_BLOG_POSTS as unknown as BlogPostContent[];
+  return raw;
+}
+
+const BLOG_BY_SLUG_QUERY = `*[_type == "blogPost" && slug.current == $slug][0]{
+  title,
+  "slug": slug.current,
+  excerpt, author, publishedAt, tags, category, body,
+  "coverImageUrl": coalesce(coverImage.asset->url, coverImage.externalUrl),
+  seo
+}`;
+
+export async function getBlogPost(slug: string): Promise<BlogPostContent | null> {
+  const raw = await sanityFetch<BlogPostContent | null>(BLOG_BY_SLUG_QUERY, { slug }, null);
+  if (raw) return raw;
+  const fb = FALLBACK_BLOG_POSTS.find((p) => p.slug === slug);
+  return (fb as unknown as BlogPostContent) || null;
+}
+
+const BLOG_SLUGS_QUERY = `*[_type == "blogPost" && defined(slug.current)][].slug.current`;
+export async function getAllBlogSlugs(): Promise<string[]> {
+  const slugs = await sanityFetch<string[] | null>(BLOG_SLUGS_QUERY, {}, null);
+  if (slugs && slugs.length > 0) return slugs;
+  return FALLBACK_BLOG_POSTS.map((p) => p.slug);
+}
+
+export function categorySlug(name: string): string {
+  return (name || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-");
+}
+
+export type BlogCategory = { name: string; slug: string; count: number };
+
+export async function getBlogCategories(): Promise<BlogCategory[]> {
+  const posts = await getBlogPosts();
+  const counts = new Map<string, number>();
+  for (const p of posts) {
+    const c = (p as any).category;
+    if (c) counts.set(c, (counts.get(c) || 0) + 1);
+  }
+  return Array.from(counts.entries())
+    .map(([name, count]) => ({ name, slug: categorySlug(name), count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+export async function getPostsByCategory(slug: string): Promise<{ name: string; posts: BlogPostContent[] }> {
+  const posts = await getBlogPosts();
+  const matched = posts.filter((p) => categorySlug((p as any).category || "") === slug);
+  const name = (matched[0] as any)?.category || slug.replace(/-/g, " ");
+  return { name, posts: matched };
+}
+
+export async function getRelatedPosts(currentSlug: string, limit = 3): Promise<BlogPostContent[]> {
+  const posts = await getBlogPosts();
+  const current = posts.find((p) => p.slug === currentSlug);
+  if (!current) return posts.filter((p) => p.slug !== currentSlug).slice(0, limit);
+  const curCat = (current as any).category;
+  const curTags: string[] = (current as any).tags || [];
+  const scored = posts
+    .filter((p) => p.slug !== currentSlug)
+    .map((p) => {
+      let score = 0;
+      if ((p as any).category && (p as any).category === curCat) score += 3;
+      const tags: string[] = (p as any).tags || [];
+      score += tags.filter((t) => curTags.includes(t)).length;
+      return { p, score };
+    })
+    .sort((a, b) => b.score - a.score);
+  return scored.slice(0, limit).map((s) => s.p);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Landing Pages                                                             */
+/* -------------------------------------------------------------------------- */
+
+const LANDING_BY_SLUG_QUERY = `*[_type == "landingPage" && slug.current == $slug && published == true][0]{
+  title,
+  "slug": slug.current,
+  published, heroHeading, heroSubheading, heroCtaLabel, heroCtaHref,
+  "heroImageUrl": coalesce(heroImage.asset->url, heroImage.externalUrl),
+  sections, seo
+}`;
+
+export async function getLandingPage(slug: string): Promise<LandingPageContent | null> {
+  const raw = await sanityFetch<LandingPageContent | null>(LANDING_BY_SLUG_QUERY, { slug }, null);
+  if (raw) return raw;
+  const fb = FALLBACK_LANDING_PAGES.find((p) => p.slug === slug);
+  return (fb as unknown as LandingPageContent) || null;
+}
+
+const LANDING_SLUGS_QUERY = `*[_type == "landingPage" && published == true && defined(slug.current)][].slug.current`;
+export async function getAllLandingSlugs(): Promise<string[]> {
+  const slugs = await sanityFetch<string[] | null>(LANDING_SLUGS_QUERY, {}, null);
+  if (slugs && slugs.length > 0) return slugs;
+  return FALLBACK_LANDING_PAGES.map((p) => p.slug);
 }

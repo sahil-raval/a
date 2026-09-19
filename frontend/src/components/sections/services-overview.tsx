@@ -50,7 +50,7 @@ export function ServicesOverview({ title, subtitle, services }: ServicesOverview
                       src={service.imageUrl}
                       alt={service.title}
                       fill
-                      unoptimized={service.imageUrl?.startsWith("http")}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-colors duration-300" />

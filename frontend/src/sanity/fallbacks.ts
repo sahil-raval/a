@@ -44,6 +44,7 @@ export const FALLBACK_NAV = {
     { label: "Home", href: "/" },
     { label: "About", href: "/about" },
     { label: "How We Work", href: "/how-we-work" },
+    { label: "Blog", href: "/blog" },
     { label: "Contact", href: "/contact" },
   ],
   servicesMenuItems: [
@@ -110,6 +111,7 @@ export const FALLBACK_FOOTER = {
       links: [
         { label: "About Us", href: "/about" },
         { label: "How We Work", href: "/how-we-work" },
+        { label: "Blog", href: "/blog" },
         { label: "Contact", href: "/contact" },
         { label: "Privacy Policy", href: "/privacy-policy" },
         { label: "Terms of Service", href: "/terms-of-service" },
@@ -555,6 +557,180 @@ export const FALLBACK_HOW_WE_WORK = {
   },
 };
 
+/* -------------------------------------------------------------------------- */
+/*  Blog + Landing Pages                                                      */
+/* -------------------------------------------------------------------------- */
+
+// Helper to build Portable Text blocks from simple markup so fallback demo
+// content renders through the same PortableText pipeline as real Sanity data.
+let _k = 0;
+const bk = () => `fb${(_k++).toString(36)}`;
+function blocks(items: string[]): any[] {
+  return items.map((raw) => {
+    const heading = raw.match(/^(#{2,4})\s+(.*)$/);
+    if (heading) {
+      const style = heading[1].length === 2 ? "h2" : heading[1].length === 3 ? "h3" : "h4";
+      return {
+        _type: "block",
+        _key: bk(),
+        style,
+        markDefs: [],
+        children: [{ _type: "span", _key: bk(), text: heading[2], marks: [] }],
+      };
+    }
+    const bullet = raw.match(/^-\s+(.*)$/);
+    if (bullet) {
+      return {
+        _type: "block",
+        _key: bk(),
+        style: "normal",
+        listItem: "bullet",
+        level: 1,
+        markDefs: [],
+        children: [{ _type: "span", _key: bk(), text: bullet[1], marks: [] }],
+      };
+    }
+    return {
+      _type: "block",
+      _key: bk(),
+      style: "normal",
+      markDefs: [],
+      children: [{ _type: "span", _key: bk(), text: raw, marks: [] }],
+    };
+  });
+}
+
+export const FALLBACK_BLOG_POSTS = [
+  {
+    title: "How Home Batteries Slash Your Power Bill",
+    slug: "home-batteries-slash-power-bill",
+    excerpt:
+      "Pairing solar with a home battery lets you store daytime energy and use it at night — here's how much you can really save.",
+    author: "APM Energy",
+    publishedAt: "2025-01-15T09:00:00.000Z",
+    category: "Battery",
+    coverImageUrl:
+      "https://images.pexels.com/photos/37929911/pexels-photo-37929911.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    tags: ["Solar", "Battery", "Savings"],
+    body: blocks([
+      "Solar panels are brilliant during the day, but most households use the bulk of their electricity in the evening. A home battery bridges that gap by storing surplus daytime generation for use after sunset.",
+      "## Why batteries make financial sense",
+      "Feed-in tariffs have fallen sharply across Australia, which means exporting excess solar to the grid earns you very little. Storing that same energy and using it yourself avoids buying power at peak retail rates.",
+      "- Maximise self-consumption of your own solar",
+      "- Protect against rising grid prices",
+      "- Keep the lights on during outages with backup-capable systems",
+      "## What size battery do you need?",
+      "The right capacity depends on your evening load and how much solar you generate. Our team models your usage profile to recommend a system that pays for itself as fast as possible.",
+      "Ready to see your numbers? Book a free assessment and we'll show you a realistic payback estimate for your home.",
+    ]),
+    seo: {
+      title: "How Home Batteries Slash Your Power Bill | APM Energy",
+      description:
+        "Discover how pairing solar with a home battery cuts your electricity bill, boosts self-consumption and protects against rising grid prices.",
+      keywords: ["home battery", "solar storage", "power bill savings", "solar battery Australia"],
+    },
+  },
+  {
+    title: "Solar Panel Maintenance: A Simple Seasonal Checklist",
+    slug: "solar-panel-maintenance-checklist",
+    excerpt:
+      "A few minutes of seasonal care keeps your solar system performing at its best. Follow this simple checklist.",
+    author: "APM Energy",
+    publishedAt: "2025-02-02T09:00:00.000Z",
+    category: "Maintenance",
+    coverImageUrl:
+      "https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2064&auto=format&fit=crop",
+    tags: ["Maintenance", "Solar"],
+    body: blocks([
+      "Solar systems are famously low-maintenance, but a little attention each season keeps them generating peak power for decades.",
+      "## Keep an eye on output",
+      "Check your monitoring app monthly. A sudden drop in generation is the earliest sign something needs attention.",
+      "## Keep panels clean",
+      "Dust, pollen and bird droppings reduce output. In most areas rain does the job, but a gentle rinse before summer helps.",
+      "- Inspect for shading from growing trees",
+      "- Look for loose mounting or damaged cabling",
+      "- Book a professional inspection every few years",
+      "If you notice anything unusual, our maintenance team can run a full safety and performance check.",
+    ]),
+    seo: {
+      title: "Solar Panel Maintenance Checklist | APM Energy",
+      description:
+        "Keep your solar system performing at its best with this simple seasonal maintenance checklist from APM Energy.",
+      keywords: ["solar maintenance", "solar panel cleaning", "solar inspection"],
+    },
+  },
+  {
+    title: "EV Chargers at Home: What You Need to Know",
+    slug: "ev-chargers-at-home-guide",
+    excerpt:
+      "Thinking about a home EV charger? Here's how to choose the right unit and charge for next to nothing using solar.",
+    author: "APM Energy",
+    publishedAt: "2025-02-20T09:00:00.000Z",
+    category: "EV Charging",
+    coverImageUrl:
+      "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?q=80&w=2072&auto=format&fit=crop",
+    tags: ["EV", "Charging", "Solar"],
+    body: blocks([
+      "Home charging is the most convenient — and cheapest — way to keep your electric vehicle ready to go each morning.",
+      "## Level 2 is the sweet spot",
+      "A dedicated 7kW Level 2 charger adds around 40km of range per hour, comfortably topping up most cars overnight.",
+      "## Charge on sunshine",
+      "Smart chargers can prioritise your solar generation, so you fill the battery with free energy from your roof rather than the grid.",
+      "- Faster, safer charging than a standard power point",
+      "- Solar-aware scheduling to cut costs",
+      "- Future-proof for a second EV",
+      "We supply and install EV charging solutions for homes and businesses across Australia.",
+    ]),
+    seo: {
+      title: "Home EV Chargers Guide | APM Energy",
+      description:
+        "Everything you need to know about installing a home EV charger and charging your car with solar power.",
+      keywords: ["home EV charger", "EV charging", "solar EV charging", "Level 2 charger"],
+    },
+  },
+];
+
+export const FALLBACK_LANDING_PAGES = [
+  {
+    title: "Summer Solar Offer",
+    slug: "summer-solar-offer",
+    published: true,
+    heroHeading: "Go Solar This Summer & Save",
+    heroSubheading:
+      "Premium solar and battery packages installed by accredited experts — with transparent pricing and no hidden costs.",
+    heroImageUrl:
+      "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=2072&auto=format&fit=crop",
+    heroCtaLabel: "Get a Free Quote",
+    heroCtaHref: "/contact",
+    sections: [
+      {
+        _type: "featureGrid",
+        _key: "lg1",
+        heading: "Why Choose APM Energy",
+        subheading: "Quality systems, expert installation and long-term support.",
+        items: [
+          { _key: "f1", icon: "ShieldCheck", title: "Licensed & Insured", description: "Fully qualified professionals compliant with Australian standards." },
+          { _key: "f2", icon: "Zap", title: "Latest Technology", description: "Premium panels and smart batteries for maximum efficiency." },
+          { _key: "f3", icon: "Award", title: "Quality Guaranteed", description: "Premium materials backed by comprehensive warranties." },
+        ],
+      },
+      {
+        _type: "ctaBanner",
+        _key: "lg2",
+        heading: "Ready to start saving?",
+        description: "Book your free, no-obligation assessment today.",
+        buttonLabel: "Contact Us",
+        buttonHref: "/contact",
+      },
+    ],
+    seo: {
+      title: "Summer Solar Offer | APM Energy",
+      description: "Premium solar and battery packages installed by accredited experts. Get a free quote this summer.",
+      keywords: ["solar offer", "solar quote", "battery package"],
+    },
+  },
+];
+
 export type SiteContent = typeof FALLBACK_SITE;
 export type NavContent = typeof FALLBACK_NAV;
 export type FooterContent = typeof FALLBACK_FOOTER;
@@ -563,3 +739,5 @@ export type AboutContent = typeof FALLBACK_ABOUT;
 export type ContactContent = typeof FALLBACK_CONTACT;
 export type HowWeWorkContent = typeof FALLBACK_HOW_WE_WORK;
 export type ServiceContent = (typeof FALLBACK_SERVICES)[number];
+export type BlogPostContent = (typeof FALLBACK_BLOG_POSTS)[number];
+export type LandingPageContent = (typeof FALLBACK_LANDING_PAGES)[number];

@@ -10,6 +10,8 @@ import {
   PanelTop,
   PanelBottom,
   Briefcase,
+  Newspaper,
+  LayoutTemplate,
 } from "lucide-react";
 import React from "react";
 
@@ -80,6 +82,25 @@ export const structure: StructureResolver = (S) =>
             .id("contactPage")
             .schemaType("contactPage")
             .documentId("contactPage"),
+        ),
+      S.divider(),
+      // Landing Pages (form-based, uploadable)
+      S.listItem()
+        .title("Landing Pages")
+        .icon(ico(LayoutTemplate))
+        .child(
+          S.documentTypeList("landingPage")
+            .title("Landing Pages")
+            .defaultOrdering([{ field: "_createdAt", direction: "desc" }]),
+        ),
+      // Blog
+      S.listItem()
+        .title("Blog Posts")
+        .icon(ico(Newspaper))
+        .child(
+          S.documentTypeList("blogPost")
+            .title("Blog Posts")
+            .defaultOrdering([{ field: "publishedAt", direction: "desc" }]),
         ),
       S.divider(),
       // Collections
