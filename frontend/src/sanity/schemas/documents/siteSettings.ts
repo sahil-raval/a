@@ -69,6 +69,16 @@ export const siteSettings = defineType({
       type: "string",
       group: "contact",
     }),
+    
+    
+    defineField({
+      name: "whatsapp",
+      title: "WhatsApp Number",
+      type: "string",
+      group: "contact",
+      description:
+        "Digits only, with country code and no spaces or symbols (e.g. 61412391878 for +61 412 391 878). Leave blank to reuse the Phone number, or to hide the WhatsApp button set this to a single space.",
+    }),
     defineField({
       name: "address",
       title: "Address / Region",
