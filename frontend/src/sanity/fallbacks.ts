@@ -12,6 +12,7 @@ export const FALLBACK_SITE = {
   abn: "11 681 478 848",
   email: "info@apmenergy.com.au",
   phone: "+61 412 391 878",
+  whatsapp: "61412391878",
   address: "West 6, 33 Mackey Street, North Geelong VIC, 3215",
   businessHours: "Mon-Fri from 8am to 5pm.",
   serviceArea: "Servicing all metropolitan and regional areas.",
