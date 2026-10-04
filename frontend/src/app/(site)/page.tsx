@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import {
   buildMetadata,
+  getContact,
   getHome,
   getServices,
 } from "@/sanity/queries";
@@ -23,11 +24,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [home, services] = await Promise.all([getHome(), getServices()]);
+  const [home, services, contact] = await Promise.all([
+    getHome(),
+    getServices(),
+    getContact(),
+  ]);
 
   return (
     <div className="flex flex-col min-h-screen" data-testid="home-page">
-      <Hero data={home} />
+      <Hero data={home} serviceOptions={contact.serviceOptions} />
       <ServicesOverview
         title={home.servicesTitle}
         subtitle={home.servicesSubtitle}

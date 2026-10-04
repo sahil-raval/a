@@ -48,7 +48,7 @@ export default function FloatingContactButtons({
         <a
           href={telHref}
           aria-label="Call us"
-          className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-lg shadow-black/20 transition-transform hover:scale-105"
+          className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary to-blue-900 text-white shadow-lg shadow-black/20 transition-transform hover:scale-105"
         >
           <Phone className="h-6 w-6" fill="currentColor" />
         </a>
