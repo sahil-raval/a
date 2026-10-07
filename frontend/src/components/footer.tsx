@@ -106,7 +106,7 @@ export default async function Footer() {
         <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
   <p className="text-sm text-muted-foreground">{copyright}</p>
   <p className="text-sm text-muted-foreground">
-    Developed and managed by{" "}
+    Website Developed and Managed by{" "}
     <a
       href="https://drivwon.com"
       target="_blank"
