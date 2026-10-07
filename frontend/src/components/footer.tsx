@@ -103,9 +103,21 @@ export default async function Footer() {
           </div>
         </div>
 
-        <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-center items-center gap-4">
-          <p className="text-sm text-muted-foreground">{copyright}</p>
-        </div>
+        <div className="border-t mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+  <p className="text-sm text-muted-foreground">{copyright}</p>
+  <p className="text-sm text-muted-foreground">
+    Developed and managed by{" "}
+    <a
+      href="https://drivwon.com"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-medium hover:text-primary transition-colors"
+      data-testid="footer-developer-credit"
+    >
+      DRIVWON PTY LTD
+    </a>
+  </p>
+</div>
       </div>
     </footer>
   );
