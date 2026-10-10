@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { getSiteSeoMetadata } from "@/sanity/queries";
 import StructuredData from "@/components/structured-data";
+import ContactTracking from "@/components/contact-tracking"; // ADDED
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,6 +45,7 @@ export default function RootLayout({
         </Script>
 
         <StructuredData />
+        <ContactTracking /> {/* ADDED */}
         {children}
       </body>
     </html>
