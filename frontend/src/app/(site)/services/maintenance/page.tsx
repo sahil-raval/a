@@ -48,7 +48,7 @@ export default function MaintenancePage() {
                <Link href="/contact">Book Service</Link>
             </Button>
             <Button asChild variant="outline" size="lg" className="rounded-full px-8 h-12 text-lg bg-transparent border-white text-white hover:bg-white hover:text-black">
-               <Link href="tel:+61300123456">Emergency Call</Link>
+               <Link href="tel:+61 412 391 878">Emergency Call</Link>
             </Button>
           </div>
         </div>
